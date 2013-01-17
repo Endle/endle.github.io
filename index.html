@@ -16,6 +16,34 @@ page_name: homepage
   {% endif %}
 {% endfor %}
  
+
+<div class="paginator">
+  
+  <div class="left_column">
+    {% if paginator.next_page %}
+      <a href="/page{{ paginator.next_page }}/" title="Older entries">&laquo; older entries</a>
+    {% endif %}
+		&nbsp;
+  </div>
+  
+  {% include search.html %}
+  
+  <div class="right_column">
+    {% if paginator.previous_page %}
+      <a href="
+        {% if paginator.previous_page == 1 %}
+          /
+        {% else %}
+          /page{{ paginator.previous_page }}
+        {% endif %}" title="Newer entries">newer entries &raquo;</a>
+    {% endif %}
+		&nbsp;
+  </div>
+ 
+  <div class="clear_both">
+  </div>
+ 
+</div>
 <!-- 
-由 https://github.com/wulfovitch/wulfovitch.net/blob/master/index.html 大幅精简所得
+由 https://github.com/wulfovitch/wulfovitch.net/blob/master/index.html 所得
 -->
