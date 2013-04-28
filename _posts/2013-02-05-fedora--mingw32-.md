@@ -2,7 +2,7 @@
 layout: post
 title: "Fedora 下安装 mingw32 以交叉编译"
 description: ""
-category: C 
+category: linix 
 tags: [C, gcc, mingw, fedora, wine]
 ---
 {% include JB/setup %}
