@@ -1,3 +1,4 @@
 User-agent: Baiduspider
 Disallow: 404.html
+Sitemap: http://endle.gitcafe.com/atom.xml
 
