@@ -22,15 +22,19 @@ libGL error: unable to load driver: swrast_dri.so
 libGL error: failed to load driver: swrast
 {% endhighlight %}
 我的电脑上，只有 `/usr/lib64/dri/r600_dri.so`。很显然，我缺的是 32 位的驱动。第一反应，是建一个软链接。但这次，提示变成了
+{% highlight c %}
+libGL error: dlopen /usr/lib/dri/r600_dri.so failed (/usr/lib/dri/r600_dri.so: cannot open shared object file: Too many levels of symbolic links)
+{% endhighlight %}
 
-`libGL error: dlopen /usr/lib/dri/r600_dri.so failed (/usr/lib/dri/r600_dri.so: cannot open shared object file: Too many levels of symbolic links)`
-
-那我拷贝过去呢？很遗憾，没这么简单。 `libGL error: dlopen /usr/lib/dri/r600_dri.so failed (/usr/lib/dri/r600_dri.so: wrong ELF class: ELFCLASS64)`
+那我拷贝过去呢？很遗憾，没这么简单。 
+{% highlight c %}
+libGL error: dlopen /usr/lib/dri/r600_dri.so failed (/usr/lib/dri/r600_dri.so: wrong ELF class: ELFCLASS64)
+{% endhighlight %}
 
 这里，我就只好用一个笨方法了：我从网上下载了 Fedora 19 32bit 的 ISO，然后装到了虚拟机里，再把这个文件拷贝了出来（后面我会提供链接）。
 
 问题是，最后还是出了一点小问题
-{% highlight c%}
+{% highlight c %}
 libGL: OpenDriver: trying /usr/lib/dri/tls/r600_dri.so
 libGL: OpenDriver: trying /usr/lib/dri/r600_dri.so
 libGL error: dlopen /usr/lib/dri/r600_dri.so failed (libLLVM-3.3.so: cannot open shared object file: No such file or directory)
@@ -49,5 +53,6 @@ libGL error: failed to load driver: swrast
 32 位驱动下载链接：<https://skydrive.live.com/redir?resid=902E5583A63BC02B!120>
 
 sha1sum: `86351d2d73e63c7088e90d442969643f7ad79111`
-
-PS DOTA里的神灵果然是一个（虐AI）强大的英雄。
+<br />
+<br />
+P.S.  DOTA里的神灵果然是一个（虐AI）强大的英雄。
