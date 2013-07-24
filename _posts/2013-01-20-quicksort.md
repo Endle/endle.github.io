@@ -3,7 +3,7 @@ layout: post
 title: "重学quicksort"
 description: ""
 category: algorithm
-tags: [algorithm, QuickSort, sort, 除草]
+tags: [algorithm, sort]
 ---
 {% include JB/setup %}
 
