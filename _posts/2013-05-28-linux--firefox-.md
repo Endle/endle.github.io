@@ -9,7 +9,7 @@ tags: [firefox, 同步]
 
 不知道为什么，最近我的 Firefox 加载一些网页总是有问题。参考了 [Bugzilla 上我收到的回复][bug]，我打算重置我的个人配置。
 
-但这么做，就意味着我要重新安装一下自己的扩展，和积累的一票油猴脚本。尤其是 [ForTrick][fox]，还要手动去下载 .xpi 文件。网上有人 [推荐了FEBE][febe]，但不知道为什么，我就是没装上。所以，就打算试试手动备份。
+但这么做，就意味着我要重新安装一下自己的扩展，和积累的一票油猴脚本。尤其是 [ForTrick][fox]，还要手动去下载 .xpi 文件。网上有人推荐了 [FEBE][febe]，但不知道为什么，我就是没装上。所以，就打算试试手动备份。
 [bug]: https://bugzilla.mozilla.org/show_bug.cgi?id=851867
 [febe]: http://www.williamlong.info/archives/2217.html
 [fox]: http://www.foxtrick.org
@@ -21,7 +21,8 @@ Linux 下的配置文件
 建立新的配置文件
 --
 关掉 Firefox，输入 `firefox -p`（本人测试不区分大小写），然后会出现一个很和谐的窗口。
-![screen](http://i1152.photobucket.com/albums/p481/letusdo_photos/blog%20of%20endle/Screenshotfrom2013-05-28180849_zpsed5f1905.png)
+![screen](/images/firefox/sync.png)
+
 
 新建一个用户，然后指定新的文件夹即可。
 
