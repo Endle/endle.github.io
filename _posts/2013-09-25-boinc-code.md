@@ -27,6 +27,8 @@ BOINC 的代码可以从官方网站 [下载][offi]，也可以从我在 GitCafe
 
 RPC_CLIENT
 --
+[官方wiki][wiki] 上给的解释是：The BOINC client provides a set of RPCs (**remote procedure calls**) for control and state interrogation. This enables the development of GUI (graphical user interface) programs. These RPCs *send XML request* and reply messages over a **TCP** connection. The XML formats are not documented, but can be inferred from the source code. 
+
 `RPC_CLIENT` 的定义在 `lib/gui_rpc_client.h` 里。可以看出，这是一个负责与 HOST 进行沟通的模块。以 `lib/gui_rpc_client_ops.cpp` 中的 `project_op` 函数为例（部分精简）：
 {% highlight c %}
 int RPC_CLIENT::project_op(PROJECT& project, const char* op) {
@@ -68,6 +70,7 @@ int RPC_CLIENT::project_op(PROJECT& project, const char* op) {
 }
 {% endhighlight %}
 
+[wiki]: http://boinc.berkeley.edu/trac/wiki/GuiRpc
 用户的指令会被包装成 xml 格式，然后使用 `send_request(const chap *p)` 函数发送给 `boinc`
 
 接收命令
