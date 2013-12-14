@@ -42,10 +42,11 @@ QQ2013 SP1 安装时，会调用 `SHFileOperation` 删除 `C:\\Program Files\\qq
 
 接下来的任务
 --
-在 Wine 的实现里，`SHFileOperation` 会调用 `BOOL DeleteFileW`。而 `DeleteFileW` 是靠 `SetLastError()` 抛出异常的。([MSDN][]) 我看了一下 kernel32 的相关测试，覆盖的并不是很好。我的 [patch 101039][101039] 被 reject 掉了，[相关讨论](http://www.winehq.org/pipermail/wine-devel/2013-December/102265.html) 里提到，kernel32 的很多 testcase 比较旧。接下来，我打算花时间完善一下这些 testcase。
+在 Wine 的实现里，`SHFileOperation` 会调用 `BOOL DeleteFileW`。而 `DeleteFileW` 是靠 `SetLastError()` 抛出异常的。([MSDN: DeleteFile function][MSDN]) 我看了一下 kernel32 的相关测试，覆盖的并不是很好。我的 [patch 101039][101039] 被 reject 掉了，[相关讨论](http://www.winehq.org/pipermail/wine-devel/2013-December/102265.html) 里提到，kernel32 的很多 testcase 比较旧。接下来，我打算花时间完善一下这些 testcase。
 
 
 
+[MSDN]: http://msdn.microsoft.com/en-us/library/windows/desktop/aa363915%28v=vs.85%29.aspx
 [101039]: http://source.winehq.org/patches/data/101039
 [34324]: http://bugs.winehq.org/show_bug.cgi?id=34324
 [bot]: http://wiki.winehq.org/WineTestBot
