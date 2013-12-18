@@ -2,7 +2,7 @@
 layout: post
 title: "为 wine 添加 testcase"
 description: ""
-category: linux 
+category: wine 
 tags: [wine]
 ---
 {% include JB/setup %}

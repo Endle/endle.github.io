@@ -2,7 +2,7 @@
 layout: post
 title: "SHFileOperation 删除文件的小测试"
 description: ""
-category: linux 
+category: wine 
 tags: [wine, shell32]
 ---
 {% include JB/setup %}
