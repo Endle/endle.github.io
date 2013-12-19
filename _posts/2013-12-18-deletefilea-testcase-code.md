@@ -16,6 +16,9 @@ tags: [wine, kernel32, git]
 很多组 testcase 是 2002 年左右加上去的。当时 XP 刚刚面世。这么多个版本过来，很多 Win API 的行为都变了，尤其是非法情况下的返回值。  
 2. Wine 的代码质量  
 翻了 git log，发现 Wine 的一些旧代码的质量真不敢恭维。欠缺了很多的注释，git commit 时写的 comment 也不准确，这给后来的工作带来了一些障碍。  
+3. Windows API 的诡异行为  
+可能是我对 Windows 的了解太少，我做测试的时候，发现 `DeleteFile("nul")` 和 `DeleteFile("a.exe")` 遇到文件不存在的问题后，`GetLastError()` 的返回值是不一样的。看来，我最初的推测并不准确。
+
 
 如何去做
 --
