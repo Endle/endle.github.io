@@ -9,7 +9,7 @@ tags: [algorithm, sort]
 
 前两天写一道水题，想尝试一下手写快排，可没想到花了一个多小时都没有搞定。看来， **The devil is in the detail** ，细节的地方埋藏了许多知识盲点。看来，有的草，是迟早要花时间除的。
 
-{% highlight c %}
+{% highlight c++ %}
 void quicksort(int A[], int p, int r)
 {
 	if (p >= r)		return;
@@ -21,7 +21,7 @@ void quicksort(int A[], int p, int r)
 {% endhighlight %}
 
 为了保证 O(nlgn)的复杂度，partition 需要达到O(n)的复杂度。算法导论上，提供了这样一种实现
-{% highlight c %}
+{% highlight c++ %}
 int partition(int A[], int p, int r)
 {
 	int i, j, x;
@@ -31,9 +31,9 @@ int partition(int A[], int p, int r)
 		if (A[j] <= x){
 			++i;
 			SWAP(A[i], A[j]);
-		}//if (A[j] <= x)
-	}//for (j = p; j < r; ++j)
-	SWAP(A[i+1], A[r]);
+		}
+    }
+    SWAP(A[i+1], A[r]);
 	return i + 1;
 }
 {% endhighlight %}
