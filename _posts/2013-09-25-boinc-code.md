@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Boinc 源代码的阅读笔记"
+title: "BOINC 源代码的阅读笔记"
 description: ""
 category: project 
 tags: [C++, C, boinc, project]
