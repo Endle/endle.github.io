@@ -21,7 +21,7 @@ $ sudo dnf remove `cat rpm_tex`
 $ sudo dnf install perl-Digest-MD5
 {% endhighlight %}
 #### 下载安装包
-官网上提供了[多种下载方式][texlive]，例如便捷的在线安装包。不过，因为网络不太稳定，所以我选择了直接下载 ISO 的方式。中科大的镜像链接 <http://www.tug.org/texlive/>
+官网上提供了[多种下载方式][texlive]，例如便捷的在线安装包。不过，因为网络不太稳定，所以我选择了直接下载 ISO 的方式。中科大的镜像链接 <http://mirrors.ustc.edu.cn/CTAN/systems/texlive/Images/>
 
 #### 运行安装程序
 {% highlight sh %}
