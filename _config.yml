@@ -20,7 +20,7 @@ baseurl: ''
 # This can be '' to hide the Github nav button
 github: ''
 
-# Set this to your disqus shortname to enable comments via disqus. Set to '' to disable disqus.
+comments: true
 disqus: 'endle'
   
 # For sitemap
