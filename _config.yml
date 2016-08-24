@@ -6,7 +6,8 @@ exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
 lsi: false
 highlighter: rb-pygments
 paginate: 3 
-markdown: redcarpet
+# GitHub Pages only supports kramdown as a Markdown processor.
+markdown: kramdown
 rdiscount:
   extensions: []
 
