@@ -1,4 +1,7 @@
-# This is the default format. 
+name : Blog of Endle
+description: Endle's small island
+
+
 # For more see: https://github.com/mojombo/jekyll/wiki/Permalinks
 permalink: /:year/:month/:day/:title/ 
 
@@ -8,18 +11,11 @@ highlighter: rb-pygments
 paginate: 3 
 # GitHub Pages only supports kramdown as a Markdown processor.
 markdown: kramdown
-rdiscount:
-  extensions: []
 
-gems: [jekyll-paginate, rb-pygments, rdiscount, redcarpet]
+gems: [jekyll-paginate, rb-pygments, kramdown]
 
-# Themes are encouraged to use these universal variables 
-# so be sure to set them if your theme uses them.
-#
-title : Blog of Endle
-tagline: Site Tagline
-author :
-  name : Endle
+baseurl: ''
+
 
 # This can be '' to hide the Github nav button
 github: ''
@@ -27,3 +23,5 @@ github: ''
 # Set this to your disqus shortname to enable comments via disqus. Set to '' to disable disqus.
 disqus: 'endle'
   
+# For sitemap
+production_url: 'https://endle.github.io' 
