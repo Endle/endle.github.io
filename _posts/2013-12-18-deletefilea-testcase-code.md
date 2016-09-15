@@ -5,7 +5,6 @@ description: ""
 category: wine
 tags: [wine, kernel32, git]
 ---
-{% include JB/setup %}
 
 为了处理 [Wine bug 34324](http://bugs.winehq.org/show_bug.cgi?id=34324)，我看了 `kernel32.dll` 里 `DeleteFileA()` 和其 testcase 的代码，发现埋藏了不少的坑。考虑到最近我会比较忙，就先做一些简单的记录，回头再进一步的处理。
 

@@ -5,7 +5,6 @@ description: ""
 category: linux 
 tags: [C, gcc, mingw, fedora, wine]
 ---
-{% include JB/setup %}
 Qian Hong 在 [wine-zh 邮件列表][1] 里发表了[分享: 如何入门 Wine 的开发调试?][2]，提到了要尝试使用 mingw 交叉编译代码为 exe，然后尝试 [debug channel][3]。兜了一个圈子，总算在我的 Fedora 16上装好了 mingw.
 
 首先，要去 [fedora packages][4] 搜索 mingw 的包。搜完以后，把看着舒服的装上吧（我不太清楚哪些必要就装了一大堆。。。反正 mingw-gcc 肯定是必要的）。

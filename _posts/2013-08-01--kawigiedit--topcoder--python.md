@@ -5,7 +5,6 @@ description: ""
 category: algorithm 
 tags: [python, topcoder, 算法竞赛]
 ---
-{% include JB/setup %}
 
 在 [上篇文章][last] 里，我提到 *很多插件还不支持 python。比赛的时候，可能不太方便*，但我在 [Topcoder 官方论坛][bbs] 上逛了一圈，发现我要收回这句话。KawigiEdit 有一个 [非官方版][unoffi]，提供了 Python support。下载链接：<http://dl.dropboxusercontent.com/u/95690732/KawigiEdit/pf/2.2.2/KawigiEdit.jar>
 

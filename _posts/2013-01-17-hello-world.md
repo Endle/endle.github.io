@@ -6,7 +6,6 @@ category: jekyll
 tags: [jekyll, blog]
 ---
 
-{% include JB/setup %}
 
 折腾了将近一周，总算把jekyll架了起来。要是一开始就老老实实照着Jekyll Bootstrap做，就费不了这么多事吧。。。
 

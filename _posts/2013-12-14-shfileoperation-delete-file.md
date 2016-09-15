@@ -5,7 +5,6 @@ description: ""
 category: wine 
 tags: [wine, shell32]
 ---
-{% include JB/setup %}
 
 这段时间处理 [Wine bug 34324: QQ2013 SP1 can't install][34324]， 发现问题没有想象的简单。把之前取得的成果先记录下来，希望能给同样遇到这个问题的人一点提示，也算给自己留下一点笔记。
 

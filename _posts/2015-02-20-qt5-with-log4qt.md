@@ -5,7 +5,6 @@ description: ""
 category: project 
 tags: [C++, QT]
 ---
-{% include JB/setup %}
 
 最近在写一个 QT 的程序，需要打印日志。搜索了一下，选定了 [Log4Qt][]。不过，原项目已经长期不更新了，而 [DevBean][db] 维护了一个 [Qt5 的版本][qt5]。所以，我执行了 `git submodule add https://github.com/devbean/log4qt.git` 而在此同时，另一个团队也在孜孜不倦地 [维护着 Log4qt][lq2]。感兴趣的朋友不妨也测试一下。
 

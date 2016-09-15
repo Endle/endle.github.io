@@ -5,7 +5,6 @@ description: ""
 category: project 
 tags: [C++, C, boinc, project]
 ---
-{% include JB/setup %}
 
 在论坛上跟人聊天，提到了修改 BOINC 客户端，以便于屯包的设想。在开学前没什么事，就挖下了这个坑。我修改后的版本，可以在 [这里][gcrepo] 看到。当然，现在还没有什么可用性。
 

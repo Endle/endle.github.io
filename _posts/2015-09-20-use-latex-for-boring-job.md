@@ -5,7 +5,6 @@ description: ""
 category: tool
 tags: [LaTeX]
 ---
-{% include JB/setup %}
 
 假期里，我们被布置了一篇报告作为作业。排版要求如下：
 ```

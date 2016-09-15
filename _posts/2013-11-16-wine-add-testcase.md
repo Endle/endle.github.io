@@ -5,7 +5,6 @@ description: ""
 category: wine 
 tags: [wine]
 ---
-{% include JB/setup %}
 
 之前处理一个 [QQ2013安装程序无法完成的 bug][qqbug]，经过分析，问题锁定在了 `SHFileOperation` 函数上。[MSDN 的函数介绍][msdn]
 

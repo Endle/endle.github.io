@@ -5,7 +5,6 @@ description: ""
 category: linux 
 tags: [fedora, kernel, CentOS]
 ---
-{% include JB/setup %}
 
 回家给台式机装上了 CentOS 6.5，发现很多软件包都太旧，尤其是 kernel，还停留在 2.6 的时代。找了一些介绍，多数说要自己编译 kernel，实在太麻烦。不过，有一篇文章介绍了用 [ELRepo][] 安装新内核的方法，我只想说：  
 >太伟大了！

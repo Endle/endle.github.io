@@ -5,7 +5,6 @@ description: ""
 category: linux 
 tags: [fedora, wine, video, driver]
 ---
-{% include JB/setup %}
 
 自从装上了 64 位的 Fedora，就没能用 wine 带起过 3D 游戏。设置上`LIBGL_DEBUG=verbose`，用 crossover 测试，有这样的提示
 {% highlight c %}

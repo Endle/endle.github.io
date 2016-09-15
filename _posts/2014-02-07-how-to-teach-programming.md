@@ -5,7 +5,6 @@ description: ""
 category: think
 tags: [think]
 ---
-{% include JB/setup %}
 
 这学期头脑发热，辅导了两个人编程（第一个 Python，第二个 C++），真的是很难忘的经历。  
 学习编程是一件有挑战的事情。相比之下，教一个人编程更加困难。第一个障碍，就是思维方式的改变（针对大学生而言）。

@@ -5,7 +5,6 @@ description: "why-inferiority"
 category: think
 tags: [think]
 ---
-{% include JB/setup %}
 
 两位竞赛党在一起聊天，很容易就会说 “我弱” “我纱布” 之类的词汇，就像 “我很好” 一样常见。绝大多数的人，在贴吧、Q群里呆久了，都会染上这样的习惯。
 

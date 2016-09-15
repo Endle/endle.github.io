@@ -5,7 +5,6 @@ description: ""
 category: tool 
 tags: [C, vim, cscope]
 ---
-{% include JB/setup %}
 这两天看 BOINC 的代码，需要 find usage 的功能。花了一上午，摸索出了让 vim 自动加载生成的 cscope.out 的方法。
 
 在 .vimrc 中插入如下代码即可：

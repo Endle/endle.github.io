@@ -5,7 +5,6 @@ description: ""
 category: algorithm
 tags: [algorithm, sort]
 ---
-{% include JB/setup %}
 
 前两天写一道水题，想尝试一下手写快排，可没想到花了一个多小时都没有搞定。看来， **The devil is in the detail** ，细节的地方埋藏了许多知识盲点。看来，有的草，是迟早要花时间除的。
 

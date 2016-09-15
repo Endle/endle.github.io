@@ -5,7 +5,6 @@ description: ""
 category: algorithm 
 tags: [python, topcoder, 算法竞赛]
 ---
-{% include JB/setup %}
 
 据 [人人上的消息][rr], topcoder 的 SRM 已经开始支持 python 了。今天没事，就测试了一下。
 [rr]: http://renren.com/acmicpc

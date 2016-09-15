@@ -5,7 +5,6 @@ description: ""
 category: linux
 tags: [fedora, LaTex]
 ---
-{% include JB/setup %}
 
 写这篇文章的起因，是我要使用 CTeX 宏集中的 `\ctexset` 指令自定义显示效果。但是，编译时，却总是提示 `Undefined control sequence. \ctexset`。在 Google 上搜索了一下，发现 `\ctexset` 是新版本的 `ctex` 引入的，而 Fedora 软件源中的 `texlive-ctex` 很旧，因此无法编译。最简单的解决办法，就是放弃 Fedora 的包管理系统，而统一使用 TeXLive 的 `tlmgr` 来管理宏包，并手动安装 TeXStudio。现将安装步骤记录如下：
 

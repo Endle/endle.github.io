@@ -5,7 +5,6 @@ description: ""
 category: linux
 tags: [firefox, 同步]
 ---
-{% include JB/setup %}
 
 不知道为什么，最近我的 Firefox 加载一些网页总是有问题。参考了 [Bugzilla 上我收到的回复][bug]，我打算重置我的个人配置。
 
