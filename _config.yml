@@ -7,12 +7,12 @@ permalink: /:year/:month/:day/:title/
 
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
 lsi: false
-highlighter: rb-pygments
+highlighter: rouge
 paginate: 3 
 # GitHub Pages only supports kramdown as a Markdown processor.
 markdown: kramdown
 
-gems: [jekyll-paginate, rb-pygments, kramdown]
+gems: [jekyll-paginate, rouge, kramdown]
 
 baseurl: ''
 
