@@ -9,6 +9,7 @@ tags: [C, algorithm, 算法竞赛]
 
 
 ## 预处理
+
 ### 预处理的潜在风险
 C 语言中，预处理与编译是独立的阶段。很多时候，这会引入额外的风险。
 
@@ -60,14 +61,18 @@ C 语言中并没有内置的 `string`，而只有 `char *`。请举若干例子
 2. [用 C 语言实现链表][clink] 等数据结构
 
 #### C 语言中，什么是函数的声明？什么是函数的定义？缺失了其中的一个会发生什么？  
-参见 [C 语言程序设计 现代方法][cmodern] 第九章 函数
+参见 [C 语言程序设计 现代方法][cmodern] 第九章 函数  
+
 #### 什么是动态链接？有什么好处？如何使用？  
 参见 [程序员的自我修养 链接、装载与库][linker] 第7章(Linux) 第9章(Windows)  
+
 #### 头文件中的 `extern "C"` 有什么用？如果没有，会发生什么？  
 参见 [程序员的自我修养 链接、装载与库][linker] 3.5.4   
 [Wikipedia Name Mangling](http://en.wikipedia.org/wiki/Name_mangling)  
+
 #### “带模版”的 qsort
-参见 [C 语言程序设计 现代方法][cmodern] 17.7.2 指针的高级应用
+参见 [C 语言程序设计 现代方法][cmodern] 17.7.2 指针的高级应用  
+
 #### Better String
 主要有两种思路：  
 1. 使用结构体封装，如 [bstrlib](https://github.com/websnarf/bstrlib/blob/master/bstrlib.txt#L60)  
