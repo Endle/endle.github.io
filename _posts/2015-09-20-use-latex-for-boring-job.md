@@ -16,7 +16,7 @@ tags: [LaTeX]
 
 在布置作业时，我们也得到了一个[Word 模板][template]。刚刚读完 [《LaTex 入门》][book]，就想着用 LaTeX 来完成这项工作。
 
-####自定义纸张
+#### 自定义纸张
 自定义纸张可以用 [wallpaper 宏包](https://www.ctan.org/pkg/wallpaper) 来处理。这个包的功能很简单，刚好符合本例的需求。将原有的模板导出成 pdf，然后使用该宏包加载即可。
 
 
@@ -24,7 +24,7 @@ tags: [LaTeX]
 \CenterWallPaper{1}{background.pdf}
 ```
 
-####自定义章节标题格式
+#### 自定义章节标题格式
 新的 [CTeX 套件][CTeX] 已经能完善地支持标题格式。本例中，可以使用
 {% highlight LaTeX %}
 \ctexset {
