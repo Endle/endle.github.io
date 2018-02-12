@@ -12,7 +12,7 @@ paginate: 3
 # GitHub Pages only supports kramdown as a Markdown processor.
 markdown: kramdown
 
-gems: [jekyll-paginate, rouge, kramdown]
+plugins: [jekyll-paginate, rouge, kramdown]
 
 baseurl: ''
 
