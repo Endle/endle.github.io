@@ -6,10 +6,6 @@ category: C
 tags: []
 ---
 
-<script type="text/javascript"
-    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
 最近，参加了一个提交答案类的编程比赛，有一道题可用线性规划解决。搜索发现，[GLPK (GNU Linear Programming Kit)][GLPK] 是一个免费的线性规划计算库，可以方便地被 C/C++ 代码调用。现将基本使用方法整理如下：  
 
 ## 准备工作  
