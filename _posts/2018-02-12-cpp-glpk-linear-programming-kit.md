@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "在 C++ 中调用 GLPK 求解线性规划"
+title: "在 C++ 中使用 GLPK 求解线性规划"
 description: "怎么使用 GLPK (GNU Linear Programming Kit)"
 category: C 
 tags: []
