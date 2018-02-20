@@ -1,4 +1,5 @@
 ---
+---
 layout: post
 title: "Qt5 中使用 log4qt 输出日志"
 description: ""
@@ -88,8 +89,7 @@ Log4Qt 的功能非常强大。例如，四个 Level 用于输出不同的信息
 
 #### Last
 从我学 Qt 的第一天起就没少看 DevBeans 的博客，也在这里推荐一下他的书籍
-<a href="http://www.amazon.cn/gp/product/B00SALSVVG/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B00SALSVVG&linkCode=as2&tag=blo-23">《Qt 5编程入门》</a><img src="http://ir-cn.amazon-adsystem.com/e/ir?t=blo-23&l=as2&o=28&a=B00SALSVVG" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-
+<a href="http://www.amazon.cn/gp/product/B00SALSVVG/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B00SALSVVG&linkCode=as2&tag=blo-23">《Qt 5编程入门》</a>
 
 [layout]: https://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html
 [Log4Qt]: http://log4qt.sourceforge.net/

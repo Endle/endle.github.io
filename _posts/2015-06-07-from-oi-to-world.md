@@ -91,11 +91,7 @@ SDS 项目给出了[两种实现方式的对比](https://github.com/antirez/sds/
 
 
 ### 书籍推荐
-<a href="http://www.amazon.cn/gp/product/B00FF1Y53C/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B00FF1Y53C&linkCode=as2&tag=blo-23">一站式学习C编程</a><img src="http://ir-cn.amazon-adsystem.com/e/ir?t=blo-23&l=as2&o=28&a=B00FF1Y53C" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-
-<a href="http://www.amazon.cn/gp/product/B0027VSA7U/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B0027VSA7U&linkCode=as2&tag=blo-23">程序员的自我修养:链接、装载与库</a><img src="http://ir-cn.amazon-adsystem.com/e/ir?t=blo-23&l=as2&o=28&a=B0027VSA7U" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-
-<a href="http://www.amazon.cn/gp/product/B003BVBOOQ/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B003BVBOOQ&linkCode=as2&tag=blo-23">C语言程序设计:现代方法(第2版)</a><img src="http://ir-cn.amazon-adsystem.com/e/ir?t=blo-23&l=as2&o=28&a=B003BVBOOQ" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-
-<a href="http://www.amazon.cn/gp/product/B0012UMPBY/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B0012UMPBY&linkCode=as2&tag=blo-23">C陷阱与缺陷</a><img src="http://ir-cn.amazon-adsystem.com/e/ir?t=blo-23&l=as2&o=28&a=B0012UMPBY" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-
+<a href="http://www.amazon.cn/gp/product/B00FF1Y53C/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B00FF1Y53C&linkCode=as2&tag=blo-23">一站式学习C编程</a>
+<a href="http://www.amazon.cn/gp/product/B0027VSA7U/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B0027VSA7U&linkCode=as2&tag=blo-23">程序员的自我修养:链接、装载与库</a>
+<a href="http://www.amazon.cn/gp/product/B003BVBOOQ/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B003BVBOOQ&linkCode=as2&tag=blo-23">C语言程序设计:现代方法(第2版)</a>
+<a href="http://www.amazon.cn/gp/product/B0012UMPBY/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B0012UMPBY&linkCode=as2&tag=blo-23">C陷阱与缺陷</a>
