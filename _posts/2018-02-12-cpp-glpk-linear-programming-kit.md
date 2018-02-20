@@ -171,6 +171,6 @@ PS 写这篇 blog 时，我第一次使用了 [mathjax][]。只能说，写作�
 [GLPK]: https://www.gnu.org/software/glpk
 [mathjax]: http://www.gastonsanchez.com/visually-enforced/opinion/2014/02/16/Mathjax-with-jekyll/
 
-
+{% include mathjax.html %}
 
 
