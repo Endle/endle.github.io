@@ -44,7 +44,7 @@ __lower_bound(_ForwardIterator __first, _ForwardIterator __last, const _Tp& __va
 3. 迭代结束：`l2 == 0` 当且仅当 `len == 1`。这是我们最后一次进行迭代  
 4. 特殊情况：如果所有的元素都为假，那最后一次迭代时， `++m` 的结果正是 `last`  
 
-相比我之前写de 不时出现死循环、真值被丢弃的二分查找，clang 的代码可以说高到不知道哪里去了。  
+相比我之前写的不时丢弃真值、出现死循环的二分查找，clang 的代码可是高到不知道哪里去了。  
 
 [upper_bound 的实现](https://github.com/llvm-mirror/libcxx/blob/dffe9e0f1dde084f2aab8010345aeb1b7c8f7d4c/include/algorithm#L4238) 看起来是相反的，不过从布尔值的角度看，与 `lower_bound` 是一样的，我就不复制代码了。  
 
