@@ -42,6 +42,11 @@ git checkout upstream/master
 git submodule update --recursive --depth=1
 ```
 
+在工作完成后，可以再[恢复 submodule 配置](https://stackoverflow.com/a/61751340/1166518)。
+```
+git restore . --recurse-submodules
+```
+
 #### 番外：获取更深的历史记录
 
 初次下载项目代码使用了 `--depth=1` 。如果想要看稍微久一些的历史记录，不需要 `git fetch --unshallow` 下载完整内容，而可以用 `git fetch origin master --deepen=10`。
