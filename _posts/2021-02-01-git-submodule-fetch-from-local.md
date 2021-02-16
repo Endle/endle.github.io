@@ -14,7 +14,7 @@ tags: [git]
 
 #### 使用本地源
 
-git checkout wine/master
+
 
 ```
 git clone https://github.com/madewokherd/wine-mono.git
