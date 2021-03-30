@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "如何让 Git Submodule 回复初始状态"
+title: "如何让 Git Submodule 恢复初始状态"
 description: ""
 category: tool
 tags: [git]
