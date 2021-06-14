@@ -26,7 +26,7 @@ $$E(X) =  \sum_{x=0}^{\infty} P(X \gt x) $$
 
 $$ E(X) = \sum_{x=1}^{\infty} \sum_{k=1}^{k=x} P(X=x) $$  
 
-我们将每一行的结果 `X=x` 拆出来   
+我们将每一行的结果 `Row(X=x)` 拆出来   
 
 $$ Row(X=x) = \sum_{k=1}^{k=x} P(X=x) $$  
 
