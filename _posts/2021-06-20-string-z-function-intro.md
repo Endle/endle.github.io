@@ -90,4 +90,6 @@ Z Function 的英文定义可以参考 [CMU 295 z-string-matching Page 7](https:
 
 [resilar](https://github.com/resilar) 提供了[更为精简的实现](https://gist.github.com/resilar/e65745cf7a80ef364df034e96cfcc86d#file-z-c-L82)。  
 
-[UT Dallas 的课程页面][utd] 和 [Matteo Dunnhofer 的文章](https://github.com/raywenderlich/swift-algorithm-club/blob/2fdd8b8be1b3fcd17ad0394053e672f2bd1d3076/Z-Algorithm/README.markdown) 都提到了 [Gusfield, Dan. Algorithms on Strings, Trees, and Sequences: Computer Science and Computational Biology](https://www.worldcat.org/title/algorithms-on-strings-trees-and-sequences-computer-science-and-computational-biology/oclc/910017234). 但我手头并没有这本书，并没有验证 Gusfield 的书上是否提到了这一算法。
+[UT Dallas 的课程页面][utd] 和 [Matteo Dunnhofer 的文章](https://github.com/raywenderlich/swift-algorithm-club/blob/2fdd8b8be1b3fcd17ad0394053e672f2bd1d3076/Z-Algorithm/README.markdown) 都提到了 [Gusfield, Dan. Algorithms on Strings, Trees, and Sequences: Computer Science and Computational Biology](https://www.worldcat.org/title/algorithms-on-strings-trees-and-sequences-computer-science-and-computational-biology/oclc/910017234). 但我手头并没有这本书，并没有验证 Gusfield 的书上是否提到了这一算法。  
+
+非常感谢 ITX351 对本文提供的宝贵意见。  
