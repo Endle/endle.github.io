@@ -3,7 +3,7 @@ layout: post
 title: "初探 Z function 处理字符串"
 description: ""
 category: algorithm 
-tags: [algorithm, string]
+tags: [codeforces, algorithm, string]
 ---
 
 之前参加了 [Codeforces Round #726](https://codeforces.com/blog/entry/91381)，E2 这道题方法很多，推荐的方法是 Z Function. 我也借机学习一个新算法。  
