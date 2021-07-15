@@ -1,12 +1,11 @@
 ---
-layout: page
+layout: default
 ---
 
 
+ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse congue lorem nec eros fringilla, sed venenatis ipsum egestas. Sed et blandit felis. Quisque arcu dolor, fermentum sed sodales vel, placerat at lorem. Nam fringilla accumsan lacus, ac ullamcorper turpis scelerisque nec. Morbi sit amet dolor orci. Fusce eget ante ultrices, mollis ipsum nec, elementum sapien. Aenean massa arcu, sagittis in elit pretium, tempus eleifend metus. Vestibulum et diam eu mauris suscipit placerat.
+
+Nam malesuada magna at tortor ultrices, malesuada commodo metus ornare. Aliquam ultrices est sit amet diam tincidunt, at lobortis nibh bibendum. Donec tempus at lectus a iaculis. Fusce dignissim, ipsum sit amet dictum tristique, justo libero porttitor turpis, quis semper est odio quis libero. Nam viverra turpis augue, feugiat suscipit erat rhoncus et. Curabitur bibendum diam non auctor mattis. Ut fermentum commodo elementum. Praesent eu tristique magna. Etiam posuere non eros a imperdiet. Etiam eleifend nibh ac magna interdum, a cursus turpis pretium. Vestibulum aliquet, tellus ac euismod volutpat, sem purus ultricies elit, et consequat ligula odio tristique neque. Nam vitae odio leo. 
 
 
 
-<!-- 
-============
-[代码不朽：编写可维护软件的10大要则：Java版](https://rcm-cn.amazon-adsystem.com/e/cm?ref=qf_sp_asin_til&t=blo-23&m=amazon&o=28&p=8&l=as1&IS1=1&asins=B07TTQL9M8&linkId=7a99dc5cb3b3d17567063d8ae802000f&bc1=FFFFFF&lt1=_top&fc1=333333&lc1=0066C0&bg1=FFFFFF&f=ifr)
--->
