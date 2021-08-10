@@ -12,6 +12,9 @@ title: 友情链接
 
 #### [依云's Blog](https://blog.lilydjwg.me/)  
 Happy coding, happy living!  
+#### [VOID001'S WOWO](https://void-shana.moe)
+VOID001 的小窝  
+
 
 
 
