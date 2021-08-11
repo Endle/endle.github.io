@@ -1,4 +1,5 @@
 name : Blog of Endle
+title : Blog of Endle
 description: Endle's small island
 
 
@@ -25,3 +26,4 @@ disqus: 'endle'
   
 # For sitemap
 production_url: 'https://endle.github.io' 
+
