@@ -11,6 +11,16 @@
     <link href="{{ site.baseurl }}/css/theme.css" rel="stylesheet" type="text/css">
     <link href="{{ site.baseurl }}/css/syntax.css" rel="stylesheet" type="text/css">
 
+    <script>
+    function searchOnMySite() {
+        //console.log("Search");
+        let x = document.querySelector('input[name="searchInput"]').value;
+        //console.log(x);
+        //let search_link="https://duckduckgo.com/?q=site%3Aendle.github.io+" + x;
+        let search_link="https://www.google.com.hk/search?q=site%3Aendle.github.io+" + x;
+        window.open(search_link); 
+    }
+    </script>
 </head>
 
 <body>

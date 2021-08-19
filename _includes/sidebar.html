@@ -10,6 +10,18 @@
 </div>
 
 <div class="sidebar well">
+    <div id="search">
+<!--
+       <form role="search" method="get" action="https://duckduckgo.com/">
+-->
+       <form role="search" action="#" onsubmit="searchOnMySite()">
+           <input id="searchInput" name="searchInput" placeholder="线性规划" type="text"></input>
+           <input type="submit"></input>
+        </form>
+    </div>
+</div>
+
+<div class="sidebar well">
     <h1>Recent Posts</h1>
     <ul>
         {% for post in site.posts limit:5 %}
