@@ -15,6 +15,9 @@ Happy coding, happy living!
 #### [VOID001'S WOWO](https://void-shana.moe)
 VOID001 的小窝  
 
+#### [Zhullyb's Blog](https://blog.zhullyb.top/)  
+大笨钟啊拜啊拜（｡ò ∀ ó｡）
+
 
 
 
@@ -25,7 +28,6 @@ VOID001 的小窝
 对 [这个文件](https://github.com/Endle/endle.github.io/blob/master/links/index.md) 提交 PR 即可。
 
 要求 1. 原创文章为主 2. 至少有一篇有趣的文章。
-
 
 
 
