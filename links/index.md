@@ -18,3 +18,14 @@ VOID001 的小窝
 
 
 
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+如何申请友链
+--------
+对 [这个文件](https://github.com/Endle/endle.github.io/blob/master/links/index.md) 提交 PR 即可。
+
+要求 1. 原创文章为主 2. 至少有一篇有趣的文章。
+
+
+
+
