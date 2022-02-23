@@ -18,7 +18,8 @@ VOID001 的小窝
 #### [Zhullyb's Blog](https://blog.zhullyb.top/)  
 大笨钟啊拜啊拜（｡ò ∀ ó｡）
 
-
+#### [Cui Hao's Homepage](https://cvhc.cc/)  
+ex-CTO of LUG@USTC.
 
 
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
