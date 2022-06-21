@@ -119,9 +119,21 @@ previous equation \ref{eqn:o3}
 参考了 [孟晨的回答 - 知乎](https://www.zhihu.com/question/25082703/answer/30038248)
 ```
 \usepackage{float}
-% ...
 \begin{figure}[H]
-% ...
 \begin{table}[H]
-% ...
+```
+
+不进行字符转义  write in plain text mode
+-------------
+[https://tex.stackexchange.com/a/422207/81692](https://tex.stackexchange.com/a/422207/81692)
+
+```
+\newenvironment{simplechar}{
+   \catcode`\$=12
+ 这里应该还有一个列表，但是我没配置好 Jekyll 的字符转义
+}{}
+
+
+\begin{simplechar}
+This is a paragraph with \textbf{bold} and \emph{emphasized} text, but special characters are treated normally
 ```
