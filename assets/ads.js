@@ -28,7 +28,7 @@ async function set_sidebar_recommendation() {
 
 }
 
+// 亚马逊中国都要凉了，就不去显示推荐书籍了
+// console.log("Set ads");
 
-console.log("Set ads");
-
-set_sidebar_recommendation();
+// set_sidebar_recommendation();
