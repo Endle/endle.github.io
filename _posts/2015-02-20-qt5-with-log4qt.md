@@ -1,5 +1,4 @@
 ---
----
 layout: post
 title: "Qt5 中使用 log4qt 输出日志"
 description: ""
@@ -7,7 +6,9 @@ category: project
 tags: [C++, QT]
 ---
 
-最近在写一个 QT 的程序，需要打印日志。搜索了一下，选定了 [Log4Qt][]。不过，原项目已经长期不更新了，而 [DevBean][db] 维护了一个 [Qt5 的版本][qt5]。所以，我执行了 `git submodule add https://github.com/devbean/log4qt.git` 而在此同时，另一个团队也在孜孜不倦地 [维护着 Log4qt][lq2]。感兴趣的朋友不妨也测试一下。
+最近在写一个 QT 的程序，需要打印日志。搜索了一下，选定了 [Log4Qt][]。不过，原项目已经长期不更新了，而 [DevBean][db] 维护了一个 [Qt5 的版本][qt5]。所以，我执行了 `git submodule add https://github.com/devbean/log4qt.git` 。在我撰写本文时(2015年2月)，另一个团队也在孜孜不倦地 [维护着 Log4qt][lq2]。可惜，在2023年，他们的网站已经无法访问了。  
+
+
 
 官方提供了一个比较详细的[使用介绍][Log4Qt]，但也隐藏了几个小坑，整理如下：
 
@@ -95,5 +96,5 @@ Log4Qt 的功能非常强大。例如，四个 Level 用于输出不同的信息
 [Log4Qt]: http://log4qt.sourceforge.net/
 [db]: http://www.devbean.net/
 [qt5]: https://github.com/devbean/log4qt
-[lq2]: https://gitorious.org/log4qt
+[lq2]: https://web.archive.org/web/20140808035437/https://gitorious.org/log4qt  
 
