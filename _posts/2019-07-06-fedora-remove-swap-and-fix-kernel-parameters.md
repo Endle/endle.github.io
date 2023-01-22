@@ -25,6 +25,6 @@ tags: [fedora, kernel, LVM]
 
 [ar]: https://wiki.archlinux.org/index.php/LVM  
 [swap]: https://serverfault.com/a/684792  
-[fw]: https://docs.fedoraproject.org/en-US/fedora/rawhide/system-administrators-guide/kernel-module-driver-configuration/Working_with_the_GRUB_2_Boot_Loader/  
+[fw]: https://web.archive.org/web/20221226031847/https://docs.fedoraproject.org/en-US/fedora/rawhide/system-administrators-guide/kernel-module-driver-configuration/Working_with_the_GRUB_2_Boot_Loader/  
 [ob]: https://orenbell.com/  
 [sesol]:https://unix.stackexchange.com/questions/412149/grub2-mkconfig-isnt-generating-correct-mount-paths-and-also-how-do-i-get-rid-o  
