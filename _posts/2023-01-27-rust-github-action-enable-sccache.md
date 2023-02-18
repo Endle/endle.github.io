@@ -78,6 +78,8 @@ env:
 ![Screenshot of Github Action Cache](/images/2023/rust/Screenshot 2023-01-28 GitHub Action Cache.png)
 
 
+#### 后记  
+在撰写完本文大概两周后，发现 [xxchan](https://xxchan.github.io/about/) 写了一篇博文 [我如何动动小手就让 CI 时间减少了 10 分钟](https://xxchan.github.io/cs/2023/02/11/optimize-rust-comptime.html) 比本文更详细、更完整。  
 
 
 [Sccache]: https://github.com/mozilla/sccache  
