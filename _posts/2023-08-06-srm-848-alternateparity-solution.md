@@ -53,7 +53,7 @@ $$
 \end{aligned}
 \right.
 $$  
-$\sum_{i=1}^{L}b_i = a_L-L = X-L-1$  
+$\sum_{i=1}^{L}b_i = a_L-L -1= X-L-1$  
 
 #### 数列b的性质  
 无论 $a_1$ 的奇偶性，数列b都符合：    
