@@ -8,7 +8,7 @@ tags: [algorithm, 算法竞赛]
 
 2023年8月3日，我参加了 [TopCoder SRM 848](https://community.topcoder.com/stat?c=round_overview&rd=19668)，结果 Div I 第一题就没做出来，零分完赛。赛后看了[其他选手的代码](https://community.topcoder.com/stat?c=problem_solution&cr=90029704&rd=19668&pm=18085)，意识到这其实是一个比较基础的组合数学问题。  
 
-## [题目描述][]  
+## Alternate Parity [题目描述][]  
 
 相比于原有的 [题目描述][]， 我决定将其转换为如下形式： 给定两个正整数 `X` `L`, 生成一个长度为 `L` 的数列，要求：  
 
