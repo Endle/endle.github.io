@@ -33,6 +33,51 @@ c_R &= \sum_{i=M}^{R} A_i - A_M \\
 \end{aligned}
 $$
 
-( $P_V = \sum{i=0}^{V} A_i$ )
+
+### 算法实现   
+有了如上的分析，实现 Sliding Window 算法就非常容易了。将所有坐标排序后，先求出前缀和 $P_V = \sum{i=0}^{V} A_i$。  
+
+我们将初始的 Window 设置为 $L=R=0$. 显然，此时 $c=0$,是一种合法的情况。按照通常的 Sliding Window 的做法，我们不断移动右边界 $R$，在 $c>k$ 时移动左边界 $L$. 和其他的 Sliding Window 方法一样，我们的贪心算法会找出最优解。
+
+### 引理证明  
+
+#### Lemma 2  
+使用反证法，假设 $A_M < x_{opt} < A_{M+1} $, 此时交通成本  
+$$
+\begin{aligned} 
+c &= c_L + c_R \\
+ &= \sum_{i=L}^{M} x_{opt} - A_i + \sum_{i=M+1}^{R} A_i - x_{opt}\\
+\end{aligned}
+$$
+
+我们将邮局向左移动至 $ A_M = x' < x_{opt} < A_{M+1} $,  $x_{opt}-x'=d>0$    
+
+左侧的 $(M-L+1)$ 个村庄的成本会下降  $(M-L+1)d$,  而右侧的 $(R-M)$ 个村庄的成本会上升 $(R-M)d$.  
+
+这样，我们分三种情况讨论：　　
+1. 如果 $x_{opt}$ 左侧的村庄更多，即 $M-L+1 > R-M$,　那　$x'＝A_M$　优于 $x_{opt}$   
+2. 如果两侧的村庄一样多，那么移动至 $x'＝A_M$ 不会得到更差的结果　　
+3. 如果右侧的村庄更多，那易证 $x'\'＝A_{M+1}$　优于 $x_{opt}$   
+
+Lemma 2 得证。　　
+
+#### Lemma 3  
+可以沿用类似　Lemma 2　的证明方法。我们首先假设
+
+$$
+\begin{aligned} 
+c_L -= (M-L+1)d
+\end{aligned}
+$$
+$$
+\begin{aligned} 
+c' &= c_L + c_R \\
+ &= \sum_{i=L}^{M} x' - A_i + \sum_{i=M+1}^{R} A_i - x'\\
+ &= \sum_{i=L}^{M}[ (x_{opt} - d) - A_i ] + \sum_{i=M+1}^{R} [ A_i - (x_{opt} - d) ] \\
+ &= \sum_{i=L}^{M} x_{opt} - A_i - (M-L+1)d + \sum_{i=M+1}^{R} A_i - x_{opt} + (R-M)d \\
+ &= c + (L+R
+\end{aligned}
+$$
+
 
 {% include mathjax.html %}
