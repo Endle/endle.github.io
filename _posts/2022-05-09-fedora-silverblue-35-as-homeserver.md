@@ -24,7 +24,7 @@ Server 的 `$HOME/.SSH` 目录需要设置为 `700` 权限。
 使用 Flatpak 安装的应用的 `.desktop` 文件会存放在 `/var/lib/flatpak/exports/share/applications` 。打开后，就可以知道如何在命令行中运行某个应用。
 
 #### 安装 Nvidia 闭源驱动 （失败）  
-我参考 <https://nudesystems.com/how-to-install-nvidia-drivers-in-fedora-silverblue/> 一文，使用 rpmfusion 的包安装 NVidia 闭源驱动。虽然软件包安装成功，但 `nvidia-smi` 等工具并不能正常运行。因为也不打算用这台家庭服务器玩游戏，就没有深究这个问题。  
+我参考 [https://nudesystems.com/how-to-install-nvidia-drivers-in-fedora-silverblue/](https://web.archive.org/web/20231211123426/https://nudesystems.com/how-to-install-nvidia-drivers-in-fedora-silverblue/) 一文，使用 rpmfusion 的包安装 NVidia 闭源驱动。虽然软件包安装成功，但 `nvidia-smi` 等工具并不能正常运行。因为也不打算用这台家庭服务器玩游戏，就没有深究这个问题。  
 
 #### 安装 Teamviewer  
 参考 <https://community.teamviewer.com/English/kb/articles/30664-use-the-tar-package-for-linux>，可以从 <https://www.teamviewer.com/en-us/download/linux/> 下载 tar 包。运行 `./tv-setup checklibs` 提示缺少 `libminizip.so.1` 和若干 QT 库。运行 `rpm-ostree install qt5-qtquickcontrols qt5-qtquickcontrols2 minizip-compat` 后，teamviewer 可以顺利运行了。
