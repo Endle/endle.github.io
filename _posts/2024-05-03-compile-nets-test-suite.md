@@ -2,8 +2,8 @@
 layout: post
 title: "Compile .NET's Test Suite and Run .NET Tests under Wine"
 description: ""
-category: 
-tags: []
+category: wine
+tags: [wine, C#, dotnet]
 ---
 
 In 2024 March, I had been trying to build .NET test suite and running 
