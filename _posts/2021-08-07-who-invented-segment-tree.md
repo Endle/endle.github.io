@@ -20,7 +20,7 @@ tags: []
 [Klee1977]: http://www.jstor.org/stable/2318871
 [Bentley]: https://en.wikipedia.org/wiki/Jon_Bentley_(computer_scientist)
 [B1980]: https://ieeexplore.ieee.org/document/1675628
-[cg]: https://doi.org/10.1007/978-3-540-77974-2
+[cg]: https://link.springer.com/book/10.1007/978-3-540-77974-2
 
 
 #### 参考资料  

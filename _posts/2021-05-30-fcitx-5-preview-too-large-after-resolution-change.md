@@ -19,4 +19,5 @@ tags: []
 
 后记：ffmpeg 技巧两则  
 [去除视频文件音轨](https://superuser.com/q/268985/295652)  
-[mkv2mp4](https://askubuntu.com/a/396906/134171)
+[mkv2mp4](https://askubuntu.com/questions/396883/how-to-simply-convert-video-files-i-e-mkv-to-mp4/396906)
+
