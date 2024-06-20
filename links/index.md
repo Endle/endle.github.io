@@ -12,6 +12,7 @@ title: 友情链接
 
 #### [依云's Blog](https://blog.lilydjwg.me/)  
 Happy coding, happy living!  
+
 #### [VOID001'S WOWO](https://void-shana.moe)
 VOID001 的小窝  
 
@@ -20,6 +21,9 @@ VOID001 的小窝
 
 #### [Cui Hao's Homepage](https://cvhc.cc/)  
 ex-CTO of LUG@USTC.
+
+#### [漩涡的博客](https://xuanwo.io/)  
+自动化, 分布式系统, 存储
 
 
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
