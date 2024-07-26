@@ -22,6 +22,8 @@ tags: []
 [B1980]: https://ieeexplore.ieee.org/document/1675628
 [cg]: https://link.springer.com/book/10.1007/978-3-540-77974-2
 
+编辑于 2024-07-25: [Daniel Zingaro](https://www.danielzingaro.com/) 撰写的 [Algorithmic Thinking](https://nostarch.com/algorithmic-thinking-2nd-edition) 提到，Segment Tree 有 interval trees, tournament trees, order-statistic trees, range query trees 等多个名字. 书中使用了 [POI 2000: Promotion](https://www.oi.edu.pl/old/php/show.php?ac=e181313&module=show&file=zadania/oi7/promocja) 作为例题.
+
 
 #### 参考资料  
 - Klee, Victor. "Can the Measure of U[Ai, Bi] Be Computed in Less Than O(n Log N) Steps?" <i>The American Mathematical Monthly</i> 84, no. 4 (1977): 284-85. Accessed August 7, 2021. doi:10.2307/2318871.  
