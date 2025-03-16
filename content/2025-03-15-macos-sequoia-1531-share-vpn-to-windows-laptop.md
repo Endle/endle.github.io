@@ -21,6 +21,8 @@ A USB-C hub adapter needs to be connected to macbook to provide an ethernet port
 #### macOS Set-up 
 
 Settings -> VPN -> Add VPN Configuration -> L2TP over IPSec  
+
+
 ![Add VPN](/images/2025/macos_vpn/add_l2tp.png)
 
 L2TP -> Options -> Send all traffic over VPN connection
@@ -49,3 +51,4 @@ When MacBook is connected to Wi-Fi, [it can also share Internet with Thunderbolt
 iPhone's USB tethering is limited. Only the cellular connection can be shared. [link](https://support.apple.com/en-ca/guide/iphone/iph45447ca6/ios)
 
 Vanilla Android doesn't route VPN traffic when tethering [link](https://protonvpn.com/support/share-vpn-connection-android-hotspot). Modified Android like AOSP may have an option **Allow clients to use VPNs** [link1](https://www.reddit.com/r/VPN/comments/m13d0h/comment/gqbdist/) [link2](https://github.com/PixelExperience/android-issues/issues/5932). After rooting, there are several apps doing so, including [VPNHotspot](https://github.com/Mygod/VPNHotspot). Sadly (again), my Samsung Tablet at hand [can't unlock bootloader](https://www.reddit.com/r/androidroot/comments/1g2xhd9/unlock_bootloader_for_newer_samsung_devices_in/).
+
