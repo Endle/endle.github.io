@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>自动向 Crates.io 发布新版本 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/rust-automatically-publish-cratesio-inspired-by-maven-release-plugin/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/rust-automatically-publish-cratesio-inspired-by-maven-release-plugin/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/rust-automatically-publish-cratesio-inspired-by-maven-release-plugin/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="自动向 Crates.io 发布新版本 | Blog of Endle" />
+  <meta name="twitter:title" content="自动向 Crates.io 发布新版本 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2021-08-19" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/rust-automatically-publish-cratesio-inspired-by-maven-release-plugin/">自动向 Crates.io 发布新版本</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> August 19, 2021 <span class="rpad"></span></span>
+
+    
+
+
+<h4 id="yuan-qi">缘起</h4>
+<p>之前写 Java 时，自己所在的组遵循这样的 workflow:</p>
+<ol>
+<li>每当 master branch 有新 commit 时，会使用 <a rel="noopener" target="_blank" href="http://maven.apache.org/maven-release/maven-release-plugin/">Maven Release Plugin</a> 修改 <code>pom.xml</code> 内的版本号</li>
+<li>Bot 会将新版本的 Maven Package 上传到 JFrog 内。</li>
+</ol>
+<p>最近，我在尝试维护一个 <a rel="noopener" target="_blank" href="https://github.com/Endle/rust-bundler-cp">Rust 包 rust_bundler_cp</a>，想着复刻上文的 Maven Workflow，每当有新 commit 时自动向 crates.io 发布新版本。摸索一段时间后成功在 Github Action 上实现了这个功能。</p>
+<h4 id="shi-xian">实现</h4>
+<p>首先，需要一个修改 <code>Cargo.toml</code> 的工具。虽然自己写一个脚本识别版本号只需要几行，但我还是用了现有的软件包 <a rel="noopener" target="_blank" href="https://github.com/wraithan/cargo-bump">cargo-bump</a>. 使用非常简单，不再赘述了。</p>
+<p><a rel="noopener" target="_blank" href="https://docs.github.com/en/actions/reference/events-that-trigger-workflows">GitHub Action on</a> 可以设置触发条件。但是，我没有找到如何设置在不同的触发条件下执行不同的任务。在<a rel="noopener" target="_blank" href="https://github.com/Endle/rust-bundler-cp/blob/176f9f22cdbdcaa874c0ee0943dfe5ac810fa868/.github/workflows/rust.yml#L5">原有的代码中</a>，Pull Request 和新 commit 都会触发相同的任务。我不打算对原有的 workflow 做过多的修改，因此，我写了一个每次都会被执行的 Python 脚本，用它进行必要的操作。</p>
+<p>首先，我在 <a rel="noopener" target="_blank" href="https://github.com/Endle/rust-bundler-cp/blob/176f9f22cdbdcaa874c0ee0943dfe5ac810fa868/bump_version.py#L31">脚本</a> 内判断当前是否是在 master branch 执行 CICD 任务。</p>
+<pre class="z-code"><code><span class="z-text z-plain">    branch_name = shell_call(&quot;git branch --show-current&quot;)
+</span><span class="z-text z-plain">    if branch_name not in [&#39;master&#39;]:
+</span><span class="z-text z-plain">        print(&quot;Current branch  ({})  is not for release. Exiting&quot;.format(branch_name))
+</span><span class="z-text z-plain">        return
+</span></code></pre>
+<p>可以使用如下命令创建新的 commit</p>
+<pre class="z-code"><code><span class="z-text z-plain">def bump_version():
+</span><span class="z-text z-plain">    def extract_ver(s)-&gt;str:
+</span><span class="z-text z-plain">        with_quotes = s.split(&quot;=&quot;)[1].strip()
+</span><span class="z-text z-plain">        wo_q = with_quotes.replace(&#39;&quot;&#39;, &#39;&#39;)
+</span><span class="z-text z-plain">        return wo_q
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">    shell_call(&quot;cargo bump patch&quot;)
+</span><span class="z-text z-plain">    diff = shell_call(&quot;git diff Cargo.toml| grep version | egrep ^[+-]&quot;).split(&quot;\n&quot;)
+</span><span class="z-text z-plain">    versions = [extract_ver(v) for v in diff]
+</span><span class="z-text z-plain">    return versions[0], versions[1]
+</span><span class="z-text z-plain">    
+</span><span class="z-text z-plain">    # Snip 
+</span><span class="z-text z-plain">    (old_ver, new_ver) = bump_version()
+</span><span class="z-text z-plain">    version_change_info = &quot; From {} To {}&quot;.format(old_ver, new_ver)
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">    new_commit_message = MESSAGE_FLAG + version_change_info
+</span><span class="z-text z-plain">    git_commit_cmd = &quot;git add Cargo.toml &amp;&amp; git commit  -m &#39;{}&#39;&quot;.format(new_commit_message)
+</span><span class="z-text z-plain">    subprocess.run(git_commit_cmd, shell=True)
+</span></code></pre>
+<p>在执行 <code>git commit</code> 前，需要先设置作者的姓名和 email. 我将<a rel="noopener" target="_blank" href="https://github.com/Endle/rust-bundler-cp/blob/176f9f22cdbdcaa874c0ee0943dfe5ac810fa868/.github/workflows/rust.yml#L100">这一步放到了 <code>rust.yml</code> 中</a>，在 Python 脚本前运行。</p>
+<pre class="z-code"><code><span class="z-text z-plain">          git config --global user.name &#39;Endle&#39;
+</span><span class="z-text z-plain">          git config --global user.email &#39;Endle@users.noreply.github.com&#39;
+</span><span class="z-text z-plain">          git branch --show-current
+</span><span class="z-text z-plain">          python3 --version
+</span><span class="z-text z-plain">          python3 bump_version.py
+</span></code></pre>
+<p>在 crates.io 上注册帐号后，需要创建自己的 Token. 接着，在 Github Project-&gt;Settings-&gt;Secrets 里存储该token, 如图所示：</p>
+<img src="/images/github/github_action_rust_crates_io.png" alt="Github Screenshot" width="100%">
+<p>这样，在 <code>rust.yml</code> 中，就可以使用如下命令上传到 crates.io:</p>
+<pre class="z-code"><code><span class="z-text z-plain">      - name: Push to Github and crates
+</span><span class="z-text z-plain">        env:
+</span><span class="z-text z-plain">          CRATES_SECRET: ${{ secrets.CRATES_ENDLE }}
+</span><span class="z-text z-plain">        run: |
+</span><span class="z-text z-plain">            git push origin master
+</span><span class="z-text z-plain">            cargo login &quot;$CRATES_SECRET&quot;
+</span><span class="z-text z-plain">            cargo publish -v
+</span></code></pre>
+<h4 id="hou-ji">后记</h4>
+<p>使用 <a rel="noopener" target="_blank" href="https://github.com/marketplace/actions/checkout">Github actions/checkout@v2</a>，向原有的 repo 执行 <code>git push</code> 不需要手动设置 token。可以参考 <a rel="noopener" target="_blank" href="https://stackoverflow.com/a/58393457/1166518">https://stackoverflow.com/a/58393457/1166518</a></p>
+<p>我在我的 Python 脚本中加入了对上一个 commit message 的判断，从而避免 Workflow 被重复触发。但实践中发现，bot 创建的 commit 并没有触发 GitHub Actions. 我还不太清楚这是什么机制导致的。我在撰写本文是意识到，我应该在 commit message 中加入 <code>[skip ci]</code> 作为标识。</p>
+<p>如果设置了 crates.io 的镜像，如</p>
+<pre class="z-code"><code><span class="z-text z-plain">[source.crates-io]
+</span><span class="z-text z-plain">registry = &quot;https://github.com/rust-lang/crates.io-index&quot;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">replace-with = &quot;mirror&quot;
+</span><span class="z-text z-plain">[source.mirror]
+</span><span class="z-text z-plain">registry = &quot;https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index/&quot;
+</span></code></pre>
+<p>在运行 <code>cargo publish</code> 前，需要将 <code>replace-with = "mirror"</code> 暂时注释掉。在网络条件不好的环境下，使用 Github Action 发布，可以省下不少时间。</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/packaging-rpm-upload-to-copr/">&#8249; 自己动手为 Fedora 打包的几个小技巧</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/who-invented-segment-tree/"> 线段树作者是谁 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

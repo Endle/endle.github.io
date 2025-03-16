@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>自己动手为 Fedora 打包的几个小技巧 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/packaging-rpm-upload-to-copr/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/packaging-rpm-upload-to-copr/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/packaging-rpm-upload-to-copr/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="自己动手为 Fedora 打包的几个小技巧 | Blog of Endle" />
+  <meta name="twitter:title" content="自己动手为 Fedora 打包的几个小技巧 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2021-09-01" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/packaging-rpm-upload-to-copr/">自己动手为 Fedora 打包的几个小技巧</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> September 01, 2021 <span class="rpad"></span></span>
+
+    
+
+
+<p>这几天<a rel="noopener" target="_blank" href="https://news.ycombinator.com/item?id=27893303">被人推荐</a>了 <a rel="noopener" target="_blank" href="https://github.com/ahrm/sioyek">sioyek</a>，据说是一个很适合读论文的 PDF 阅读器。但是，软件还比较新，截止到 2021 年 9 月没有 Fedora 的包。在 <a rel="noopener" target="_blank" href="https://zh.fedoracommunity.org/about/">FZUG 群</a> 里有人提过，自己手动编译软件时避免 <code>make install</code>，而是打成 RPM 包。这样自己的编译和运行环境更干净，便于后期维护，也也能在 copr 上和人分享。忙了两天，总算编译成功了，总结一下自己踩过的几个小坑。</p>
+<h4 id="zhun-bei-spec">准备 spec</h4>
+<p>spec 文件的规范我就不赘述了，我找到的最详细的文档是 <a rel="noopener" target="_blank" href="http://ftp.rpm.org/max-rpm/s1-rpm-build-creating-spec-file.html">Maximum RPM: Taking the RPM Package Manager to the Limit. Chapter 11. Building Packages: A Simple Example</a></p>
+<p>在实际操作上，我主要参考了 <a rel="noopener" target="_blank" href="https://developer.fedoraproject.org/deployment/rpm/about.html">RPM Packaging</a> 一文。照着这个例子，运行如下命令</p>
+<pre class="z-code"><code><span class="z-text z-plain">$ sudo dnf install fedora-packager rpmdevtools gcc
+</span><span class="z-text z-plain">$ rpmdev-setuptree
+</span><span class="z-text z-plain">$ cd ~/rpmbuild/SOURCES
+</span><span class="z-text z-plain">$  wget -O v0.31.6.tar.gz https://github.com/ahrm/sioyek/archive/refs/tags/v0.31.6.tar.gz 
+</span><span class="z-text z-plain">$ cd ~/rpmbuild/SPECS
+</span><span class="z-text z-plain">$ rpmdev-newspec --macros sioyek.spec
+</span></code></pre>
+<p>并修改 spec 文件即可。</p>
+<p>更详细的流程，可以参考 <a rel="noopener" target="_blank" href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/packaging_and_distributing_software/index">Packaging and distributing software</a></p>
+<h4 id="shi-yong-mock-bian-yi-srpm">使用 mock 编译 SRPM</h4>
+<p><a rel="noopener" target="_blank" href="https://github.com/rpm-software-management/mock/wiki">Mock wiki</a> 介绍的很详细。我配置好 mock 以后，直接运行</p>
+<pre class="z-code"><code><span class="z-text z-plain">rpmbuild -bs ~/rpmbuild/SPECS/sioyek.spec  &amp;&amp; mock --enable-plugin=tmpfs --enable-plugin=yum_cache  ~/rpmbuild/SRPMS/sioyek-0.31.6-1.fc34.src.rpm 
+</span><span class="z-text z-plain">
+</span></code></pre>
+<h4 id="shi-yong-container-podman-docker-de-cha-cuo-ji-qiao">使用 Container (Podman/Docker) 的查错技巧</h4>
+<p>刚写好的 spec 编译错误很正常。为了使用 interactive shell,我决定在 podman 里进行测试。每次启动时，都要浪费大量的时间在 <code>dnf upgrade/install</code> 上。受到 <a rel="noopener" target="_blank" href="https://sysadmin.prod.acquia-sites.com/sysadmin/overlay-mounts">https://sysadmin.prod.acquia-sites.com/sysadmin/overlay-mounts</a> 一文的启发，我用如下命令启动容器</p>
+<pre class="z-code"><code><span class="z-text z-plain">$ sudo dnf install --downloadonly harfbuzz-devel # 这里可以替换成其他可能用到的软件包
+</span><span class="z-text z-plain">$ trash /dev/shm/src &amp;&amp; mkdir /dev/shm/src &amp;&amp; cp ~/rpmbuild/SOURCES/* /dev/shm/src &amp;&amp; cd /dev/shm/src &amp;&amp; tar xf v0.31.6.tar.gz
+</span><span class="z-text z-plain">$ cp -r /var/cache/dnf /dev/shm/cache_dnf
+</span><span class="z-text z-plain">$ podman run --rm -it -v /dev/shm/cache_dnf:/var/cache/dnf:z -v /dev/shm/src:/src:z docker.io/fedora:34 bash
+</span></code></pre>
+<h4 id="jian-cha-lian-jie-cuo-wu">检查链接错误</h4>
+<p>我在编译时，出现了若干链接错误</p>
+<pre class="z-code"><code><span class="z-text z-plain">/usr/bin/ld: /usr/lib/gcc/x86_64-redhat-linux/11/../../../../lib64/libmupdf.a(pdf-font-add.o): undefined reference to symbol &#39;FT_Get_Postscript_Name&#39;
+</span><span class="z-text z-plain">/usr/lib64/libfreetype.so.6: error adding symbols: DSO missing from command line
+</span></code></pre>
+<p>虽然 BuildRequires 里有了必要的依赖，但还是要使用 <code>-lfreetype</code> 这一命令显式链接。其他库同理。</p>
+<p>可以使用 <code>nm</code> 查看一个库的符号表 (symbols)，如</p>
+<pre class="z-code"><code><span class="z-text z-plain">nm -D /usr/lib64/libfontconfig.so | grep FT_Get_Postscript_Name 
+</span><span class="z-text z-plain">nm -D /usr/lib64/libfreetype.so | grep FT_Get_Postscript_Name 
+</span></code></pre>
+<h4 id="ji-shi-geng-xin">及时更新</h4>
+<p>copr 编译完成后，本地的缓存更新可能也许是要时间。为了避免重复下载所有的 metadata, 我会运行</p>
+<pre class="z-code"><code><span class="z-text z-plain">sudo dnf --disablerepo=&#39;*&#39; --enablerepo=&#39;copr*&#39; --refresh upgrade  sioyek
+</span></code></pre>
+<p>最后，再次感谢 <a rel="noopener" target="_blank" href="https://zh.fedoracommunity.org/about/">FZUG 群</a> 的朋友们，无私地解答了我许多问题。</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/my-latex-cheatsheet/">&#8249; My LaTex Cheatsheet</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/rust-automatically-publish-cratesio-inspired-by-maven-release-plugin/"> 自动向 Crates.io 发布新版本 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

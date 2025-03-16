@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Codeforces 282B Painting Eggs 题解与贪心算法的证明 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/cf-282b-painting-eggs-solution-how-to-prove-the-greedy-algorithm/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/cf-282b-painting-eggs-solution-how-to-prove-the-greedy-algorithm/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/cf-282b-painting-eggs-solution-how-to-prove-the-greedy-algorithm/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="Codeforces 282B Painting Eggs 题解与贪心算法的证明 | Blog of Endle" />
+  <meta name="twitter:title" content="Codeforces 282B Painting Eggs 题解与贪心算法的证明 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2022-06-21" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/cf-282b-painting-eggs-solution-how-to-prove-the-greedy-algorithm/">Codeforces 282B Painting Eggs 题解与贪心算法的证明</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> June 21, 2022 <span class="rpad"></span></span>
+
+    
+
+
+<p>题目链接: <a rel="noopener" target="_blank" href="https://codeforces.com/problemset/problem/282/B">https://codeforces.com/problemset/problem/282/B</a></p>
+<p>官方题解: <a rel="noopener" target="_blank" href="https://codeforces.com/blog/entry/6999">https://codeforces.com/blog/entry/6999</a></p>
+<p><a rel="noopener" target="_blank" href="https://codeforces.com/contest/282/submission/3314492">官方代码</a></p>
+<p>CF 282B 我思考了很久，也没有什么头绪。看了官方题解，发现可以用一个很简单的贪心算法求解。证明的过程要用到数学归纳法(Mathematical induction)，我按照我的理解，把证明过程详细地写下来。</p>
+<p>贪心算法：对于每一个鸡蛋，尝试让 A 喷绘。如果这会导致让 A 的收入高于 G 的收入，且超出了 500 的幅度，则把这个鸡蛋交给 G。</p>
+<p>引理1：对于合法的输入数据，一定存在至少一种方法，使得两人的收入和之差
+$$ |S_a - S_g| \leq 500 $$</p>
+<p>求证：使用贪心算法，可以得到正确解。</p>
+<p>Base case is trivial.</p>
+<p>递推步骤，假设对于前 <code>i-1</code> 个鸡蛋，我们已经找到了一种方法，满足
+$$ |S_a - S_g| \leq 500 $$
+。不失一般性 (WLOG)，我们假定
+$$ S_a - S_g = D$$
+且
+$$ 0 \leq D \leq 500$$</p>
+<p>现在，我们尝试将第 <code>i</code> 个鸡蛋分配给 A. 如果
+$$ D + a_i \leq 500 $$
+仍然成立，那我们就得到了满足前 <code>i</code> 个鸡蛋的合法方案。</p>
+<p>反之，我们将第 <code>i</code> 个鸡蛋分配给 G。此时，
+$$ a_i &gt; 500 - D \iff 1000 - g_i &gt; 500 - D \iff g_i &lt; 500 + D$$</p>
+<p>新的差值是
+$$D_i = (S_g + g_i) - S_a = g_i - D$$
+显然
+$$ -D \leq D_i &lt; 500 $$
+我们就得到了满足前 <code>i</code> 个鸡蛋的合法方案。</p>
+<p>引理1 也由此得到了证明。Base case 选择一个报酬不超过 500 元的人，接着每次扩展，都不会打破 500 元工资差的限制。</p>
+<h4 id="wan-lu">弯路</h4>
+<p>看答案之前，我没有想到引理1. 我猜到这是一道贪心的题目，但题目里的“无法满足时输出-1”迷惑了我，让我一直在想，我的贪心策略会不会让一个可行的输入被误认为不可能。</p>
+<p>我一直试图寻找一个给输入数据排序的方法，接着用类似对对碰的方式进行贪心匹配。我一直试图找一个例子，证明错误的贪心顺序会导致错误。最终当然是找不到了。</p>
+<p>这道题给定的限制条件是不超过 500 的工资差，而两人的工资和则恰巧是 1000 元。这其实给了我很大的提示，两人的工资差可能是钟摆式的摆动，但我没有顺着这个思路思考下去。</p>
+<p>我在做这道题的时候，一度试图把 500 元的条件拿掉，去找一个让两人工资差最低的方案。我成功地给自己找了一个困难得多的问题。</p>
+<p>{% include mathjax.html %}</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/2022-year-review/">&#8249; 2022 年的总结</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/fedora-silverblue-35-as-homeserver/"> Fedora Silverblue 35 设置为家庭服务器 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

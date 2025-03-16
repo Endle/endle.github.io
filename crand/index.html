@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>C语言生成随机数的小实验 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/crand/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/crand/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/crand/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="C语言生成随机数的小实验 | Blog of Endle" />
+  <meta name="twitter:title" content="C语言生成随机数的小实验 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2013-01-30" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/crand/">C语言生成随机数的小实验</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> January 30, 2013 <span class="rpad"></span></span>
+
+    
+
+
+<p>C语言的随机函数 <code>rand()</code>， 理论上会在[1, RAND_MAX]之间生成均匀的随机数。但通常情况下，我们需要一个范围很小的随机数（例如随机化快排）。</p>
+<p>多数人的做法（包括之前的我），直接采用 <code>rand() % N</code> 的做法。但根据 <a rel="noopener" target="_blank" href="http://c-faq.com/lib/rand.html">C-faq 13.15</a> 的介绍，这并不是一个好方法。相比之下，提供了另外两种方案：</p>
+<ol>
+<li><code>(int)((double)rand() / ((double)RAND_MAX + 1) * N)</code></li>
+<li><code>rand() / (RAND_MAX / N + 1)</code></li>
+</ol>
+<p>为了验证哪种方式生成的随机数更均匀，我就打算做一个小小的测试。</p>
+<p>实验步骤：</p>
+<ol>
+<li>使用<code>rand()</code> 生成 10^7 个随机数。</li>
+<li>对于每个随机数，分别带入3个函数中来生成随机数，并将结果输出到文件中。</li>
+<li>使用R语言，利用 <code>hist(x, breaks=range)</code> 来生成图像（感谢SHLUG上的朋友们）。</li>
+</ol>
+<p>注：使用 <code>rand()%N</code> 方案生成的随机数被存储到了向量 r0 中，另外两种被存储到了 r1 和 r2 中。经过测试， r1 与 r2 绝大多数元素都是一样的。所以，接下来我仅对比 r0 和 r1</p>
+<p>我把范围设到了5000，最后统计的结果让我很震惊：r0 和 r1 的频率分布都很均匀</p>
+<p><img src="/images/c-lang/rand-a-r0.jpg" alt="a0" />
+<img src="/images/c-lang/rand-a-r1.jpg" alt="a1" /></p>
+<p>考虑到可能由于数据量太大抹掉了一些区别，我将数据范围缩减至 10^4</p>
+<p><img src="/images/c-lang/rand-b-r0.jpg" alt="b0" />
+<img src="/images/c-lang/rand-b-r1.jpg" alt="b1" /></p>
+<p>依旧看不到明显的区别。
+我将随机数范围缩减到 <code>[0,100)</code></p>
+<p><img src="/images/c-lang/rand-c-r0.jpg" alt="c0" />
+<img src="/images/c-lang/rand-c-r1.jpg" alt="c1" /></p>
+<p>直观上看，仍然没有本质上的区别。
+在 <a rel="noopener" target="_blank" href="http://c-faq.com/lib/notveryrand.html">C-faq 13.18</a> 上提到，使用 <code>rand() % N</code> 会让随机数具有周期性。但是我将范围设置为2，也没有找到明显的周期。</p>
+<p>由此看来，<code>rand() % N</code> 并没有 <em>显著</em> 的缺陷。但为什么除了 C-FAQ，<a rel="noopener" target="_blank" href="http://book.douban.com/subject/1148265/">C语言的科学与艺术</a> 也这么说呢？看来，找寻答案的道路还很漫长啊。</p>
+<P STYLE="margin-bottom: 0cm"><FONT COLOR="#e6e6e6">折腾这么久得到这样的一个结论，实在是太让人沮丧了。。。</FONT></P>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/fedora-mingw32/">&#8249; Fedora 下安装 mingw32 以交叉编译</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/quicksort/"> 重学quicksort &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

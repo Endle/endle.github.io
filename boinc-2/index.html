@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>BOINC 的源代码阅读笔记 2 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/boinc-2/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/boinc-2/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/boinc-2/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="BOINC 的源代码阅读笔记 2 | Blog of Endle" />
+  <meta name="twitter:title" content="BOINC 的源代码阅读笔记 2 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2013-10-26" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/boinc-2/">BOINC 的源代码阅读笔记 2</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> October 26, 2013 <span class="rpad"></span></span>
+
+    
+
+
+<p>想研究一下 BOINC 客户端获取任务的方式，望文生义，找到了 <code>client/cs_scheduler.cpp</code> 里的 <code>request_work_fetch(const char *)</code>。这个函数做的很少，只是修改了 <code>CLIENT_STATE</code> 的一个 <code>private</code> 变量： <code>must_check_work_fetch</code>。</p>
+<p>接下来要看的是一个关键函数：<code>client/cs_scheduler.cpp</code> 里的 <code>scheduler_rpc_poll()</code> 。它首先会尝试上报任务，然后再申请任务。如果两次申请的时间差别不大，那它是不会申请任务的。但如果 <code>must_check_work_fetch</code> 为真，那就不用担心时间间隔的问题了。</p>
+<p>但 <code>scheduler_rpc_poll()</code> 的目的是从全局考虑，保证电脑“有饭吃”。因此，它每次只会通过 <code>work_fetch.choose_project()</code> 找一个项目来申请。</p>
+<p>这里的 <code>work_fetch</code> 在 <code>client/work_fetch.cpp</code> 文件中，是定义在全局的 <code>WORK_FETCH</code> 变量。他会对显卡和处理器分别讨论，调用 <code>cpu_work_fetch</code> 和 <code>cuda_work_fetch</code>。我们以 cpu 为例。</p>
+<p>首先，是遍历一遍所有的项目，找到最合适的，存储到 <code>PROJECT* pbst</code> 里。然后，根据不同的需求，调用 <code>RSC_WORK_FETCH::set_request(PROJECT*, double)</code> 来执行这项工作（说实话，这里的机制我理解的还不好）。</p>
+<p>如果想要强行获取任务的话，不停把 <code>must_check_work_fetch</code> 设置成真应该是一个办法。但这种对于全局的操作，可能不适合对某个项目进行屯包。所以，接下来，我应该对 <code>PROJECT</code> 类研究一下。</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/wine-add-testcase/">&#8249; 为 wine 添加 testcase</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/boinc-code/"> BOINC 源代码的阅读笔记 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer>
+</body>
+</html>

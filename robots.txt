@@ -1,0 +1,5 @@
+
+Sitemap: https://blog.zhenbo.pro/sitemap.xml
+User-Agent: *
+Allow: /
+Host: https://blog.zhenbo.pro

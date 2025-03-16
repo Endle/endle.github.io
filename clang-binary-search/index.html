@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>跟着 clang 的 libcxx 学习二分查找 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/clang-binary-search/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/clang-binary-search/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/clang-binary-search/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="跟着 clang 的 libcxx 学习二分查找 | Blog of Endle" />
+  <meta name="twitter:title" content="跟着 clang 的 libcxx 学习二分查找 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2018-10-26" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/clang-binary-search/">跟着 clang 的 libcxx 学习二分查找</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> October 26, 2018 <span class="rpad"></span></span>
+
+    
+
+
+<p>哪个算法简单到初学编程的人都能轻松实现，但有多年编程经验的人也可能会写出严重的 bug 呢？没错，正是二分查找。既然普通人的二分查找容易写错，那专业人士会如何实现二分查找呢？不妨参考一下 clang 7.0 的实现。</p>
+<h3 id="lower-bound-zai-stl-de-ding-yi"><code>lower_bound</code> <a rel="noopener" target="_blank" href="https://en.cppreference.com/w/cpp/algorithm/lower_bound">在 STL 的定义</a></h3>
+<p>给定有序区间 <code>[first, last)</code>, <code>val</code> 和 <code>operator &lt;</code>。寻找第一个元素 <code>p</code> 使得 <code>A[p] &lt;  val</code> 为<strong>假</strong>。</p>
+<p>我们也可以这样理解，对于任意 <code>i &lt; j</code>，若 <code>A[i]&lt;val</code> 为假，则 <code>A[j]&lt;val</code>
+必为假。如下图，我们要寻找第一个绿色的元素</p>
+<p><img src="/images/binary_search/lower_bound.png" alt="lower_bound" /></p>
+<h3 id="clang-7-0-de-shi-xian">Clang 7.0 的实现</h3>
+<p>让我们看一看 <a rel="noopener" target="_blank" href="https://github.com/llvm-mirror/libcxx/blob/dffe9e0f1dde084f2aab8010345aeb1b7c8f7d4c/include/algorithm#L4190">lower_bound 的实现</a><br />
+{% highlight C++ %}
+__lower_bound(_ForwardIterator __first, _ForwardIterator __last, const _Tp&amp; _<em>value</em>, _Compare __comp)
+{
+typedef typename iterator_traits&lt;_ForwardIterator&gt;::difference_type difference_type;
+difference_type __len = _VSTD::distance(__first, __last);
+while (__len != 0)
+{
+difference_type __l2 = __len / 2;
+_ForwardIterator __m = __first;
+_VSTD::advance(__m, __l2);
+if (__comp(*__m, _<em>value</em>))
+{
+__first = ++__m;
+__len -= __l2 + 1;
+}
+else
+__len = __l2;
+}
+return __first;
+}
+// This file is dual licensed under the MIT and the UIUC license.
+{% endhighlight %}</p>
+<h3 id="zhe-duan-dai-ma-de-yao-dian">这段代码的要点</h3>
+<ol>
+<li>定义：<code>first</code> 是第一个<strong>有可能</strong>使 <code>*first&lt;val</code> 为 <strong>假</strong>的元素。或者说，是第一个可能为绿色的元素。</li>
+<li>迭代：<code>l2 &lt; len</code> 恒成立，因此 <code>first+l2</code> 就不会越界。同时，每次迭代时 <code>len</code> 严格递减</li>
+<li>迭代结束：<code>l2 == 0</code> 当且仅当 <code>len == 1</code>。这是我们最后一次进行迭代</li>
+<li>特殊情况：如果所有的元素都为假，那最后一次迭代时， <code>++m</code> 的结果正是 <code>last</code></li>
+</ol>
+<p>相比我之前写的不时丢弃真值、出现死循环的二分查找，clang 的代码可是高到不知道哪里去了。</p>
+<p><a rel="noopener" target="_blank" href="https://github.com/llvm-mirror/libcxx/blob/dffe9e0f1dde084f2aab8010345aeb1b7c8f7d4c/include/algorithm#L4238">upper_bound 的实现</a> 看起来是相反的，不过从布尔值的角度看，与 <code>lower_bound</code> 是一样的，我就不复制代码了。</p>
+<h3 id="hou-ji">后记</h3>
+<p>上文中的示意图使用 R 语言绘制，参考了 <a rel="noopener" target="_blank" href="https://stackoverflow.com/a/50438532/1166518">Stack Overflow 上画棋盘的讨论</a>。代码如下<br />
+{% highlight R %}
+b &lt;- matrix(nrow=1,ncol=6)<br />
+colorindex &lt;- c(rep(0, 4), rep(1, 2))</p>
+<h1 id="for-each-square">for each square</h1>
+<p>colors &lt;- c("red", "green")[colorindex+1] # choose colors
+side &lt;- 1/8                               # side of one square
+ux &lt;- col(b)*side                         # upper x values
+lx &lt;- ux-side                             # lower x values
+uy &lt;- row(b)*side                         # upper y
+ly &lt;- uy-side                             # upper y
+plot.new()                                # initialize R graphics
+rect(lx, ly, ux, uy, col=colors, asp=1)   # draw the board
+{% endhighlight %}</p>
+<h4 id="geng-xin-yu-2023-08-20">更新于 2023-08-20</h4>
+<p>这几天翻出了这篇文章，照着 clang 的代码，怎么写都不对。重读了一遍，才发现我在 2018
+年撰写本文时，对<code>真/假</code>的使用有些混乱。抽出周末的时间，对文章进行了订正。</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/fedora-remove-swap-and-fix-kernel-parameters/">&#8249; Fedora 删除 swap 后修复 Kernel Parameters</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/distcc-to-speedup-expansion/"> 用 distcc 加快编译 续篇-clang &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

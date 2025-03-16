@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>从 OI 到世界 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/from-oi-to-world/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/from-oi-to-world/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/from-oi-to-world/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="从 OI 到世界 | Blog of Endle" />
+  <meta name="twitter:title" content="从 OI 到世界 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2015-06-07" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/from-oi-to-world/">从 OI 到世界</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> June 07, 2015 <span class="rpad"></span></span>
+
+    
+
+
+<p>又到了一年的高考季，而我，当年泡在机房里的高中生，已经毕业了两年。在参加 OI 比赛时，侧重点都在算法上，因而忽视了很多 C 语言的特性。在刚参与开源项目时，也多走了不少弯路。所以，我整理了一个小小的列表，希望这些问题能对你起到些许帮助。</p>
+<h2 id="yu-chu-li">预处理</h2>
+<h3 id="yu-chu-li-de-qian-zai-feng-xian">预处理的潜在风险</h3>
+<p>C 语言中，预处理与编译是独立的阶段。很多时候，这会引入额外的风险。</p>
+<ol>
+<li>举出至少两个可能带来风险的，在 OI 中较为常用的宏，说明其危险性</li>
+<li>用 <code>inline</code>, <code>const</code> 等方式重写，在不增加额外代价的情况下解决该问题</li>
+</ol>
+<h3 id="chang-yong-de-hong">常用的宏</h3>
+<p>虽然宏很危险，但很多时候，宏有其不可替代的作用。</p>
+<ol>
+<li>举出至少一个例子，说明宏的必要性</li>
+<li>解释 <code>__FILE__</code>, <code>__FUNCTION__</code>, <code>__LINE__</code> 等宏的作用</li>
+</ol>
+<h2 id="lian-jie-qi">链接器</h2>
+<p>与许多带有 <code>import</code> 的语言不同，C 语言中链接器与编译器是分开的。链接器的机制，并不是三言两语就可以说清的。所以，在这里，我只是提几个常见的基础问题。</p>
+<ol>
+<li>C 语言中，什么是函数的声明？什么是函数的定义？缺失了其中的一个会发生什么？</li>
+<li><code>#include</code> 时发生了什么？为什么有时没有包含 <code>stdio.h</code> 也可以使用 <code>printf</code> 函数？</li>
+<li>什么是动态链接？有什么好处？如何使用？</li>
+<li>头文件中的 <code>extern "C"</code> 有什么用？如果没有，会发生什么？</li>
+</ol>
+<h2 id="shi-zhan-yan-lian">实战演练</h2>
+<p>此部分没有固定答案，希望大家的思路不要被拘束。</p>
+<h3 id="dai-mo-ban-de-qsort">“带模版”的 qsort</h3>
+<p><code>stdlib.h</code> 中的 <code>qsort</code> 有四个参数。它们的意义都是什么？为什么要如此定义？<br />
+尝试自己实现一个 <code>my_qsort</code> 函数，要求：</p>
+<ol>
+<li>具有普适性</li>
+<li>在平均情况下为 <code>O(n lgn)</code> 的复杂度。</li>
+</ol>
+<h3 id="better-string">Better String</h3>
+<p>C 语言中并没有内置的 <code>string</code>，而只有 <code>char *</code>。请举若干例子，说明这导致了哪些问题。<br />
+尝试在不使用编译器扩展特性的情况下，实现一个字符串类型。要求如下：</p>
+<ol>
+<li>求字符串长度的时间复杂度为 <code>O(1)</code></li>
+<li>与 <code>string.h</code> 的 <code>strlen</code>, <code>strstr</code>, <code>strcat</code>, <code>strcpy</code> 兼容，或是重写对应的函数</li>
+<li>额外的时间和空间代价必须是常数级的</li>
+</ol>
+<br />
+<br />
+<br />
+<h2 id="can-kao-xin-xi">参考信息</h2>
+<p>我并不会对这些问题给出标准答案。如果你感觉没什么头绪，可以参考如下信息</p>
+<h4 id="ju-chu-zhi-shao-yi-ge-li-zi-shuo-ming-hong-de-bi-yao-xing">举出至少一个例子，说明宏的必要性</h4>
+<ol>
+<li>Windows API 中的 <a rel="noopener" target="_blank" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms221627%28v=vs.85%29.aspx">VARIANT</a> (<a rel="noopener" target="_blank" href="https://gitcafe.com/WineZH/wine/blob/master/include/oleauto.h#L102">Wine 中的实现</a>)</li>
+<li>[用 C 语言实现链表][clink] 等数据结构</li>
+</ol>
+<h4 id="c-yu-yan-zhong-shen-me-shi-han-shu-de-sheng-ming-shen-me-shi-han-shu-de-ding-yi-que-shi-liao-qi-zhong-de-yi-ge-hui-fa-sheng-shen-me">C 语言中，什么是函数的声明？什么是函数的定义？缺失了其中的一个会发生什么？</h4>
+<p>参见 <a rel="noopener" target="_blank" href="http://www.amazon.cn/gp/product/B003BVBOOQ/ref=as_li_ss_tl?ie=UTF8&amp;camp=536&amp;creative=3132&amp;creativeASIN=B003BVBOOQ&amp;linkCode=as2&amp;tag=blo-23">C 语言程序设计 现代方法</a> 第九章 函数</p>
+<h4 id="shen-me-shi-dong-tai-lian-jie-you-shen-me-hao-chu-ru-he-shi-yong">什么是动态链接？有什么好处？如何使用？</h4>
+<p>参见 <a rel="noopener" target="_blank" href="http://www.amazon.cn/gp/product/B0027VSA7U/ref=as_li_ss_tl?ie=UTF8&amp;camp=536&amp;creative=3132&amp;creativeASIN=B0027VSA7U&amp;linkCode=as2&amp;tag=blo-23">程序员的自我修养 链接、装载与库</a> 第7章(Linux) 第9章(Windows)</p>
+<h4 id="tou-wen-jian-zhong-de-extern-c-you-shen-me-yong-ru-guo-mei-you-hui-fa-sheng-shen-me">头文件中的 <code>extern "C"</code> 有什么用？如果没有，会发生什么？</h4>
+<p>参见 <a rel="noopener" target="_blank" href="http://www.amazon.cn/gp/product/B0027VSA7U/ref=as_li_ss_tl?ie=UTF8&amp;camp=536&amp;creative=3132&amp;creativeASIN=B0027VSA7U&amp;linkCode=as2&amp;tag=blo-23">程序员的自我修养 链接、装载与库</a> 3.5.4<br />
+<a rel="noopener" target="_blank" href="http://en.wikipedia.org/wiki/Name_mangling">Wikipedia Name Mangling</a></p>
+<h4 id="dai-mo-ban-de-qsort-1">“带模版”的 qsort</h4>
+<p>参见 <a rel="noopener" target="_blank" href="http://www.amazon.cn/gp/product/B003BVBOOQ/ref=as_li_ss_tl?ie=UTF8&amp;camp=536&amp;creative=3132&amp;creativeASIN=B003BVBOOQ&amp;linkCode=as2&amp;tag=blo-23">C 语言程序设计 现代方法</a> 17.7.2 指针的高级应用</p>
+<h4 id="better-string-1">Better String</h4>
+<p>主要有两种思路：</p>
+<ol>
+<li>使用结构体封装，如 <a rel="noopener" target="_blank" href="https://github.com/websnarf/bstrlib/blob/master/bstrlib.txt#L60">bstrlib</a></li>
+<li>在指针前附加信息，如 <a rel="noopener" target="_blank" href="https://github.com/antirez/sds">SDS</a>, <a rel="noopener" target="_blank" href="https://msdn.microsoft.com/en-us/library/ms221069.aspx">BSTR</a></li>
+</ol>
+<p>SDS 项目给出了<a rel="noopener" target="_blank" href="https://github.com/antirez/sds/blob/master/README.md#advantages-and-disadvantages-of-sds">两种实现方式的对比</a></p>
+<p>[clink]: {% post_url 2013-05-06-c_list %}</p>
+<h3 id="shu-ji-tui-jian">书籍推荐</h3>
+<p><a href="http://www.amazon.cn/gp/product/B00FF1Y53C/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B00FF1Y53C&linkCode=as2&tag=blo-23">一站式学习C编程</a>
+<a href="http://www.amazon.cn/gp/product/B0027VSA7U/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B0027VSA7U&linkCode=as2&tag=blo-23">程序员的自我修养:链接、装载与库</a>
+<a href="http://www.amazon.cn/gp/product/B003BVBOOQ/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B003BVBOOQ&linkCode=as2&tag=blo-23">C语言程序设计:现代方法(第2版)</a>
+<a href="http://www.amazon.cn/gp/product/B0012UMPBY/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=B0012UMPBY&linkCode=as2&tag=blo-23">C陷阱与缺陷</a></p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/use-latex-for-boring-job/">&#8249; 用牛刀 LaTeX 完成简单的排版任务</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/qt5-with-log4qt/"> Qt5 中使用 log4qt 输出日志 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

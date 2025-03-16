@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Fedora 删除 swap 后修复 Kernel Parameters | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/fedora-remove-swap-and-fix-kernel-parameters/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/fedora-remove-swap-and-fix-kernel-parameters/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/fedora-remove-swap-and-fix-kernel-parameters/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="Fedora 删除 swap 后修复 Kernel Parameters | Blog of Endle" />
+  <meta name="twitter:title" content="Fedora 删除 swap 后修复 Kernel Parameters | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2019-07-06" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/fedora-remove-swap-and-fix-kernel-parameters/">Fedora 删除 swap 后修复 Kernel Parameters</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> July 06, 2019 <span class="rpad"></span></span>
+
+    
+
+
+<p>笔者近日为自己的笔记本电脑升级到了 32G 内存，就想着删掉 swap 分区，为自己捉襟见肘的 SSD 释放一些空间。参考着 <a rel="noopener" target="_blank" href="https://wiki.archlinux.org/index.php/LVM">Arch Wiki</a>，整体而言比较顺利，但也有一点小小的插曲。</p>
+<p>首先，运行 <code># lvs</code> 查看分区情况。我的系统里，Volume Group 是 <code>fedora_zhenbo</code>。 删除 swap 分区不需要运行 <code># umount /&lt;mountpoint&gt;</code> 。相反，<a rel="noopener" target="_blank" href="https://serverfault.com/a/684792">运行 <code>swapoff -a</code> 即可</a>。 接下来，删除 LV <code># lvremove &lt;volume_group&gt;/&lt;logical_volume&gt;</code>，并修改 <code>etc/fstab</code>。</p>
+<p>可是，重启后，系统并没有正确启动，而是进入了 dracut 环境，提示 <code>fedora_zhenbo/swap</code> 未找到。重新检查了一遍，发现 Kernel parameters 里有一行 <code>rd.lvm.lv=fedora_zhenbo/swap</code>。将其删去后，可以顺利启动。<a rel="noopener" target="_blank" href="https://web.archive.org/web/20221226031847/https://docs.fedoraproject.org/en-US/fedora/rawhide/system-administrators-guide/kernel-module-driver-configuration/Working_with_the_GRUB_2_Boot_Loader/">尝试运行 <code>grub2-mkconfig</code></a>，生成的 <code>grub.cfg</code> 里依旧有 swap。把 <code>/etc/grub.d/</code> 翻了一遍，也没有任何头绪。</p>
+<p>幸运的是，<a rel="noopener" target="_blank" href="https://orenbell.com/">网友 Oren Bell</a> 在 2017 年<a rel="noopener" target="_blank" href="https://unix.stackexchange.com/questions/412149/grub2-mkconfig-isnt-generating-correct-mount-paths-and-also-how-do-i-get-rid-o">遇到了一样的问题</a>。LVM 分区被硬编码到了 <code>/etc/default/grub</code>。编辑该文件的 <code>GRUB_CMDLINE_LINUX=</code> 一栏，删掉 <code>rd.lvm.lv=fedora_zhenbo/swap</code> 后重新 <code>grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg</code> 即可。</p>
+<p>最后，参考 <a rel="noopener" target="_blank" href="https://wiki.archlinux.org/index.php/LVM">Arch Wiki</a>，把释放出来的空间添加到 home</p>
+<p><code># lvresize -l +100%FREE --resizefs fedora_zhenbo/home</code></p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/upgrade-fedora-30-to-31-via-ssh/">&#8249; 经SSH将Fedora 30升级至31</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/clang-binary-search/"> 跟着 clang 的 libcxx 学习二分查找 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer>
+</body>
+</html>
