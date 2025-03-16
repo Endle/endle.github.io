@@ -1,2 +1,0 @@
-disqus_shortname  = {{ site.disqus }}  = endle
-{{ page.url }} = /2021/06/20/string-z-function-intro/
