@@ -1,6 +1,6 @@
 on: push
 jobs:
-  build:
+  build_only:
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/master'
     steps:
@@ -9,9 +9,8 @@ jobs:
       - name: 'build'
         uses: shalzz/zola-deploy-action@master
         env:
-          PAGES_BRANCH: gh-pages
           BUILD_DIR: .
-          # BUILD_ONLY: true
+          BUILD_ONLY: true
   build_and_deploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
@@ -21,6 +20,7 @@ jobs:
       - name: 'build and deploy'
         uses: shalzz/zola-deploy-action@master
         env:
-          PAGES_BRANCH: master
+          PAGES_BRANCH: gh-pages
           BUILD_DIR: .
-          REPOSITORY: username/username.github.io
+          TOKEN: ${{ secrets.PUBLIC_TOKEN }}
+
