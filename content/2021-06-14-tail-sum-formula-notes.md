@@ -99,8 +99,7 @@ $$ E(X) = \frac{1}{p(1-p)} - 1 $$
 
 感谢老同学 [毕睿克](https://www.linkedin.com/in/%E7%9D%BF%E5%85%8B-%E6%AF%95-61407698/) 为本文草稿提出的意见。  
 
-[示意图](/images/statistics/tailsum_formula/schematic_diagram.png) 我是用 [LibreOffice Calc](/resources/statistics/tailsum_formula/image_base.ods) 制作的，步骤繁琐且效率差。如果有人了解如何绘制类似图形，恳请您不吝赐教。
+[示意图](/images/statistics/tailsum_formula/schematic_diagram.png) 我是用 LibreOffice Calc 制作的，步骤繁琐且效率差。如果有人了解如何绘制类似图形，恳请您不吝赐教。
 
 [Sinho]: https://inst.eecs.berkeley.edu/~cs70/su16/static/su16/extra_note/sinho_cs_70_notes.pdf
 
-{% include mathjax.html %}
