@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>My LaTex Cheatsheet | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/my-latex-cheatsheet/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/my-latex-cheatsheet/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/my-latex-cheatsheet/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="My LaTex Cheatsheet | Blog of Endle" />
+  <meta name="twitter:title" content="My LaTex Cheatsheet | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2021-10-28" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/my-latex-cheatsheet/">My LaTex Cheatsheet</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> October 28, 2021 <span class="rpad"></span></span>
+
+    
+
+
+<h2 id="table-biao-ge">Table 表格</h2>
+<pre class="z-code"><code><span class="z-text z-plain">\begin{center}
+</span><span class="z-text z-plain">\begin{tabular}{ |c|c|c| } 
+</span><span class="z-text z-plain"> \hline
+</span><span class="z-text z-plain"> cell1 &amp; cell2 &amp; cell3 \\ 
+</span><span class="z-text z-plain"> cell4 &amp; cell5 &amp; cell6 \\ 
+</span><span class="z-text z-plain"> cell7 &amp; cell8 &amp; cell9 \\ 
+</span><span class="z-text z-plain"> \hline
+</span><span class="z-text z-plain">\end{tabular}
+</span><span class="z-text z-plain">\end{center}
+</span></code></pre>
+<h2 id="pseudo-code-cha-ru-dai-ma">Pseudo-code 插入代码</h2>
+<pre class="z-code"><code><span class="z-text z-plain">\usepackage{listings}
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">\begin{lstlisting}
+</span><span class="z-text z-plain">F(S, T, s[1..n], t[1..n])
+</span><span class="z-text z-plain">    a + b	
+</span><span class="z-text z-plain">\end{lstlisting}
+</span></code></pre>
+<p>Set tab size</p>
+<pre class="z-code"><code><span class="z-text z-plain">\lstset{
+</span><span class="z-text z-plain">	numbers=left,
+</span><span class="z-text z-plain">	breaklines=true,
+</span><span class="z-text z-plain">	tabsize=2,
+</span><span class="z-text z-plain">}
+</span></code></pre>
+<h2 id="insert-picture-cha-ru-tu-pian">Insert picture 插入图片</h2>
+<pre class="z-code"><code><span class="z-text z-plain">\begin{figure}[h]
+</span><span class="z-text z-plain">\centering
+</span><span class="z-text z-plain">\includegraphics[width=.3\textwidth]{a.jpg}
+</span><span class="z-text z-plain">\end{figure}
+</span></code></pre>
+<h2 id="insert-pdf-cha-ru-pdf">Insert PDF 插入PDF</h2>
+<pre class="z-code"><code><span class="z-text z-plain">%https://stackoverflow.com/a/2739710/1166518
+</span><span class="z-text z-plain">\usepackage{pdfpages}
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">\includepdf[pages=-]{q1_x20.pdf}
+</span></code></pre>
+<h2 id="duo-xing-de-da-gua-hao">多行的大括号</h2>
+<pre class="z-code"><code><span class="z-text z-plain">$$ W[i,j]= max \left\{ \\
+</span><span class="z-text z-plain">\begin{aligned}
+</span><span class="z-text z-plain">	P[i,j], \\
+</span><span class="z-text z-plain">	max_{1\leq x\leq i,1\leq y \leq j} W[x,y] + max(
+</span><span class="z-text z-plain">	W[x,j-y]+W[i-x,j], 
+</span><span class="z-text z-plain">	&amp; W[i-x,y]+W[i.j-y])
+</span><span class="z-text z-plain">\end{aligned}
+</span><span class="z-text z-plain">\right.
+</span><span class="z-text z-plain">$$
+</span><span class="z-text z-plain">
+</span></code></pre>
+<h2 id="matrix-ju-zhen">Matrix 矩阵</h2>
+<pre class="z-code"><code><span class="z-text z-plain">\begin{equation*}
+</span><span class="z-text z-plain">    A=\begin{bmatrix}
+</span><span class="z-text z-plain">    10 &amp; -4 &amp; 18\\
+</span><span class="z-text z-plain">    11 &amp; 0 &amp; 0\\
+</span><span class="z-text z-plain">    0 &amp; 16 &amp; -3
+</span><span class="z-text z-plain">    \end{bmatrix}
+</span><span class="z-text z-plain">\end{equation*}
+</span></code></pre>
+<h2 id="limit-at-infinity-qu-jin-yu-wu-qiong-de-ji-xian">Limit at Infinity 趋近于无穷的极限</h2>
+<pre class="z-code"><code><span class="z-text z-plain">$$\lim_{n \to \infty} y_n$$
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">
+</span></code></pre>
+<h2 id="reference-to-equations-nei-lian-gong-shi">Reference to equations 内链公式</h2>
+<pre class="z-code"><code><span class="z-text z-plain">\begin{equation}
+</span><span class="z-text z-plain">	\label{eqn:o3}
+</span><span class="z-text z-plain">0 = f(x^*) = f(x_k) + f&#39;(x_k)(x^*-x_k) + \dfrac{1}{2}f&#39;&#39;(x_k)(x^*-x_k)^2 + \dfrac{1}{6}f&#39;&#39;&#39;(u_1)(x^*-x_k)^3
+</span><span class="z-text z-plain">\end{equation}
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">previous equation \ref{eqn:o3}
+</span><span class="z-text z-plain">
+</span></code></pre>
+<h2 id="jin-zhi-tu-pian-fu-dong">禁止图片浮动</h2>
+<p>如果希望禁止浮动，可以使用 float 宏包，结合 H 选项。
+参考了 <a rel="noopener" target="_blank" href="https://www.zhihu.com/question/25082703/answer/30038248">孟晨的回答 - 知乎</a></p>
+<pre class="z-code"><code><span class="z-text z-plain">\usepackage{float}
+</span><span class="z-text z-plain">\begin{figure}[H]
+</span><span class="z-text z-plain">\begin{table}[H]
+</span></code></pre>
+<h2 id="bu-jin-xing-zi-fu-zhuan-yi-write-in-plain-text-mode">不进行字符转义  write in plain text mode</h2>
+<p><a rel="noopener" target="_blank" href="https://tex.stackexchange.com/a/422207/81692">https://tex.stackexchange.com/a/422207/81692</a></p>
+<pre class="z-code"><code><span class="z-text z-plain">\newenvironment{simplechar}{
+</span><span class="z-text z-plain">   \catcode`\$=12
+</span><span class="z-text z-plain"> 这里应该还有一个列表，但是我没配置好 Jekyll 的字符转义
+</span><span class="z-text z-plain">}{}
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">\begin{simplechar}
+</span><span class="z-text z-plain">This is a paragraph with \textbf{bold} and \emph{emphasized} text, but special characters are treated normally
+</span></code></pre>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/fedora-silverblue-35-as-homeserver/">&#8249; Fedora Silverblue 35 设置为家庭服务器</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/packaging-rpm-upload-to-copr/"> 自己动手为 Fedora 打包的几个小技巧 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer>
+</body>
+</html>

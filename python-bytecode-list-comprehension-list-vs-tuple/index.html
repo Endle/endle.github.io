@@ -1,0 +1,323 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>从 Python Bytecode 的角度看 List Comprehension 生成 Tuple | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/python-bytecode-list-comprehension-list-vs-tuple/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/python-bytecode-list-comprehension-list-vs-tuple/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/python-bytecode-list-comprehension-list-vs-tuple/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="从 Python Bytecode 的角度看 List Comprehension 生成 Tuple | Blog of Endle" />
+  <meta name="twitter:title" content="从 Python Bytecode 的角度看 List Comprehension 生成 Tuple | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2021-03-28" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/python-bytecode-list-comprehension-list-vs-tuple/">从 Python Bytecode 的角度看 List Comprehension 生成 Tuple</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> March 28, 2021 <span class="rpad"></span></span>
+
+    
+
+
+<p><a rel="noopener" target="_blank" href="https://www.w3schools.com/python/python_lists_comprehension.asp">Python List Comprehension</a> 使用非常广泛。通常认为，在生成的 <a rel="noopener" target="_blank" href="https://docs.python.org/3/glossary.html#term-sequence">sequence</a> 定长的情况下，应该生成 Tuple 而非 List。出于好奇，我简单研究一下这两者在 Bytecode 的区别。</p>
+<p>示例代码如下，很简单的 List Comprehension。</p>
+<pre class="z-code"><code><span class="z-text z-plain">def transform(x:int)-&gt;int:
+</span><span class="z-text z-plain">    return (x * 2) + 5
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">original_data = [3, 7, 6, 5, 4, 4, 8]
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">result_1 = [transform(x) for x in original_data]
+</span><span class="z-text z-plain">result_1b = list(transform(x) for x in original_data)
+</span><span class="z-text z-plain">result_2 = tuple(transform(x) for x in original_data)
+</span></code></pre>
+<p>首先，看一下最常见的写法 <code>[transform(x) for x in original_data]</code></p>
+<pre class="z-code"><code><span class="z-text z-plain">import dis
+</span><span class="z-text z-plain">dis.dis(&quot;result_1 = [transform(x) for x in original_data]&quot;)
+</span><span class="z-text z-plain">  1           0 LOAD_CONST               0 (&lt;code object &lt;listcomp&gt; at 0x7fe3345ea3a0, file &quot;&lt;dis&gt;&quot;, line 1&gt;)
+</span><span class="z-text z-plain">              2 LOAD_CONST               1 (&#39;&lt;listcomp&gt;&#39;)
+</span><span class="z-text z-plain">              4 MAKE_FUNCTION            0
+</span><span class="z-text z-plain">              6 LOAD_NAME                0 (original_data)
+</span><span class="z-text z-plain">              8 GET_ITER
+</span><span class="z-text z-plain">             10 CALL_FUNCTION            1
+</span><span class="z-text z-plain">             12 STORE_NAME               1 (result_1)
+</span><span class="z-text z-plain">             14 LOAD_CONST               2 (None)
+</span><span class="z-text z-plain">             16 RETURN_VALUE
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Disassembly of &lt;code object &lt;listcomp&gt; at 0x7fe3345ea3a0, file &quot;&lt;dis&gt;&quot;, line 1&gt;:
+</span><span class="z-text z-plain">  1           0 BUILD_LIST               0
+</span><span class="z-text z-plain">              2 LOAD_FAST                0 (.0)
+</span><span class="z-text z-plain">        &gt;&gt;    4 FOR_ITER                12 (to 18)
+</span><span class="z-text z-plain">              6 STORE_FAST               1 (x)
+</span><span class="z-text z-plain">              8 LOAD_GLOBAL              0 (transform)
+</span><span class="z-text z-plain">             10 LOAD_FAST                1 (x)
+</span><span class="z-text z-plain">             12 CALL_FUNCTION            1
+</span><span class="z-text z-plain">             14 LIST_APPEND              2
+</span><span class="z-text z-plain">             16 JUMP_ABSOLUTE            4
+</span><span class="z-text z-plain">        &gt;&gt;   18 RETURN_VALUE
+</span></code></pre>
+<p>这里的 <a rel="noopener" target="_blank" href="https://github.com/python/cpython/blob/master/Lib/dis.py">dis module</a> 仅仅是 <a rel="noopener" target="_blank" href="https://docs.python.org/3/library/functions.html#compile">built-in function compile</a> 的 wrapper。</p>
+<p>如果稍稍写的臃肿一些，写成 <code>list(transform(x) for x in original_data)</code> 我们会发现字节码有小幅的变动。</p>
+<pre class="z-code"><code><span class="z-text z-plain">dis.dis(&quot;result_1b = list(transform(x) for x in original_data)&quot;)
+</span><span class="z-text z-plain">  1           0 LOAD_NAME                0 (list)
+</span><span class="z-text z-plain">              2 LOAD_CONST               0 (&lt;code object &lt;genexpr&gt; at 0x7fe3344dda80, file &quot;&lt;dis&gt;&quot;, line 1&gt;)
+</span><span class="z-text z-plain">              4 LOAD_CONST               1 (&#39;&lt;genexpr&gt;&#39;)
+</span><span class="z-text z-plain">              6 MAKE_FUNCTION            0
+</span><span class="z-text z-plain">              8 LOAD_NAME                1 (original_data)
+</span><span class="z-text z-plain">             10 GET_ITER
+</span><span class="z-text z-plain">             12 CALL_FUNCTION            1
+</span><span class="z-text z-plain">             14 CALL_FUNCTION            1
+</span><span class="z-text z-plain">             16 STORE_NAME               2 (result_1b)
+</span><span class="z-text z-plain">             18 LOAD_CONST               2 (None)
+</span><span class="z-text z-plain">             20 RETURN_VALUE
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Disassembly of &lt;code object &lt;genexpr&gt; at 0x7fe3344dda80, file &quot;&lt;dis&gt;&quot;, line 1&gt;:
+</span><span class="z-text z-plain">  1           0 LOAD_FAST                0 (.0)
+</span><span class="z-text z-plain">        &gt;&gt;    2 FOR_ITER                14 (to 18)
+</span><span class="z-text z-plain">              4 STORE_FAST               1 (x)
+</span><span class="z-text z-plain">              6 LOAD_GLOBAL              0 (transform)
+</span><span class="z-text z-plain">              8 LOAD_FAST                1 (x)
+</span><span class="z-text z-plain">             10 CALL_FUNCTION            1
+</span><span class="z-text z-plain">             12 YIELD_VALUE
+</span><span class="z-text z-plain">             14 POP_TOP
+</span><span class="z-text z-plain">             16 JUMP_ABSOLUTE            2
+</span><span class="z-text z-plain">        &gt;&gt;   18 LOAD_CONST               0 (None)
+</span><span class="z-text z-plain">             20 RETURN_VALUE
+</span></code></pre>
+<p>第一种方式 <code>[]</code> 调用了 <code>code object &lt;listcomp&gt;</code>，第二种方式 <code>list()</code> 则是用了 <code>code object &lt;genexpr&gt;</code>，并多了一次 <code>CALL_FUNCTION</code>。在 <a rel="noopener" target="_blank" href="https://github.com/python/cpython/blob/a81fca6ec8e0f748f8eafa12fb12cf9e12df465c/Python/compile.c#L4733">Python/compile.c</a> 里，我们能看到这两者的实现几乎是一样的。</p>
+<pre class="z-code"><code><span class="z-text z-plain">static int
+</span><span class="z-text z-plain">compiler_genexp(struct compiler *c, expr_ty e)
+</span><span class="z-text z-plain">{
+</span><span class="z-text z-plain">    static identifier name;
+</span><span class="z-text z-plain">    if (!name) {
+</span><span class="z-text z-plain">        name = PyUnicode_InternFromString(&quot;&lt;genexpr&gt;&quot;);
+</span><span class="z-text z-plain">        if (!name)
+</span><span class="z-text z-plain">            return 0;
+</span><span class="z-text z-plain">    }
+</span><span class="z-text z-plain">    assert(e-&gt;kind == GeneratorExp_kind);
+</span><span class="z-text z-plain">    return compiler_comprehension(c, e, COMP_GENEXP, name,
+</span><span class="z-text z-plain">                                  e-&gt;v.GeneratorExp.generators,
+</span><span class="z-text z-plain">                                  e-&gt;v.GeneratorExp.elt, NULL);
+</span><span class="z-text z-plain">}
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">static int
+</span><span class="z-text z-plain">compiler_listcomp(struct compiler *c, expr_ty e)
+</span><span class="z-text z-plain">{
+</span><span class="z-text z-plain">    static identifier name;
+</span><span class="z-text z-plain">    if (!name) {
+</span><span class="z-text z-plain">        name = PyUnicode_InternFromString(&quot;&lt;listcomp&gt;&quot;);
+</span><span class="z-text z-plain">        if (!name)
+</span><span class="z-text z-plain">            return 0;
+</span><span class="z-text z-plain">    }
+</span><span class="z-text z-plain">    assert(e-&gt;kind == ListComp_kind);
+</span><span class="z-text z-plain">    return compiler_comprehension(c, e, COMP_LISTCOMP, name,
+</span><span class="z-text z-plain">                                  e-&gt;v.ListComp.generators,
+</span><span class="z-text z-plain">                                  e-&gt;v.ListComp.elt, NULL);
+</span><span class="z-text z-plain">}
+</span></code></pre>
+<p>这两者都会交由 <a rel="noopener" target="_blank" href="https://github.com/python/cpython/blob/a81fca6ec8e0f748f8eafa12fb12cf9e12df465c/Python/compile.c#L4635"><code>compiler_comprehension</code> 来处理</a>。</p>
+<pre class="z-code"><code><span class="z-text z-plain">static int
+</span><span class="z-text z-plain">compiler_comprehension(...){
+</span><span class="z-text z-plain">--------------- snip ---------------
+</span><span class="z-text z-plain">    if (type != COMP_GENEXP) {
+</span><span class="z-text z-plain">        int op;
+</span><span class="z-text z-plain">        switch (type) {
+</span><span class="z-text z-plain">        case COMP_LISTCOMP:
+</span><span class="z-text z-plain">            op = BUILD_LIST;
+</span><span class="z-text z-plain">            break;
+</span><span class="z-text z-plain">        case COMP_SETCOMP:
+</span><span class="z-text z-plain">            op = BUILD_SET; break;
+</span><span class="z-text z-plain">        case COMP_DICTCOMP:
+</span><span class="z-text z-plain">            op = BUILD_MAP; break;
+</span><span class="z-text z-plain">        default:
+</span><span class="z-text z-plain">            PyErr_Format(PyExc_SystemError,
+</span><span class="z-text z-plain">                         &quot;unknown comprehension type %d&quot;, type);
+</span><span class="z-text z-plain">            goto error_in_scope;
+</span><span class="z-text z-plain">        }
+</span><span class="z-text z-plain">        ADDOP_I(c, op, 0);
+</span><span class="z-text z-plain">    }
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">    if (!compiler_comprehension_generator(c, generators, 0, 0, elt,
+</span><span class="z-text z-plain">                                          val, type))
+</span><span class="z-text z-plain">        goto error_in_scope;
+</span><span class="z-text z-plain">    if (type != COMP_GENEXP) {
+</span><span class="z-text z-plain">        ADDOP(c, RETURN_VALUE);
+</span><span class="z-text z-plain">    }
+</span><span class="z-text z-plain">    --------------- snip ---------------
+</span><span class="z-text z-plain">    return 1;
+</span><span class="z-text z-plain">error_in_scope: error:
+</span><span class="z-text z-plain">    --------------- snip: error handling ---------------
+</span><span class="z-text z-plain">}
+</span></code></pre>
+<p>到这里，我可以判断 <code>code object &lt;listcomp&gt;</code> 的返回值已经是 <code>list object</code>。而 <code>code object &lt;genexpr&gt;</code> 的返回值需要额外的一组指令</p>
+<pre class="z-code"><code><span class="z-text z-plain">  1           0 LOAD_NAME                0 (list)
+</span><span class="z-text z-plain">             14 CALL_FUNCTION            1
+</span></code></pre>
+<p>到这里，我们再看一下尝试生成 tuple 的 Bytecode。</p>
+<pre class="z-code"><code><span class="z-text z-plain">dis.dis(&quot;result_2 = tuple(transform(x) for x in original_data)&quot;)
+</span><span class="z-text z-plain">  1           0 LOAD_NAME                0 (tuple)
+</span><span class="z-text z-plain">              2 LOAD_CONST               0 (&lt;code object &lt;genexpr&gt; at 0x7ff4af1ed450, file &quot;&lt;dis&gt;&quot;, line 1&gt;)
+</span><span class="z-text z-plain">              4 LOAD_CONST               1 (&#39;&lt;genexpr&gt;&#39;)
+</span><span class="z-text z-plain">              6 MAKE_FUNCTION            0
+</span><span class="z-text z-plain">              8 LOAD_NAME                1 (original_data)
+</span><span class="z-text z-plain">             10 GET_ITER
+</span><span class="z-text z-plain">             12 CALL_FUNCTION            1
+</span><span class="z-text z-plain">             14 CALL_FUNCTION            1
+</span><span class="z-text z-plain">             16 STORE_NAME               2 (result_2)
+</span><span class="z-text z-plain">             18 LOAD_CONST               2 (None)
+</span><span class="z-text z-plain">             20 RETURN_VALUE
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Disassembly of &lt;code object &lt;genexpr&gt; at 0x7ff4af1ed450, file &quot;&lt;dis&gt;&quot;, line 1&gt;:
+</span><span class="z-text z-plain">  1           0 LOAD_FAST                0 (.0)
+</span><span class="z-text z-plain">        &gt;&gt;    2 FOR_ITER                14 (to 18)
+</span><span class="z-text z-plain">              4 STORE_FAST               1 (x)
+</span><span class="z-text z-plain">              6 LOAD_GLOBAL              0 (transform)
+</span><span class="z-text z-plain">              8 LOAD_FAST                1 (x)
+</span><span class="z-text z-plain">             10 CALL_FUNCTION            1
+</span><span class="z-text z-plain">             12 YIELD_VALUE
+</span><span class="z-text z-plain">             14 POP_TOP
+</span><span class="z-text z-plain">             16 JUMP_ABSOLUTE            2
+</span><span class="z-text z-plain">        &gt;&gt;   18 LOAD_CONST               0 (None)
+</span><span class="z-text z-plain">             20 RETURN_VALUE
+</span><span class="z-text z-plain">
+</span></code></pre>
+<p>与上文的 <code>result_1b</code> 非常类似，<code>code object &lt;genexpr&gt;</code> 的结果会被</p>
+<pre class="z-code"><code><span class="z-text z-plain">  1           0 LOAD_NAME                0 (tuple)
+</span><span class="z-text z-plain">             14 CALL_FUNCTION            1
+</span></code></pre>
+<p>处理，并将结果绑定在变量名 <code>result_2</code> 上。</p>
+<p>我们同样可以讲 <code>code object &lt;genexpr&gt;</code> 的结果直接绑定在某个名称上，而非调用 <code>list()</code> 或 <code>tuple()</code> 。</p>
+<pre class="z-code"><code><span class="z-text z-plain">&gt;&gt;&gt;result_3 = (transform(x) for x in original_data)
+</span><span class="z-text z-plain">&gt;&gt;&gt;type(result_3)
+</span><span class="z-text z-plain">&lt;class &#39;generator&#39;&gt;
+</span><span class="z-text z-plain">&gt;&gt;&gt;dis.dis(&quot;result_3 = (transform(x) for x in original_data)&quot;)
+</span><span class="z-text z-plain">  1           0 LOAD_CONST               0 (&lt;code object &lt;genexpr&gt; at 0x7ff4af0e0c90, file &quot;&lt;dis&gt;&quot;, line 1&gt;)
+</span><span class="z-text z-plain">              2 LOAD_CONST               1 (&#39;&lt;genexpr&gt;&#39;)
+</span><span class="z-text z-plain">              4 MAKE_FUNCTION            0
+</span><span class="z-text z-plain">              6 LOAD_NAME                0 (original_data)
+</span><span class="z-text z-plain">              8 GET_ITER
+</span><span class="z-text z-plain">             10 CALL_FUNCTION            1
+</span><span class="z-text z-plain">             12 STORE_NAME               1 (result_3)
+</span><span class="z-text z-plain">             14 LOAD_CONST               2 (None)
+</span><span class="z-text z-plain">             16 RETURN_VALUE
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Disassembly of &lt;code object &lt;genexpr&gt; at 0x7ff4af0e0c90, file &quot;&lt;dis&gt;&quot;, line 1&gt;:
+</span><span class="z-text z-plain">-----snip----
+</span></code></pre>
+<p>但是，这样创建出的 <code>generator</code> 会在遍历时被消耗掉(consume)。如果有访问这些元素的需求，还是要第一时间将其转换为 <a rel="noopener" target="_blank" href="https://docs.python.org/3/glossary.html#term-sequence">sequence</a></p>
+<pre class="z-code"><code><span class="z-text z-plain">&gt;&gt;&gt; result_3 = (transform(x) for x in original_data)
+</span><span class="z-text z-plain">&gt;&gt;&gt; sum(result_3)
+</span><span class="z-text z-plain">109
+</span><span class="z-text z-plain">&gt;&gt;&gt; sum(result_3)
+</span><span class="z-text z-plain">0
+</span><span class="z-text z-plain">
+</span></code></pre>
+<p>运行环境</p>
+<pre class="z-code"><code><span class="z-text z-plain">&gt;&gt;&gt; import sys
+</span><span class="z-text z-plain">&gt;&gt;&gt; sys.version
+</span><span class="z-text z-plain">&#39;3.9.2 (default, Feb 20 2021, 00:00:00) \n[GCC 10.2.1 20201125 (Red Hat 10.2.1-9)]&#39;
+</span></code></pre>
+<p>推荐阅读：</p>
+<ul>
+<li><a rel="noopener" target="_blank" href="https://opensource.com/article/18/4/introduction-python-bytecode">An introduction to Python bytecode</a></li>
+<li><a rel="noopener" target="_blank" href="https://realpython.com/cpython-source-code-guide/">Your Guide to the CPython Source Code</a></li>
+<li><a rel="noopener" target="_blank" href="https://leanpub.com/insidethepythonvirtualmachine">Inside the Python Virtual Machine</a></li>
+</ul>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/fcitx-5-preview-too-large-after-resolution-change/">&#8249; Fcitx 5 在分辨率改变后候选框过大</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/git-submodule-reset-all/"> 如何让 Git Submodule 恢复初始状态 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Git Submodule 从本地源初始化 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/git-submodule-fetch-from-local/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/git-submodule-fetch-from-local/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/git-submodule-fetch-from-local/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="Git Submodule 从本地源初始化 | Blog of Endle" />
+  <meta name="twitter:title" content="Git Submodule 从本地源初始化 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2021-02-01" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/git-submodule-fetch-from-local/">Git Submodule 从本地源初始化</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> February 01, 2021 <span class="rpad"></span></span>
+
+    
+
+
+<h4 id="bei-jing-jie-shao">背景介绍</h4>
+<p>在使用 Wine 运行 <a rel="noopener" target="_blank" href="https://appdb.winehq.org/objectManager.php?sClass=version&amp;iId=37229">Magic: The Gathering Arena</a> 的过程中，我想自行编译 <a rel="noopener" target="_blank" href="https://github.com/madewokherd/wine-mono">Wine-Mono</a>。<a rel="noopener" target="_blank" href="https://github.com/madewokherd/wine-mono">Wine-Mono</a> 用 <code>git submodule</code> 将 Mono 的 codebase 囊括了进来。</p>
+<p>在此之前，我在电脑上已经下载过了 Mono 的代码 (<code>git clone https://github.com/mono/mono.git --depth=1</code>)。与其重复访问 GitHub，我希望能从本地的代码库初始化 submodule。</p>
+<h4 id="shi-yong-ben-di-yuan">使用本地源</h4>
+<pre class="z-code"><code><span class="z-text z-plain">git clone https://github.com/madewokherd/wine-mono.git
+</span><span class="z-text z-plain">cd wine-mono
+</span><span class="z-text z-plain">git submodule init
+</span><span class="z-text z-plain">git submodule set-url mono  /home/lizhenbo/src/mono
+</span><span class="z-text z-plain">git submodule update mono 
+</span></code></pre>
+<p>在完成初始化后，再还原该设置</p>
+<pre class="z-code"><code><span class="z-text z-plain">git submodule set-url mono https://github.com/madewokherd/wine-mono.git
+</span></code></pre>
+<h4 id="qie-huan-hui-shang-you-dai-ma">切换回上游代码</h4>
+<p>因为硬盘空间紧缺，我删掉了原有的 <code>/home/lizhenbo/src/mono</code> 。想要编辑上游代码，可以运行</p>
+<pre class="z-code"><code><span class="z-text z-plain">cd wine-mono/mono
+</span><span class="z-text z-plain">git remote add upstream https://github.com/mono/mono.git
+</span><span class="z-text z-plain">git fetch upstream master 
+</span><span class="z-text z-plain">git checkout upstream/master
+</span><span class="z-text z-plain">git submodule update --recursive --depth=1
+</span></code></pre>
+<p>在工作完成后，可以再<a rel="noopener" target="_blank" href="https://stackoverflow.com/a/61751340/1166518">恢复 submodule 配置</a>。</p>
+<pre class="z-code"><code><span class="z-text z-plain">git restore . --recurse-submodules
+</span></code></pre>
+<h4 id="fan-wai-huo-qu-geng-shen-de-li-shi-ji-lu">番外：获取更深的历史记录</h4>
+<p>初次下载项目代码使用了 <code>--depth=1</code> 。如果想要看稍微久一些的历史记录，不需要 <code>git fetch --unshallow</code> 下载完整内容，而可以用 <code>git fetch origin master --deepen=10</code>。</p>
+<p>我尝试了 <code>shallow-exclude</code>，但遇到了如下问题</p>
+<pre class="z-code"><code><span class="z-text z-plain">$ git fetch origin master --shallow-exclude=fad8c19d8600b34e46984ba6dbb600f9343cd773 -v
+</span><span class="z-text z-plain">POST git-upload-pack (306 bytes)
+</span><span class="z-text z-plain">POST git-upload-pack (400 bytes)
+</span><span class="z-text z-plain">error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: Unknown error code (err 2)
+</span><span class="z-text z-plain">fatal: error reading section header &#39;acknowledgments&#39;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain"># https://stackoverflow.com/a/59474908/1166518   
+</span><span class="z-text z-plain">$ git config http.version HTTP/1.1
+</span><span class="z-text z-plain">$ git fetch origin master --shallow-exclude=fad8c19d8600b34e46984ba6dbb600f9343cd773 -v
+</span><span class="z-text z-plain">POST git-upload-pack (306 bytes)
+</span><span class="z-text z-plain">POST git-upload-pack (400 bytes)
+</span><span class="z-text z-plain">error: RPC failed; curl 18 transfer closed with outstanding read data remaining
+</span><span class="z-text z-plain">fatal: error reading section header &#39;acknowledgments&#39;
+</span></code></pre>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/git-submodule-reset-all/">&#8249; 如何让 Git Submodule 恢复初始状态</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/upgrade-fedora-30-to-31-via-ssh/"> 经SSH将Fedora 30升级至31 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer>
+</body>
+</html>

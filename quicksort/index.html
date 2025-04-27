@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>重学quicksort | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/quicksort/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/quicksort/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/quicksort/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="重学quicksort | Blog of Endle" />
+  <meta name="twitter:title" content="重学quicksort | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2013-01-20" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/quicksort/">重学quicksort</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> January 20, 2013 <span class="rpad"></span></span>
+
+    
+
+
+<p>前两天写一道水题，想尝试一下手写快排，可没想到花了一个多小时都没有搞定。看来， <strong>The devil is in the detail</strong> ，细节的地方埋藏了许多知识盲点。看来，有的草，是迟早要花时间除的。</p>
+<p>{% highlight c++ %}
+void quicksort(int A[], int p, int r)
+{
+if (p &gt;= r)		return;
+int q;
+q = partition(A, p, r);
+quicksort(A, p, q - 1);
+quicksort(A, q + 1, r);
+}
+{% endhighlight %}</p>
+<p>为了保证 O(nlgn)的复杂度，partition 需要达到O(n)的复杂度。算法导论上，提供了这样一种实现
+{% highlight c++ %}
+int partition(int A[], int p, int r)
+{
+int i, j, x;
+x = A[r];
+i = p - 1;
+for (j = p; j &lt; r; ++j){
+if (A[j] &lt;= x){
+++i;
+SWAP(A[i], A[j]);
+}
+}
+SWAP(A[i+1], A[r]);
+return i + 1;
+}
+{% endhighlight %}</p>
+<p>这个算法可以这样理解：</p>
+<ol>
+<li>选取主元</li>
+<li>让 <code>j</code> 扫描一遍 <code>A[p, r - 1]</code> ，找出所有比 <code>x</code> 小的元素。这样，当循环结束时，<code>A[p, i]</code> 中存放的元素都不会比主元大。通过 <code>SWAP(A[i+1], A[r])</code> ，把主元交换到了 <code>i+1</code> 的位置。
+显然，<code>partition()</code> 过程为线性复杂度。我们有个一个不到20行的高效的排序算法。</li>
+</ol>
+<p>但在我重学快排时，看到了[v_JULY_v][1] 写的 [快速排序算法的深入分析][2] ，觉得自己正如他所说
+[1]: http://my.csdn.net/v_july_v/message
+[2]: http://blog.csdn.net/v_july_v/article/details/6211155</p>
+<blockquote>
+<p>只知其表，不知其里，只知其用，不知其本质。很多东西，都是可以从本质看本质的。而大部分人没有做到这一点。从而看了又忘，忘了再看，如此，在对知识的一次一次重复记忆中，始终未能透析本质，从而形成不好的循环。
+看来，除草之路漫漫啊。</p>
+</blockquote>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/crand/">&#8249; C语言生成随机数的小实验</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/hello-world/"> hello world &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

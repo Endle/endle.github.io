@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>给 Wine 报 bug 的错题本 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/wine-bug/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/wine-bug/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/wine-bug/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="给 Wine 报 bug 的错题本 | Blog of Endle" />
+  <meta name="twitter:title" content="给 Wine 报 bug 的错题本 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2013-06-07" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/wine-bug/">给 Wine 报 bug 的错题本</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> June 07, 2013 <span class="rpad"></span></span>
+
+    
+
+
+<p>查了一下，我保送后第一次在 <a rel="noopener" target="_blank" href="http://bugs.winehq.org">http://bugs.winehq.org</a> 上报 bug， 已经是13年1月的事了。尝试着参与了一些 debug 工作，也犯了一些错误。写下这篇短文，权当笔记吧。</p>
+<h2 id="bi-mian-zhong-fu">避免重复</h2>
+<p>在上报了一个 bug，结果被 <code>CLOSED DUPLICATE</code>，是很令人沮丧的。而且，这也不能给开发人员提供有效的帮助。除了明显的重复（比如 [bug 32751][32751]），还有一些不容易发现的重复，比如 [bug 33433][33433]。
+[32751]: http://bugs.winehq.org/show_bug.cgi?id=32751
+[33433]: http://bugs.winehq.org/show_bug.cgi?id=33433</p>
+<p>我在搜索 <em>Fetion</em> 的时候，只找到了 [Bug 29769 - Fetion IM Client: crashes when clicking on profile icon ][29769]，所以我就上报了 [Bug 33433 - Fetion IM crashed after opening a chat dialog][33433]。 但实际上，因为 backtrace 相同， [bug 29769#3][] 就把 [Bug 29770 - Fetion IM Client: crashes when opening a chat window][29770] 关掉了。所以，虽然表现不同，但这都是同一个 bug。
+[29769]: http://bugs.winehq.org/show_bug.cgi?id=29769
+[33433]: http://bugs.winehq.org/show_bug.cgi?id=33433
+[bug 29769#3]: http://bugs.winehq.org/show_bug.cgi?id=29769#c3
+[29770]: http://bugs.winehq.org/show_bug.cgi?id=29770</p>
+<h2 id="zhi-tao-lun-yi-ge-bug">只讨论一个 bug</h2>
+<p>我不知道怎么表述更好；在这里，我有两个例子。</p>
+<p>首先是 [29769#12][f-12] 。我在安装的时候出现了错误提示的对话框。Jactry Zeng 和 Qian Hong 都提醒我，我应当新建一个 bug。
+[f-12]: http://bugs.winehq.org/show_bug.cgi?id=29769</p>
+<p>其次，大家在 bugzilla 上研究 workaround，只是针对该 bug，而不是为了让软件能正常运行。比如 <a rel="noopener" target="_blank" href="http://bugs.winehq.org/show_bug.cgi?id=29638#c7">bug 29638#7</a>， Qian Hong 的回复是 <em>There are two crashing bug related to QQ, winetricks -q riched20 is for Bug 29636.</em> 一口气 winetricks 一串，只会让问题复杂化。</p>
+<h2 id="zhong-wen-xian-shi-de-wen-ti">中文显示的问题</h2>
+<p>[Bug 33666 - YY6 Installer can't show Chinese][33666] 是我最近报的一个 bug。这类 bug，多数的原因都是字体缺失。在 [文泉驿][wen] 之类的的字体屈指可数的情况下， [FontReplacement][fr] 就是最有效的解决方法了。所以，遇到类似问题时，最好先检查一下，自己是否打好了 [补丁][patch]。
+[33666]: http://bugs.winehq.org/show_bug.cgi?id=33666
+[wen]: http://wenq.org/wqy2/index.cgi
+[fr]: http://wiki.winehq.org/FontReplacements
+[patch]: https://gitcafe.com/endle/FontReplacements--TestingPatch
+<br />
+在学习报 bug 的过程中，非常感谢 [wine-zh][] 列表中大家对我的帮助，特别是 Qian Hong，回答了我大量的问题。有关于 Wine 的疑问，不妨试试 Google <code>site:http://www.freelists.org/archive/wine-zh/</code> ，你会有意想不到的收获的。
+[wine-zh]: www.freelists.org/list/wine-zh</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/ssh-linux/">&#8249; 用 ssh 安装 Linux</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/linux-firefox/"> Linux 下利用网盘同步 Firefox 扩展 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

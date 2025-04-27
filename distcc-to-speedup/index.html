@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>用 distcc 加快编译 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/distcc-to-speedup/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/distcc-to-speedup/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/distcc-to-speedup/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="用 distcc 加快编译 | Blog of Endle" />
+  <meta name="twitter:title" content="用 distcc 加快编译 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2018-09-10" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/distcc-to-speedup/">用 distcc 加快编译</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> September 10, 2018 <span class="rpad"></span></span>
+
+    
+
+
+<p>我的卧室迎来了新成员 - 拥有双 Xeon E5649 的工作站。在安顿好后，我就第一时间开始研究用 <code>distcc</code> 来加快编译速度了。毕竟，与其让我的 XPS 15 被折磨，不如把这个工作交给局域网内的工作站。官网提供了一份 <a rel="noopener" target="_blank" href="https://cdn.rawgit.com/distcc/distcc/9a09372bd3f420cdd7021e52eda14fa536a3c10e/doc/web/index.html">60-second instructions</a> ，不妨一试。如果你是在60秒内完成了配置的幸运儿，那请关掉本页面。如果你遇到了阻碍，那么请看下一节。</p>
+<h3 id="server-slaves-gong-zuo-zhan-she-zhi">Server / Slaves / 工作站设置</h3>
+<p>为了方便地调试，我选择在工作站上运行 <code>distccd --no-detach  --daemon  --allow 192.168.1.0/24 --log-stderr --verbose -j 1</code><br />
+在新版本的 <code>distcc</code> 里，<code>--allow</code>参数已经是必选项了。在完成了调试后，我在生产环境中设置成了 <code>-j 10</code>，避免将 12 核都跑满后，ssh访问工作站会有一定延迟。另一种解决方法是，通过设置 <code>nice</code> 避免吃光资源。</p>
+<h3 id="ben-di-she-zhi">本地设置</h3>
+<h4 id="zhi-xian-ren-wu-ssh-name">支线任务 - SSH name</h4>
+<p>通过<code>~/.ssh/config</code> 可以给自己局域网中的电脑分配一个简单易记的名字。我将我的工作站命名为了 <code>beddp</code>。不设置不影响使用。如果第一次接触这一概念，可以阅读 <a rel="noopener" target="_blank" href="https://serverfault.com/a/215027">https://serverfault.com/a/215027</a></p>
+<h4 id="zhu-xian-ren-wu">主线任务</h4>
+<p>首先要设置环境变量 <code>export DISTCC_HOSTS="@beddp,lzo,cpp"</code><br />
+<code>@beddp</code> 的意思是，通过 ssh 连接到名为 <code>beddp</code> 的主机。<code>,lzo,cpp</code> 这两个设置是为了开启 pump模式。详情可以阅读 <a rel="noopener" target="_blank" href="https://wiki.archlinux.org/index.php/Distcc#For_use_without_makepkg">Arch Wiki</a></p>
+<p>测试代码选择<br />
+{% highlight C %}
+#include &lt;stdio.h&gt;
+int main(){
+puts(<strong>VERSION</strong>); return 0;
+}
+{% endhighlight %}</p>
+<p>在本地运行 <code>gcc k.c -o local.out &amp;&amp; ./local.out</code> 的结果是 <code>8.1.1 20180712 (Red Hat 8.1.1-5)</code><br />
+在服务器运行 <code>gcc k.c -o server.out &amp;&amp; ./server.out</code> 的结果是 <code>4.8.4</code></p>
+<p>gcc 版本的差异可能会导致各类潜在的问题。但现阶段，可以以此测试 <code>distcc</code> 是否正常工作</p>
+<p>在本机运行 <code>DISTCC_VERBOSE=1 pump distcc gcc -c k.c -o k.o &amp;&amp; gcc k.o -o server.out &amp;&amp; ./server.out</code> 结果是 <code>4.8.4</code>。简单来说，添加了 <code>pump</code> 指令，意味着测试文件和涉及到的头文件会被发送到了工作站上，进行预处理以及编译，并在本地完成了最终的链接。我们也可以运行 <code>distcc gcc -c k.c -o k.o &amp;&amp; gcc k.o -o server_nopump.out &amp;&amp; ./server_nopump.out</code> 结果就变为了 <code>8.1.1 20180712 (Red Hat 8.1.1-5)</code>。 可以看到，没有了 <code>pump</code> 指令，预处理工作是在本地处理的</p>
+<p>在本机也可以运行 <code>distccmon-text 2</code>。这会启动一个两秒钟刷新一次的监视器，显示任务的分配状态。</p>
+<h3 id="xiang-mu-shi-zhan">项目实战</h3>
+<p>让我们开一瓶香槟，选一个项目实战一下。按照教程，我们只需要把运行 <code>make -j8 CC=distcc</code>即可。不过，很遗憾，我在 wine 项目上的测试失败了。即便 <a rel="noopener" target="_blank" href="https://wiki.winehq.org/Gcc">Wine Wiki</a> 显示 gcc 4.8.4 应当可以成功编译 wine，<code>distcc</code> 也没有顺利地接过工作。相反，它不停地显示 <code>(dcc_build_somewhere) Warning: failed to distribute, running locally instead</code>。<br />
+我在工作站上编译安装了 gcc 8。<code>distccd</code>命令支持指定 PATH，但我选择了笨办法：在本机和工作站上，都设置了一个软链接 <code>/usr/local/bin/gcc-8</code>。在编译前，设置 <code>export CC="ccache distcc gcc-8"</code>。在 ccache 缓存失败时，<code>distcc</code> 会将任务转交给工作站进行处理。我并没有统计具体的编译耗时，但个人体验是有断崖式提升的：在配置前，如果代码变化量大，编译代码时我的 XPS 机身会变得滚烫，同时风扇狂转。而配置好 <code>distcc</code> 后，即便在 ccache 缓存清空的情况下编译，自己的笔记本依旧凉爽安静。</p>
+<p>最后附上我用 <code>distcc</code> 编译 wine 的 workflow，比较复杂，个别地方的写法也有待商榷。欢迎大家在评论区，或是向我发送邮件进行讨论。</p>
+<p>{% highlight bash %}
+function cfgwine64()
+{
+cd ~/src/wine_n_extras/wine64-build &amp;&amp; ../wine/configure --enable-win64
+}
+function cfgwine32()
+{
+cd ~/src/wine_n_extras/wine32-build &amp;&amp;<br />
+PKG_CONFIG_PATH=/usr/lib/pkgconfig <br />
+../wine/configure --with-wine64=../wine64-build
+}
+function mkwine()
+{
+export DISTCC_HOSTS="@beddp,lzo,cpp"
+export CC="ccache distcc gcc-8"
+export CFLAGS="-O0"
+export JOBS=16
+export DISTCC_HOSTS="@beddp,lzo"
+cdwine
+cfgwine64
+make -j$JOBS
+cfgwine32
+make -j$JOBS
+}
+{% endhighlight %}</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/distcc-to-speedup-expansion/">&#8249; 用 distcc 加快编译 续篇-clang</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/cpp-glpk-linear-programming-kit/"> 在 C++ 中使用 GLPK 求解线性规划 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

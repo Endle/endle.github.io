@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>用牛刀 LaTeX 完成简单的排版任务 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/use-latex-for-boring-job/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/use-latex-for-boring-job/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/use-latex-for-boring-job/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="用牛刀 LaTeX 完成简单的排版任务 | Blog of Endle" />
+  <meta name="twitter:title" content="用牛刀 LaTeX 完成简单的排版任务 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2015-09-20" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/use-latex-for-boring-job/">用牛刀 LaTeX 完成简单的排版任务</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> September 20, 2015 <span class="rpad"></span></span>
+
+    
+
+
+<p>假期里，我们被布置了一篇报告作为作业。排版要求如下：</p>
+<pre class="z-code"><code><span class="z-text z-plain">正文为宋体、小四号、1.25倍行距。标题号第一层用一、二……第二层用1、2……第三层用（1）、（2）……。
+</span></code></pre>
+<p>同时，我们的报告要求写在特定纸张上。换句话说，是要用特定的页眉页脚。如图：
+<img src="/images/LaTeX/for-use-latex-for-boring-job/example.png" alt="Example" /></p>
+<p>在布置作业时，我们也得到了一个<a href="/downloads/LaTeX/example/template-for-use-latex-for-boring-job.docx">Word 模板</a>。刚刚读完 <a rel="noopener" target="_blank" href="http://www.amazon.cn/gp/product/B00D1APK0G/ref=as_li_ss_tl?ie=UTF8&amp;camp=536&amp;creative=3132&amp;creativeASIN=B00D1APK0G&amp;linkCode=as2&amp;tag=blo-23">《LaTex 入门》</a>，就想着用 LaTeX 来完成这项工作。</p>
+<h4 id="zi-ding-yi-zhi-zhang">自定义纸张</h4>
+<p>自定义纸张可以用 <a rel="noopener" target="_blank" href="https://www.ctan.org/pkg/wallpaper">wallpaper 宏包</a> 来处理。这个包的功能很简单，刚好符合本例的需求。将原有的模板导出成 pdf，然后使用该宏包加载即可。</p>
+<pre class="z-code"><code><span class="z-text z-plain">\CenterWallPaper{1}{background.pdf}
+</span></code></pre>
+<h4 id="zi-ding-yi-zhang-jie-biao-ti-ge-shi">自定义章节标题格式</h4>
+<p>新的 <a rel="noopener" target="_blank" href="https://www.tug.org/texlive//Contents/live/texmf-dist/doc/latex/ctex/ctex.pdf">CTeX 套件</a> 已经能完善地支持标题格式。本例中，可以使用
+{% highlight LaTeX %}
+\ctexset {
+section = {
+name = {,、},
+number = \chinese{section}
+},
+subsection = {
+name = {,、},
+number = \arabic{subsection},
+},
+subsubsection = {
+name = {（,）、},
+numbering = true,
+number = \arabic{subsubsection}
+}
+}
+{%endhighlight %}
+不过，这一功能比较新。如果使用的是较旧的套件，可能就无法正确编译。因此，建议首先升级至 texlive 2015.</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/cpp-glpk-linear-programming-kit/">&#8249; 在 C++ 中使用 GLPK 求解线性规划</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/from-oi-to-world/"> 从 OI 到世界 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer>
+</body>
+</html>

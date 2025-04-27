@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Fedora Silverblue 35 设置为家庭服务器 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/fedora-silverblue-35-as-homeserver/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/fedora-silverblue-35-as-homeserver/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/fedora-silverblue-35-as-homeserver/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="Fedora Silverblue 35 设置为家庭服务器 | Blog of Endle" />
+  <meta name="twitter:title" content="Fedora Silverblue 35 设置为家庭服务器 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2022-05-09" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/fedora-silverblue-35-as-homeserver/">Fedora Silverblue 35 设置为家庭服务器</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> May 09, 2022 <span class="rpad"></span></span>
+
+    
+
+
+<p>几周前，我领到了新的笔记本。从 2017 年为我工作的 Dell XPS 也光荣地退居二线了。我构思了很久的搭建家庭服务器的行动，也终于得以付诸实施了。写一篇流水账，记录一下我的操作流程。</p>
+<h4 id="an-zhuang-fedora-silverblue-35-yi-ji-xfce">安装 Fedora Silverblue 35 以及 XFCE</h4>
+<h4 id="pei-zhi-ssh-deng-lu">配置 SSH 登录</h4>
+<p>Server 的 <code>$HOME/.SSH</code> 目录需要设置为 <code>700</code> 权限。</p>
+<h4 id="zi-dong-gua-zai-automount-yi-dong-ying-pan">自动挂载(Automount) 移动硬盘</h4>
+<p>在这里，我没能找到用 XFCE 的 GUI 工具设置自动挂载的方式。我的解决方案是，切换到 Gnome 3 里，选择 nautilus -&gt; disk，进而手动选择挂载点。</p>
+<h4 id="flatpak-ying-yong-de-zi-dong-qi-dong">Flatpak 应用的自动启动</h4>
+<p>使用 Flatpak 安装的应用的 <code>.desktop</code> 文件会存放在 <code>/var/lib/flatpak/exports/share/applications</code> 。打开后，就可以知道如何在命令行中运行某个应用。</p>
+<h4 id="an-zhuang-nvidia-bi-yuan-qu-dong-shi-bai">安装 Nvidia 闭源驱动 （失败）</h4>
+<p>我参考 <a rel="noopener" target="_blank" href="https://web.archive.org/web/20231211123426/https://nudesystems.com/how-to-install-nvidia-drivers-in-fedora-silverblue/">https://nudesystems.com/how-to-install-nvidia-drivers-in-fedora-silverblue/</a> 一文，使用 rpmfusion 的包安装 NVidia 闭源驱动。虽然软件包安装成功，但 <code>nvidia-smi</code> 等工具并不能正常运行。因为也不打算用这台家庭服务器玩游戏，就没有深究这个问题。</p>
+<h4 id="an-zhuang-teamviewer">安装 Teamviewer</h4>
+<p>参考 <a rel="noopener" target="_blank" href="https://community.teamviewer.com/English/kb/articles/30664-use-the-tar-package-for-linux">https://community.teamviewer.com/English/kb/articles/30664-use-the-tar-package-for-linux</a>，可以从 <a rel="noopener" target="_blank" href="https://www.teamviewer.com/en-us/download/linux/">https://www.teamviewer.com/en-us/download/linux/</a> 下载 tar 包。运行 <code>./tv-setup checklibs</code> 提示缺少 <code>libminizip.so.1</code> 和若干 QT 库。运行 <code>rpm-ostree install qt5-qtquickcontrols qt5-qtquickcontrols2 minizip-compat</code> 后，teamviewer 可以顺利运行了。</p>
+<!--This is a comment. Comments are not displayed in the browser
+
+
+
+- Set up home server
+	- 1. Install Fedora Silverblue 35
+		2. Install XFCE
+		3. Config httpd failed
+		4. login with ssh pubkey failed. set ~/.ssh to 700 on target machine!
+		5. set auto mount with remote media (it didn't work)
+		6. set auto mount with gnome disk (nautilus then disk), specify mount point
+		7. set auto start, check  /var/lib/flatpak/exports/share/applications
+		8. add rpmfusion, and upgrade (https://nudesystems.com/how-to-install-nvidia-drivers-in-fedora-silverblue/)
+		9. rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia
+		10. also add xorg-x11-drv-nvidia-cuda
+		11. nvidia driver still not good
+		12. download tar from https://www.teamviewer.com/en-us/download/linux/
+		13. https://community.teamviewer.com/English/kb/articles/30664-use-the-tar-package-for-linux
+		14. ./tv-setup checklibs
+
+	- Analyzing dependencies ...
+	  libminizip.so.1 => not found
+	- The libraries listed above seem to be missing.
+	  Please find and install the corresponding packages.
+	  Then, run this command again.
+	- QtQuickControls seems to be missing
+	- The following command may be helpful:
+	  'libdbus-1.so.3()(64bit)' 'libQt5Gui.so.5()(64bit)' 'libQt5Widgets.so.5()(64bit)' 'libQt5Qml.so.5()(64bit)' 'libQt5Quick.so.5()(64bit)' 'libQt5WebKitWidgets.so.5()(64bit)' 'libQt5X11Extras.so.5()(64bit)'  qt5-qtdeclarative qt5-qtquickcontrols
+	- dnf provides */libminizip.so.1
+	- minizip-compat
+	- rpm-ostree install qt5-qtquickcontrols qt5-qtquickcontrols2 minizip-compat
+
+-->
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/cf-282b-painting-eggs-solution-how-to-prove-the-greedy-algorithm/">&#8249; Codeforces 282B Painting Eggs 题解与贪心算法的证明</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/my-latex-cheatsheet/"> My LaTex Cheatsheet &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

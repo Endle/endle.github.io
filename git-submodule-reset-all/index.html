@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>如何让 Git Submodule 恢复初始状态 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/git-submodule-reset-all/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/git-submodule-reset-all/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/git-submodule-reset-all/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="如何让 Git Submodule 恢复初始状态 | Blog of Endle" />
+  <meta name="twitter:title" content="如何让 Git Submodule 恢复初始状态 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2021-02-09" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/git-submodule-reset-all/">如何让 Git Submodule 恢复初始状态</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> February 09, 2021 <span class="rpad"></span></span>
+
+    
+
+
+<p>这几天在尝试编译 <a rel="noopener" target="_blank" href="https://github.com/ValveSoftware/Proton">Proton</a> ，不小心把 submodule 搞乱了。如下图所示，submodule 对应的是 <code>origin/master/HEAD</code>，而不是应有的 commit。</p>
+<pre class="z-code"><code><span class="z-text z-plain">proton$ git status
+</span><span class="z-text z-plain">On branch proton_5.13
+</span><span class="z-text z-plain">Your branch is up to date with &#39;origin/proton_5.13&#39;.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Changes not staged for commit:
+</span><span class="z-text z-plain">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+</span><span class="z-text z-plain">  (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
+</span><span class="z-text z-plain">	modified:   FAudio (new commits)
+</span><span class="z-text z-plain">	modified:   OpenXR-SDK (new commits)
+</span><span class="z-text z-plain">	modified:   fonts/liberation-fonts (new commits)
+</span><span class="z-text z-plain">	modified:   gst-orc (new commits)
+</span><span class="z-text z-plain">	modified:   gst-plugins-base (new commits)
+</span><span class="z-text z-plain">	modified:   gst-plugins-good (new commits)
+</span><span class="z-text z-plain">	modified:   gstreamer (new commits)
+</span><span class="z-text z-plain">	modified:   vkd3d-proton (new commits)
+</span></code></pre>
+<p><a rel="noopener" target="_blank" href="https://stackoverflow.com/questions/7882603/how-to-revert-a-git-submodule-pointer-to-the-commit-stored-in-the-containing-rep">参考这个回答</a>，使用 <code>git submodule update --init</code> 修复。</p>
+<p>因为网络问题，我的 openvr 最开始没能下载成功。反复尝试 fetch 以后，发现我的 <code>git module</code> 损坏了。</p>
+<pre class="z-code"><code><span class="z-text z-plain">$ git status
+</span><span class="z-text z-plain">fatal: not a git repository: openvr/../.git/modules/openvr
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">$ git submodule
+</span><span class="z-text z-plain"> aa158544b6402e6a37517c0ffa142a5edae927b0 FAudio (20.12)
+</span><span class="z-text z-plain"> 5197afbf199c026eca82a47a8573ed10b0c6fa4e OpenXR-SDK (release-1.0.13)
+</span><span class="z-text z-plain"> 85c70ad5db0863ffbc4afee2ca57a6e6e92e8ef6 dxvk (experimental-dxvk-5.13-20210115)
+</span><span class="z-text z-plain"> 9510ebd130bcb4dfc76b053b438d8a97a3ed4600 fonts/liberation-fonts (2.00.3-2-g9510ebd)
+</span><span class="z-text z-plain"> 9901a96eaff271c2d3b595214213f6805ff803c8 gst-orc (0.4.31)
+</span><span class="z-text z-plain"> 9d3581b2e6f12f0b7e790d1ebb63b90cf5b1ef4e gst-plugins-base (1.16.0-91-g9d3581b2e)
+</span><span class="z-text z-plain"> ce0723527aa37d5f4d19ef8021c0b2eb8f83b08d gst-plugins-good (1.16.0-48-gce0723527)
+</span><span class="z-text z-plain"> 129493687793cbc109d6211bb0e465218e383e9d gstreamer (1.16.0-58-g129493687)
+</span><span class="z-text z-plain">fatal: not a git repository: openvr/../.git/modules/openvr
+</span></code></pre>
+<p>我删除了 <code>.git/config</code>和 <code>.gitmodules</code> 中 openvr 的记录。接着就可以运行</p>
+<pre class="z-code"><code><span class="z-text z-plain">$ rm -rf openvr
+</span><span class="z-text z-plain">$ git status
+</span><span class="z-text z-plain">On branch proton_5.13
+</span><span class="z-text z-plain">Your branch is up to date with &#39;origin/proton_5.13&#39;.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Changes not staged for commit:
+</span><span class="z-text z-plain">  (use &quot;git add/rm &lt;file&gt;...&quot; to update what will be committed)
+</span><span class="z-text z-plain">  (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
+</span><span class="z-text z-plain">	modified:   .gitmodules
+</span><span class="z-text z-plain">	deleted:    openvr
+</span><span class="z-text z-plain">
+</span></code></pre>
+<p>到这里，就可以还原 <code>.gitmodules</code>。</p>
+<pre class="z-code"><code><span class="z-text z-plain">git restore .gitmodules
+</span><span class="z-text z-plain">git status
+</span><span class="z-text z-plain">On branch proton_5.13
+</span><span class="z-text z-plain">Your branch is up to date with &#39;origin/proton_5.13&#39;.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Changes not staged for commit:
+</span><span class="z-text z-plain">  (use &quot;git add/rm &lt;file&gt;...&quot; to update what will be committed)
+</span><span class="z-text z-plain">  (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
+</span><span class="z-text z-plain">	deleted:    openvr
+</span><span class="z-text z-plain">
+</span></code></pre>
+<p>有趣的是，我尝试 <code>submodulle update</code> 会遇到网络问题，而 <code>git clone</code> 则可以正常执行。</p>
+<pre class="z-code"><code><span class="z-text z-plain"># Fail
+</span><span class="z-text z-plain">git submodule update --depth=1 openvr
+</span><span class="z-text z-plain"># Success
+</span><span class="z-text z-plain">git clone https://github.com/ValveSoftware/openvr.git --depth=1
+</span></code></pre>
+<p>用<a rel="noopener" target="_blank" href="https://endle.github.io/2021/02/01/git-submodule-fetch-from-local/">上一篇文章的技巧</a>，我也成功初始化了 openvr。</p>
+<pre class="z-code"><code><span class="z-text z-plain">git clone https://github.com/ValveSoftware/openvr.git --depth=1
+</span><span class="z-text z-plain">git fetch origin master --deepin=20
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">git submodule set-url openvr /dev/shm/openvr
+</span><span class="z-text z-plain">git submodule update --init openvr
+</span><span class="z-text z-plain">git restore . --recurse-submodules
+</span></code></pre>
+<p>最后，使用 Vagrant 编译代码时，可能会遇到网络问题。参考<a rel="noopener" target="_blank" href="https://blog.csdn.net/haiyanghan/article/details/107168972">这篇 CSDN 的文章</a>，可以使用支持断点续传的 <code>wget</code> 下载镜像。</p>
+<pre class="z-code"><code><span class="z-text z-plain"> proton$ vagrant up
+</span><span class="z-text z-plain">Platform: 4 CPUs, 15979 MB memory
+</span><span class="z-text z-plain">Bringing machine &#39;debian10&#39; up with &#39;libvirt&#39; provider...
+</span><span class="z-text z-plain">==&gt; debian10: Box &#39;generic/debian10&#39; could not be found. Attempting to find and install...
+</span><span class="z-text z-plain">    debian10: Box Provider: libvirt
+</span><span class="z-text z-plain">    debian10: Box Version: &gt;= 0
+</span><span class="z-text z-plain">==&gt; debian10: Loading metadata for box &#39;generic/debian10&#39;
+</span><span class="z-text z-plain">    debian10: URL: https://vagrantcloud.com/generic/debian10
+</span><span class="z-text z-plain">==&gt; debian10: Adding box &#39;generic/debian10&#39; (v3.2.2) for provider: libvirt
+</span><span class="z-text z-plain">    debian10: Downloading: https://vagrantcloud.com/generic/boxes/debian10/versions/3.2.2/providers/libvirt.box
+</span><span class="z-text z-plain">==&gt; debian10: Box download is resuming from prior download progress
+</span><span class="z-text z-plain">Download redirected to host: vagrantcloud-files-production.s3.amazonaws.com
+</span><span class="z-text z-plain">Progress: 0% (Rate: 46507/s, Estimated time remaining: 14:32:45)^C==&gt; debian10: Waiting for cleanup before exiting...
+</span><span class="z-text z-plain">==&gt; debian10: Box download was interrupted. Exiting.
+</span><span class="z-text z-plain">    debian10: Calculating and comparing box checksum...
+</span><span class="z-text z-plain">The checksum of the downloaded box did not match the expected
+</span><span class="z-text z-plain">value. Please verify that you have the proper URL setup and that
+</span><span class="z-text z-plain">you&#39;re downloading the proper file.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Expected: 76118312e5a2f227544660566b7d0f6ad3d6bf50ff1fc0b92602cda66d9cf3a6
+</span><span class="z-text z-plain">Received: 9d80712a57190fb2821f11ac46e677be1c467afc15e02d3d29f84c069d4f9e8e
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">wget -c https://vagrantcloud.com/generic/boxes/debian10/versions/3.2.2/providers/libvirt.box
+</span></code></pre>
+<p>下载成功后，再执行 <code>vagrant box add</code></p>
+<pre class="z-code"><code><span class="z-text z-plain">~$ sha256sum libvirt.box 
+</span><span class="z-text z-plain">76118312e5a2f227544660566b7d0f6ad3d6bf50ff1fc0b92602cda66d9cf3a6  libvirt.box
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">vagrant box add generic/debian10 libvirt.box
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Platform: 4 CPUs, 15979 MB memory
+</span><span class="z-text z-plain">Bringing machine &#39;debian10&#39; up with &#39;libvirt&#39; provider...
+</span><span class="z-text z-plain">==&gt; debian10: Uploading base box image as volume into Libvirt storage...
+</span><span class="z-text z-plain">==&gt; debian10: Creating image (snapshot of base box volume).
+</span><span class="z-text z-plain">==&gt; debian10: Creating domain with the following settings...
+</span><span class="z-text z-plain">
+</span></code></pre>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/python-bytecode-list-comprehension-list-vs-tuple/">&#8249; 从 Python Bytecode 的角度看 List Comprehension 生成 Tuple</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/git-submodule-fetch-from-local/"> Git Submodule 从本地源初始化 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer>
+</body>
+</html>

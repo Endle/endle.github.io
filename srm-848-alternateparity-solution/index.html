@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>TopCoder SRM 848 AlternateParity 题解 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/srm-848-alternateparity-solution/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/srm-848-alternateparity-solution/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/srm-848-alternateparity-solution/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="TopCoder SRM 848 AlternateParity 题解 | Blog of Endle" />
+  <meta name="twitter:title" content="TopCoder SRM 848 AlternateParity 题解 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2023-08-06" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/srm-848-alternateparity-solution/">TopCoder SRM 848 AlternateParity 题解</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> August 06, 2023 <span class="rpad"></span></span>
+
+    
+
+
+<p>2023年8月3日，我参加了 <a rel="noopener" target="_blank" href="https://community.topcoder.com/stat?c=round_overview&amp;rd=19668">TopCoder SRM 848</a>，结果 Div I 第一题就没做出来，零分完赛。赛后看了<a rel="noopener" target="_blank" href="https://community.topcoder.com/stat?c=problem_solution&amp;cr=90029704&amp;rd=19668&amp;pm=18085">其他选手的代码</a>，意识到这其实是一个比较基础的组合数学问题。</p>
+<h2 id="alternate-parity-ti-mu-miao-shu">Alternate Parity <a rel="noopener" target="_blank" href="https://community.topcoder.com/stat?c=problem_statement&amp;pm=18085&amp;rd=19668&amp;rm=&amp;cr=90029704">题目描述</a></h2>
+<p>相比于原有的 <a rel="noopener" target="_blank" href="https://community.topcoder.com/stat?c=problem_statement&amp;pm=18085&amp;rd=19668&amp;rm=&amp;cr=90029704">题目描述</a>， 我决定将其转换为如下形式： 给定两个正整数 <code>X</code> <code>L</code>, 生成一个长度为 <code>L</code> 的数列，要求：</p>
+<ol>
+<li>数列严格单调递增</li>
+<li>相邻的两个数字奇偶性不同</li>
+<li>数列的每个元素为正整数</li>
+<li>数列最后一个元素 $a_L=X$</li>
+</ol>
+<p>求所有合法的序列数量，并对某大质数取模。</p>
+<h2 id="jie-da">解答</h2>
+<p>可以通过若干步变换，将它转化为一个<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Stars_and_bars_(combinatorics)">隔板法（Stars and bars）</a>问题。</p>
+<h3 id="a1-de-qi-ou-xing">a1 的奇偶性</h3>
+<p>对 X 和 L 的奇偶性分类讨论，一共有四种情况。易证 $(X+L)%2==0$ &lt;=&gt; $a_1%2==0$</p>
+<h3 id="gou-jian-fu-zhu-xu-lie-b">构建辅助序列 b</h3>
+<p>数列 a 要求相邻的两个数字奇偶性不同，也就是相邻的元素的差为基数。通过求差值，我们可以定义一个辅助数列 <code>b</code>，使序列中的每一个元素都为偶数。</p>
+<h4 id="a1-wei-qi-shu">a1 为奇数</h4>
+<p>$$
+b =  \left{ \
+\begin{aligned}
+&amp; b_1 = a_1 - 1 \
+&amp; b_i = a_i - a_{i-1} - 1
+\end{aligned}
+\right.
+$$</p>
+<p>$\sum_{i=1}^{L}b_i = a_L-L = X-L$</p>
+<h4 id="a1-wei-ou-shu">a1 为偶数</h4>
+<p>$$
+b =  \left{ \
+\begin{aligned}
+&amp; b_1 = a_1 - 2 \
+&amp; b_i = a_i - a_{i-1} - 1
+\end{aligned}
+\right.
+$$<br />
+$\sum_{i=1}^{L}b_i = a_L-L -1= X-L-1$</p>
+<h4 id="shu-lie-bde-xing-zhi">数列b的性质</h4>
+<p>无论 $a_1$ 的奇偶性，数列b都符合：<br />
+$b_i % 2 == 0$<br />
+$b_i \geq 0$</p>
+<h3 id="gou-jian-fu-zhu-shu-lie-c-yi-bian-yong-ge-ban-fa-qiu-jie">构建辅助数列 c 以便用隔板法求解</h3>
+<p>定义 $c_i = \dfrac{b_i}{2} + 1$, 则 $$c_i \in \mathbb{R}+$$</p>
+<p>$$\sum_{i=1}^{L}c_i = L + \dfrac{\sum_{i=1}^{L}b_i}{2}$$</p>
+<p>$$
+\sum_{i=1}^{L}c_i  =  \left{ \
+\begin{aligned}
+&amp; \dfrac{X+L}{2},   \text{same_parity} \
+&amp; \dfrac{X+L-1}{2},   \text{diff_parity}
+\end{aligned}
+\right.
+$$</p>
+<p>求数列c一共有多少种合法的情况，正是 <a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Stars_and_bars_(combinatorics)">隔板法</a> 的标准模型。</p>
+<h3 id="dui-zu-he-shu-qu-mo">对组合数取模</h3>
+<p>这个基础问题触及了我的知识盲区。查到的两份资料（<a rel="noopener" target="_blank" href="https://xienaoban.github.io/posts/36480.html#n%E7%9B%B8%E5%AF%B9%E5%B0%8F%E6%96%B9%E4%BE%BF%E6%89%93%E8%A1%A8p%E5%8F%AF%E4%BB%A5%E5%BE%88%E5%A4%A7p%E8%A6%81%E6%B1%82%E4%B8%BA%E7%B4%A0%E6%95%B0">A</a>，<a rel="noopener" target="_blank" href="https://cp-algorithms.com/algebra/module-inverse.html#finding-the-modular-inverse-using-binary-exponentiation">B</a>）提到，可以使用<a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Fermat%27s_little_theorem">费马小定理 Fermat's little theorem</a> 解决这一问题。</p>
+<h2 id="bi-sai-fu-pan">比赛复盘</h2>
+<p>比赛时，我先写出了朴素的 DP 代码 <code>f[L,X] = f[L-1,X-1] + f[L-1,X-3] +...</code>，并把这个表格显示了出来，试图找它的规律。初看起来，这和杨辉三角的形态比较类似，但我没有顺着这个方向思考下去，而试图去优化 DP 方程。赛后看到其他选手的代码，才发现是组合数学的问题。</p>
+<p>我的代码存档: <a rel="noopener" target="_blank" href="https://gist.github.com/Endle/1381aa72eb07fe1c92a5de2ff1cb83f6">https://gist.github.com/Endle/1381aa72eb07fe1c92a5de2ff1cb83f6</a><br />
+抢在<a rel="noopener" target="_blank" href="https://www.topcoder.com/blog/tag/srm/">官方题解</a>发布前写完了本文，希望搜索引擎们能给我送一些流量。</p>
+<p>{% include mathjax.html %}</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/leetcode-2948-solution-yet-another-sliding-window/">&#8249; LeetCode 2948 题解 (又是 Sliding Window)</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/codeforces-885a-vika-and-her-friends-1848a-solution/"> Codeforces 885A Vika and Her Friends (1848A) 题解 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

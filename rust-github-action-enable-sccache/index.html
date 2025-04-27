@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>为 Rust 项目的 Github Action 启用 Sccache - 2023 年的新办法 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/rust-github-action-enable-sccache/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/rust-github-action-enable-sccache/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/rust-github-action-enable-sccache/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="为 Rust 项目的 Github Action 启用 Sccache - 2023 年的新办法 | Blog of Endle" />
+  <meta name="twitter:title" content="为 Rust 项目的 Github Action 启用 Sccache - 2023 年的新办法 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2023-01-27" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/rust-github-action-enable-sccache/">为 Rust 项目的 Github Action 启用 Sccache - 2023 年的新办法</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> January 27, 2023 <span class="rpad"></span></span>
+
+    
+
+
+<p>受到 <a rel="noopener" target="_blank" href="https://xuanwo.io/reports/2023-04/">Xuanwo 的博客</a> 的鼓动，我决定给自己的 Rust 项目
+<a rel="noopener" target="_blank" href="https://github.com/Endle/fireSeqSearch">fireSeqSearch</a> 加上 <a rel="noopener" target="_blank" href="https://github.com/mozilla/sccache">Sccache</a>。</p>
+<h4 id="sccache-gai-shu">sccache 概述</h4>
+<p><a rel="noopener" target="_blank" href="https://github.com/mozilla/sccache">Sccache</a> 可以简单看成 <a rel="noopener" target="_blank" href="https://ccache.dev/">ccache</a> 的 Rust
+版。它有很多激动人心的特性，但那不在本文的范畴里。我在本地编译原有的项目时，只需运行
+<code>RUSTC_WRAPPER="sccache" cargo build</code> 即可启用 sccache。默认的缓存路径为
+<code>~/.cache/sccache</code></p>
+<h4 id="huan-cun-cargo-registry">缓存 Cargo Registry</h4>
+<p><a rel="noopener" target="_blank" href="https://github.com/Endle/fireSeqSearch/blob/6e760731e1f91df5f647f0bd551aceb5d83bfcbb/.github/workflows/rust.yml#L35">我原先的代码里</a> 缓存了 <code>~/.cargo/registry</code>，但这只是编译前的 <a rel="noopener" target="_blank" href="https://doc.rust-lang.org/cargo/reference/registries.html">crate.io registry</a>, 而不是编译产生的目标代码，加速 CI 效果有限。</p>
+<h4 id="2022-nian-de-ben-ban-fa">2022 年的笨办法</h4>
+<p>最开始，我仅仅是将 <code>~/.cache/sccache</code>
+添加到了缓存路径里。<a rel="noopener" target="_blank" href="https://github.com/Endle/fireSeqSearch/blob/0e26622b8d794a2dbc83afaeb6fca1fa48cb7d01/.github/workflows/rust.yml">代码如下</a>：</p>
+<pre class="z-code"><code><span class="z-text z-plain">      - name: Cache cargo registry and sccache
+</span><span class="z-text z-plain">        uses: actions/cache@v3
+</span><span class="z-text z-plain">        continue-on-error: false
+</span><span class="z-text z-plain">        with:
+</span><span class="z-text z-plain">          path: |
+</span><span class="z-text z-plain">            ~/.cargo/registry
+</span><span class="z-text z-plain">            ~/.cache/sccache
+</span></code></pre>
+<p><a rel="noopener" target="_blank" href="https://github.com/Endle/fireSeqSearch/commit/0e26622b8d794a2dbc83afaeb6fca1fa48cb7d01">我的这个改动</a>
+误解了 <a rel="noopener" target="_blank" href="https://github.com/mozilla/sccache-action">sccache-action</a>
+的用法，并没有发挥它真正的强大之处。使用笨办法，大概 600M 的 <code>~/.cache/sccache</code> 都会被 GitHub Action
+缓存。随着时间推移，缓存文件的体积会膨胀，在 <code>restore/save</code>
+时浪费时间。<a rel="noopener" target="_blank" href="https://gist.github.com/Endle/efe07ca76b6e148c4682e101ff9a6731">我自己的经验</a>，在 macOS instance
+上，接收 150M 的缓存就用了 3 分钟 （当然，这也与服务器实际运行情况有关）。</p>
+<h4 id="2023-nian-de-xin-ban-fa">2023 年的新办法</h4>
+<p>感谢 <a rel="noopener" target="_blank" href="https://xuanwo.io/">Xuanwo</a> 本人的答疑，我将 <code>~/.cache/sccache</code> 移出了
+<code>actions/cache@v3</code>。<a rel="noopener" target="_blank" href="https://github.com/Endle/fireSeqSearch/commit/969950f7fdb794eab1b57880d0334b5285bb404f">改动</a>后的<a rel="noopener" target="_blank" href="https://github.com/Endle/fireSeqSearch/blob/969950f7fdb794eab1b57880d0334b5285bb404f/.github/workflows/rust.yml">代码如下</a></p>
+<pre class="z-code"><code><span class="z-text z-plain">env:
+</span><span class="z-text z-plain">  CARGO_TERM_COLOR: always
+</span><span class="z-text z-plain">  RUSTC_WRAPPER: &quot;sccache&quot;
+</span><span class="z-text z-plain">  SCCACHE_GHA_ENABLED: &quot;true&quot;
+</span><span class="z-text z-plain">--- snip ---
+</span><span class="z-text z-plain">      - name: Run sccache-cache
+</span><span class="z-text z-plain">        uses: Xuanwo/sccache-action@c94e27bef21ab3fb4a5152c8a878c53262b4abb0
+</span><span class="z-text z-plain">        with:
+</span><span class="z-text z-plain">          version: &quot;v0.4.0-pre.6&quot;
+</span><span class="z-text z-plain">      - name: Cache cargo registry
+</span><span class="z-text z-plain">        uses: actions/cache@v3
+</span><span class="z-text z-plain">        with:
+</span><span class="z-text z-plain">          path: |
+</span><span class="z-text z-plain">            ~/.cargo/registry
+</span></code></pre>
+<h4 id="zui-zhi-jie-de-you-dian-xi-li-du-huan-cun">最直接的优点：细粒度缓存</h4>
+<p>相比旧办法，使用 <a rel="noopener" target="_blank" href="https://github.com/mozilla/sccache-action">sccache-action</a>
+并不会将 <code>~/.cache/sccache</code> 作为整体上传到 GitHub Action Cache 里，而是会细粒度地将每个对象上传。</p>
+<p>在
+<a rel="noopener" target="_blank" href="https://github.com/Endle/fireSeqSearch/actions/caches">https://github.com/Endle/fireSeqSearch/actions/caches</a> 里可以看到，大小从几K到几百K，乃至20M的对象被存入了 GHA。这很好地避免了旧方法中缓存文件夹膨胀的问题。</p>
+<p>![Screenshot of Github Action Cache](/images/2023/rust/Screenshot 2023-01-28 GitHub Action Cache.png)</p>
+<h4 id="hou-ji">后记</h4>
+<p>在撰写完本文大概两周后，发现 <a rel="noopener" target="_blank" href="https://xxchan.me/about/">xxchan</a> 写了一篇博文 <a rel="noopener" target="_blank" href="https://xxchan.me/cs/2023/02/11/optimize-rust-comptime.html">我如何动动小手就让 CI 时间减少了 10 分钟</a> 比本文更详细、更完整。</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/codeforces-885a-vika-and-her-friends-1848a-solution/">&#8249; Codeforces 885A Vika and Her Friends (1848A) 题解</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/write-beancount-csv-importer-from-scratch/"> 从零写一个 Beancount CSV Importer &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

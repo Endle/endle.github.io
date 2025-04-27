@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Linux 下利用网盘同步 Firefox 扩展 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/linux-firefox/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/linux-firefox/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/linux-firefox/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="Linux 下利用网盘同步 Firefox 扩展 | Blog of Endle" />
+  <meta name="twitter:title" content="Linux 下利用网盘同步 Firefox 扩展 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2013-05-28" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/linux-firefox/">Linux 下利用网盘同步 Firefox 扩展</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> May 28, 2013 <span class="rpad"></span></span>
+
+    
+
+
+<p>不知道为什么，最近我的 Firefox 加载一些网页总是有问题。参考了 [Bugzilla 上我收到的回复][bug]，我打算重置我的个人配置。</p>
+<p>但这么做，就意味着我要重新安装一下自己的扩展，和积累的一票油猴脚本。尤其是 [ForTrick][fox]，还要手动去下载 .xpi 文件。网上有人推荐了 [FEBE][febe]，但不知道为什么，我就是没装上。所以，就打算试试手动备份。
+[bug]: https://bugzilla.mozilla.org/show_bug.cgi?id=851867
+[febe]: http://www.williamlong.info/archives/2217.html
+[fox]: http://www.foxtrick.org</p>
+<h2 id="linux-xia-de-pei-zhi-wen-jian">Linux 下的配置文件</h2>
+<p>自己摸索了一下，Linux 把 FF 的配置文件保存在了 <code>~/.mozilla/firefox</code> 里。 <code>profiles.ini</code> 则决定了加载哪个用户的配置文件。默认情况下，会有一个名字很奇怪的文件夹（我的是 <code>hptzpdkk.default</code>），作为默认文件夹。</p>
+<h2 id="jian-li-xin-de-pei-zhi-wen-jian">建立新的配置文件</h2>
+<p>关掉 Firefox，输入 <code>firefox -p</code>（本人测试不区分大小写），然后会出现一个很和谐的窗口。
+<img src="/images/firefox/sync.png" alt="screen" /></p>
+<p>新建一个用户，然后指定新的文件夹即可。</p>
+<h2 id="she-zhi-ruan-lian-jie">设置软链接</h2>
+<p>关于 Linux 下软链接的知识，可以阅读 <a rel="noopener" target="_blank" href="http://www.ibm.com/developerworks/cn/linux/l-lpic1-v3-104-6/">创建和更改硬链接和符号链接</a>，但如果没有耐心，也没必要读完这篇文章。</p>
+<p>我平时使用 <a rel="noopener" target="_blank" href="https://jianguoyun.com/">坚果云</a> 来同步我的文件。在创建了新的用户配置以后，首先备份 <code>profiles.ini</code>，我使用的代码是 <code>ln -s ~/nutstore/firefox/profiles.ini ~/.mozilla/firefox/profiles.ini</code></p>
+<p><code>ln -s</code> 后的两个路径，第一个是文件实际存放的位置（坚果云自动同步文件夹），第二个是链接的位置（相当于快捷方式）。用同样的方法，备份 <code>gm_scripts</code> 和 <code>extensions</code> 两个文件夹就可以了。</p>
+<p><strong>试了半天，没有找到扩展的配置文件的位置，只好重新设置一遍了。如果你有解决方案，请告诉我，谢谢</strong></p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/wine-bug/">&#8249; 给 Wine 报 bug 的错题本</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/ted-1/"> 我的TED精选集（一） &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

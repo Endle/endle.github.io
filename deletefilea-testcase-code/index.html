@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>DeleteFileA 的 testcase 的代码阅读笔记 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/deletefilea-testcase-code/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/deletefilea-testcase-code/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/deletefilea-testcase-code/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="DeleteFileA 的 testcase 的代码阅读笔记 | Blog of Endle" />
+  <meta name="twitter:title" content="DeleteFileA 的 testcase 的代码阅读笔记 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2013-12-18" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/deletefilea-testcase-code/">DeleteFileA 的 testcase 的代码阅读笔记</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> December 18, 2013 <span class="rpad"></span></span>
+
+    
+
+
+<p>为了处理 <a rel="noopener" target="_blank" href="http://bugs.winehq.org/show_bug.cgi?id=34324">Wine bug 34324</a>，我看了 <code>kernel32.dll</code> 里 <code>DeleteFileA()</code> 和其 testcase 的代码，发现埋藏了不少的坑。考虑到最近我会比较忙，就先做一些简单的记录，回头再进一步的处理。</p>
+<h2 id="keng-you-na-xie">坑有哪些</h2>
+<p>个人以为，这段代码历史 <strong>悠久</strong> 是问题的关键。</p>
+<ol>
+<li>Windows API 的变化<br />
+很多组 testcase 是 2002 年左右加上去的。当时 XP 刚刚面世。这么多个版本过来，很多 Win API 的行为都变了，尤其是非法情况下的返回值。</li>
+<li>Wine 的代码质量<br />
+翻了 git log，发现 Wine 的一些旧代码的质量真不敢恭维。欠缺了很多的注释，git commit 时写的 comment 也不准确，这给后来的工作带来了一些障碍。</li>
+<li>Windows API 的诡异行为<br />
+可能是我对 Windows 的了解太少，我做测试的时候，发现 <code>DeleteFile("nul")</code> 和 <code>DeleteFile("a.exe")</code> 遇到文件不存在的问题后，<code>GetLastError()</code> 的返回值是不一样的。看来，我最初的推测并不准确。</li>
+</ol>
+<h2 id="ru-he-qu-zuo">如何去做</h2>
+<p>我的设想是这样的：</p>
+<ol>
+<li>DeleteFileA 的 testcase</li>
+<li>DeleteFileA (要把很多组 todo_wine 解决掉)</li>
+<li>hack SHFileOperation (in shell32.dll)</li>
+</ol>
+<h2 id="yue-du-bi-ji">阅读笔记</h2>
+<p>好了，现在到正题了。我看到的是这段代码
+{% highlight c %}
+ret = DeleteFileA(NULL);
+ok(!ret &amp;&amp; (GetLastError() == ERROR_INVALID_PARAMETER ||
+GetLastError() == ERROR_PATH_NOT_FOUND),
+"DeleteFileA(NULL) returned ret=%d error=%d\n",ret,GetLastError());</p>
+<pre class="z-code"><code><span class="z-text z-plain">ret = DeleteFileA(&quot;&quot;);
+</span><span class="z-text z-plain">ok(!ret &amp;&amp; (GetLastError() == ERROR_PATH_NOT_FOUND ||
+</span><span class="z-text z-plain">            GetLastError() == ERROR_BAD_PATHNAME),
+</span><span class="z-text z-plain">   &quot;DeleteFileA(\&quot;\&quot;) returned ret=%d error=%d\n&quot;,ret,GetLastError());
+</span></code></pre>
+<p>{% endhighlight %}
+这来自于  e948ad1fc7e18a2，由 Francois Gouget 在 2002 年 12 月提交。</p>
+<p>还有这段<br />
+{% highlight c %}
+ret = DeleteFileA("nul");
+ok(!ret &amp;&amp; (GetLastError() == ERROR_FILE_NOT_FOUND ||
+GetLastError() == ERROR_INVALID_PARAMETER ||
+GetLastError() == ERROR_ACCESS_DENIED ||
+GetLastError() == ERROR_INVALID_FUNCTION),
+"DeleteFileA("nul") returned ret=%d error=%d\n",ret,GetLastError());
+{% endhighlight %}</p>
+<p><code>ERROR_INVALID_PARAMETER</code> 来自 c49b9485，由 Jakob Eriksson 在 2004 年 4 月提交。 至于 <code>ERROR_INVALID_FUNCTION</code> 来自 6cb97534 Jacek Caban， 在 2005 年 6 月提交。</p>
+<p>PS <code>git blame file.c &gt; /dev/shm/log</code> 真神器。</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/centos-new-linux-kernel/">&#8249; CentOS 使用 ELRepo 安装最新的 Linux Kernel</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/shfileoperation-delete-file/"> SHFileOperation 删除文件的小测试 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

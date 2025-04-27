@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>BOINC 源代码的阅读笔记 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/boinc-code/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/boinc-code/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/boinc-code/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="BOINC 源代码的阅读笔记 | Blog of Endle" />
+  <meta name="twitter:title" content="BOINC 源代码的阅读笔记 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2013-09-25" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/boinc-code/">BOINC 源代码的阅读笔记</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> September 25, 2013 <span class="rpad"></span></span>
+
+    
+
+
+<p>在论坛上跟人聊天，提到了修改 BOINC 客户端，以便于屯包的设想。在开学前没什么事，就挖下了这个坑。我修改后的版本，可以在 [这里][gcrepo] 看到。当然，现在还没有什么可用性。</p>
+<h2 id="huo-qu-dai-ma">获取代码</h2>
+<p>BOINC 的代码可以从官方网站 [下载][offi]，也可以从我在 GitCafe 上留的镜像 [下载][master]（注意是 master 分支）。可以参照 [官方手册][man] 编译安装。
+[gcrepo]: https://gitcafe.com/endle/BOINCc/tree/dev
+[offi]: http://boinc.berkeley.edu/trac/wiki/SourceCodeGit
+[master]: https://gitcafe.com/endle/BOINCc/tree/master
+[man]: http://boinc.berkeley.edu/wiki/Compiling_the_core_client</p>
+<h2 id="xi-tong-ji-zhi">系统机制</h2>
+<p>软件最基本的是两部分：<code>boinc</code> 和 <code>boinccmd</code>。<code>boinc</code> 使用 <code>recv()</code> 函数接收来自 <code>boinccmd</code> 的消息，并维护一个消息队列。而 <code>boinccmd</code> 负责跟用户沟通，将用户输入的指令转化成 xml 格式，然后用 <code>send()</code> 发送给 <code>boinc</code>。</p>
+<h2 id="ru-shou-dian">入手点</h2>
+<p>第一个思路，就是找 <code>main</code> 函数。在 <code>client/boinc_cmd.cpp</code> 里的 main 函数，会对用户输入的命令进行初步的检查。接着，<code>boinccmd</code> 会通过<code>retval = rpc.init(hostname, port)</code>尝试与 HOST 建立连接，并调用 <code>RPC_CLIENT</code> 类的方法。</p>
+<h2 id="rpc-client">RPC_CLIENT</h2>
+<p><a rel="noopener" target="_blank" href="http://boinc.berkeley.edu/trac/wiki/GuiRpc">官方wiki</a> 上给的解释是：The BOINC client provides a set of RPCs (<strong>remote procedure calls</strong>) for control and state interrogation. This enables the development of GUI (graphical user interface) programs. These RPCs <em>send XML request</em> and reply messages over a <strong>TCP</strong> connection. The XML formats are not documented, but can be inferred from the source code.</p>
+<p><code>RPC_CLIENT</code> 的定义在 <code>lib/gui_rpc_client.h</code> 里。可以看出，这是一个负责与 HOST 进行沟通的模块。以 <code>lib/gui_rpc_client_ops.cpp</code> 中的 <code>project_op</code> 函数为例（部分精简）：
+{% highlight c %}
+int RPC_CLIENT::project_op(PROJECT&amp; project, const char* op) {
+int retval;
+SET_LOCALE sl;
+char buf[512];
+const char *tag;
+RPC rpc(this);</p>
+<pre class="z-code"><code><span class="z-text z-plain">if (!strcmp(op, &quot;reset&quot;)) {
+</span><span class="z-text z-plain">    tag = &quot;project_reset&quot;;
+</span><span class="z-text z-plain">} else if (!strcmp(op, &quot;detach&quot;)) {
+</span><span class="z-text z-plain">    tag = &quot;project_detach&quot;;
+</span><span class="z-text z-plain">} else if (!strcmp(op, &quot;update&quot;)) {
+</span><span class="z-text z-plain">    tag = &quot;project_update&quot;;
+</span><span class="z-text z-plain">} else if (!strcmp(op, &quot;suspend&quot;)) {
+</span><span class="z-text z-plain">    tag = &quot;project_suspend&quot;;
+</span><span class="z-text z-plain">    project.suspended_via_gui = true;
+</span><span class="z-text z-plain">} else if (!strcmp(op, &quot;resume&quot;)) {
+</span><span class="z-text z-plain">    tag = &quot;project_resume&quot;;
+</span><span class="z-text z-plain">    project.suspended_via_gui = false;
+</span><span class="z-text z-plain">} else {
+</span><span class="z-text z-plain">    return -1;
+</span><span class="z-text z-plain">}
+</span><span class="z-text z-plain">sprintf(buf,
+</span><span class="z-text z-plain">    &quot;&lt;%s&gt;\n&quot;
+</span><span class="z-text z-plain">    &quot;  &lt;project_url&gt;%s&lt;/project_url&gt;\n&quot;
+</span><span class="z-text z-plain">    &quot;&lt;/%s&gt;\n&quot;,
+</span><span class="z-text z-plain">    tag,
+</span><span class="z-text z-plain">    project.master_url.c_str(),
+</span><span class="z-text z-plain">    tag
+</span><span class="z-text z-plain">);
+</span><span class="z-text z-plain">retval = rpc.do_rpc(buf);
+</span><span class="z-text z-plain">if (!retval) {
+</span><span class="z-text z-plain">    retval = rpc.parse_reply();
+</span><span class="z-text z-plain">}
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">return retval;
+</span></code></pre>
+<p>}
+{% endhighlight %}</p>
+<p>用户的指令会被包装成 xml 格式，然后使用 <code>send_request(const chap *p)</code> 函数发送给 <code>boinc</code></p>
+<h2 id="jie-shou-ming-ling">接收命令</h2>
+<p><code>client/gui_rpc_server_ops.cpp</code> 的 <code>GUI_RPC_CONN::handle_rpc()</code> 用 <code>recv</code> 或 <code>read</code> 来接收消息，并进行处理。它通过调用 <code>lib/parse/h</code> 的 <code>match_tag(const char *, const char *)</code> 来解析 xml，并调用对应的函数。
+在进行初步的匹配后，用户指令会以字符串的形式发送给 <code>handle_project_op</code>。对于多数的命令，程序会通过 gstate 的方式来处理。</p>
+<h2 id="xia-yi-bu-gong-zuo">下一步工作</h2>
+<p>折腾了一段时间，对 BOINC 的程序框架（尤其是用户交互部分）有了些许了解。接下来，就要啃啃 <code>client/client_state.h</code> 里的 <code>class CLIENT_STATE</code>，与 BOINC 的核心部分打交道了。</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/boinc-2/">&#8249; BOINC 的源代码阅读笔记 2</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/vim-auto-cscope/"> Vim 自动加载 cscope.out &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

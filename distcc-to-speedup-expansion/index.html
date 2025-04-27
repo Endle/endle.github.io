@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>用 distcc 加快编译 续篇-clang | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/distcc-to-speedup-expansion/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/distcc-to-speedup-expansion/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/distcc-to-speedup-expansion/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="用 distcc 加快编译 续篇-clang | Blog of Endle" />
+  <meta name="twitter:title" content="用 distcc 加快编译 续篇-clang | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2018-09-15" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/distcc-to-speedup-expansion/">用 distcc 加快编译 续篇-clang</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> September 15, 2018 <span class="rpad"></span></span>
+
+    
+
+
+<p><a rel="noopener" target="_blank" href="https://endle.github.io/2018/09/10/distcc-to-speedup/">上一篇文章</a> 简单介绍了使用 <code>distcc</code> 编译 wine 代码。有人在朋友圈里问我，能不能用 <code>clang</code> 编译。我当时的回答是，为什么不能呢？这周在摸鱼的时候，我完成了测试。</p>
+<h4 id="li-lun-fen-xi">理论分析</h4>
+<p>我看了一下 <a rel="noopener" target="_blank" href="https://github.com/distcc/distcc/blob/24f73c5cd8f839bd520eb52e91d0d26e07689373/src/distcc.c#L249"><code>distcc</code> 的代码</a>，发现其机制还是比较简单的。<code>distcc</code> 后的一个参数会被当成编译器名称。理论上，不管是 gcc 还是 clang，都应该可以用类似的机制在多台电脑间分发。</p>
+<h4 id="shi-zhan-yan-lian">实战演练</h4>
+<p>因为这里仅仅是为了测试，而不是实际运行，我就不用麻烦地在 32-bit 和 64-bit下编译 wine 两次了。workflow如下</p>
+<p>{% highlight bash %}
+function mkwine_clang()
+{
+export CC="clang-6.0"
+export CXX="clang-6.0"
+export CFLAGS="-O0"
+export JOBS=8
+mkdir -p ~/src/wine_n_extras/wine-clang
+cd ~/src/wine_n_extras/wine-clang
+../wine/configure --enable-win64
+make -j$JOBS
+}
+{% endhighlight %}</p>
+<p><a rel="noopener" target="_blank" href="https://wiki.winehq.org/Clang">wine 项目组对 clang 投入的精力</a> 是有回报的。我没有做任何额外的设置，就在本机成功编译了 wine</p>
+<p><a rel="noopener" target="_blank" href="http://apt.llvm.org/">在 Ubuntu 上安装 clang</a> 非常简单。很有趣的是，在我的 Ubuntu 14 工作站上，<code>clang</code> 默认是指向 <code>clang-3.3</code> 到 <code>clang-3.5</code> 的软链接。不过，在工作站和笔记本上，<code>/usr/bin/clang-6.0</code> 都是可用的。因此，我们可以对编译的 workflow 稍加修改</p>
+<p>{% highlight bash %}
+function mkwine_clang()
+{
+export CC="distcc clang-6.0"
+export CXX="distcc clang-6.0"
+export CFLAGS="-O0"
+export JOBS=8
+export DISTCC_HOSTS="@beddp,lzo"
+mkdir -p ~/src/wine_n_extras/wine-clang
+cd ~/src/wine_n_extras/wine-clang
+../wine/configure --enable-win64
+make -j$JOBS
+}
+{% endhighlight %}</p>
+<p>在我的电脑上，这一流程非常的顺利。理论分析和实践演练同时成功的情景真是太少了。</p>
+<p><em>In theory, theory and practice are the same. In practice, they are not.  -Anonymous</em></p>
+<h4 id="bu-jin-jin-shi-c">不仅仅是C</h4>
+<p>上文提到，<code>distcc</code> 判断编译器的方法很简单。那么，能不能用它来分发其他语言呢？很抱歉，这可能不行。<a rel="noopener" target="_blank" href="https://github.com/distcc/distcc/blob/5de24577858687106c27dce1c1ae53edac2f6a6f/src/arg.c#L130"><code>dcc_scan_args</code> 函数会尝试解析编译选项</a>。如果要使用其他的编译器，个人猜测，必要条件包括使用与 <code>gcc</code>，<code>clang</code> 相同的编译选项。[Rust 社区在 2017 年年末进行了讨论](https://users.rust-lang.org/t/contract-opportunity-mozilla-distributed-compilation-cache-written-in-rust/13898）,但好像并没有得出太好的解决方案。<br />
+不过，这也称不上太大的损失。人生苦短，在 C/C++/Rust 以外，我们也不再需要一门编译超慢的语言了，不是吗？</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/clang-binary-search/">&#8249; 跟着 clang 的 libcxx 学习二分查找</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/distcc-to-speedup/"> 用 distcc 加快编译 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

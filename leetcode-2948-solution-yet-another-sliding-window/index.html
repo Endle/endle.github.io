@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>LeetCode 2948 题解 (又是 Sliding Window) | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/leetcode-2948-solution-yet-another-sliding-window/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/leetcode-2948-solution-yet-another-sliding-window/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/leetcode-2948-solution-yet-another-sliding-window/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="LeetCode 2948 题解 (又是 Sliding Window) | Blog of Endle" />
+  <meta name="twitter:title" content="LeetCode 2948 题解 (又是 Sliding Window) | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2024-03-12" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/leetcode-2948-solution-yet-another-sliding-window/">LeetCode 2948 题解 (又是 Sliding Window)</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> March 12, 2024 <span class="rpad"></span></span>
+
+    
+
+
+<p>题目链接 <a rel="noopener" target="_blank" href="https://leetcode.com/problems/apply-operations-to-maximize-frequency-score/description/">https://leetcode.com/problems/apply-operations-to-maximize-frequency-score/description/</a></p>
+<h3 id="ti-mu-miao-shu">题目描述</h3>
+<p>在一个一维坐标轴上有 N 个村庄 (0-indexed)，坐标 <code>A[i]</code> 为正整数。  给定最大交通成本 <code>k</code>.<br />
+我们准备设立一个邮局。选择一个区间 <code>[L,R]</code> 和邮局坐标 <code>x</code>, 定义交通成本 $c=\sum_{i=L}^{R}|x-A_i|$ 。 在满足 $c&lt;=k$ 的前提下，找到最大的区间。</p>
+<h3 id="ti-mu-fen-xi">题目分析</h3>
+<p>我们先考虑一个子问题：对于给定的区间 <code>[L,R]</code>，我们如何求出最低的交通成本。对此，我们先引入三个引理：</p>
+<ol>
+<li>$A_L &lt;= x_{opt} &lt;= A_R$  (Too Trivial)</li>
+<li>最优的邮局坐标一定和某个村庄(M-th)重合，即 $x_{opt}=A_M$.</li>
+<li>如果区间长度为奇数，则 $M_{opt}$ 就是最中心的一个村庄。如果为偶数，那最中间的两个村庄都是最优的选择.</li>
+</ol>
+<p>在此基础上，我们可以通过如下变换，利用前缀和，在常数时间内求出特定区间的交通成本 $c$</p>
+<p>$$
+\begin{aligned}
+c &amp;= c_L + c_R \
+c_L &amp;= \sum_{i=L}^{M} A_M - A_i \
+&amp;= (M-L+1)A_M - \sum_{i=L}^{M}A_i \
+&amp;= (M-L+1)A_M - ( \sum_{i=0}^{M}A_i  - \sum_{i=0}^{L-1} A_i)\
+c_R &amp;= \sum_{i=M}^{R} A_i - A_M \
+&amp;= \sum_{i=0}^{R} A_i - \sum_{i=0}^{M-1}A_i - (R-M+1)A_M
+\end{aligned}
+$$</p>
+<h3 id="suan-fa-shi-xian">算法实现</h3>
+<p>有了如上的分析，实现 Sliding Window 算法就非常容易了。将所有坐标排序后，先求出前缀和 $P_V = \sum_{i=0}^{V} A_i$</p>
+<p>我们将初始的 Window 设置为 $L=R=0$. 显然，此时 $c=0$,是一种合法的情况。按照通常的 Sliding Window 的做法，我们不断移动右边界 $R$，在 $c&gt;k$ 时移动左边界 $L$. 我们的贪心算法会找出最优解。</p>
+<h3 id="yin-li-zheng-ming">引理证明</h3>
+<h4 id="lemma-2">Lemma 2</h4>
+<p>使用反证法，假设 $A_M &lt; x^* &lt; A_{M+1} $, 此时交通成本<br />
+$$
+\begin{aligned}
+c &amp;= c_L + c_R \
+&amp;= \sum_{i=L}^{M}( x^* - A_i )+ \sum_{i=M+1}^{R} (A_i - x^*)\
+\end{aligned}
+$$</p>
+<p>我们将邮局向左移动至 $A_M = x' &lt; x^* &lt; A_{M+1} $,  $x^*-x'=d&gt;0$</p>
+<p>左侧的 <code>(M-L+1)</code> 个村庄的成本会下降  <code>(M-L+1)d</code>,  而右侧的 <code>(R-M)</code> 个村庄的成本会上升 <code>(R-M)d</code>.</p>
+<p>这样，我们分三种情况讨论：　　</p>
+<ol>
+<li>如果 $x^*$ 左侧的村庄更多，即 $M-L+1 &gt; R-M$,　则 $x'＝A_M$　优于 $x^*$</li>
+<li>如果两侧的村庄一样多，移动至 $x'＝A_M$ 不会得到更差的结果　　</li>
+<li>如果右侧的村庄更多，易证 $x''＝A_{M+1}$　优于 $x^*$</li>
+</ol>
+<p>Lemma 2 得证。　　</p>
+<h4 id="lemma-3">Lemma 3</h4>
+<p>可以沿用类似　Lemma 2　的计算方法。区间长为奇数时，根据引理，<code>M = (R-L) / 2 + L</code>。 如果我们要向左移动到 $A_{M-1}$, $A_M - A_{M-1}=d&gt;0$。 左侧的村庄 <code>[L, M-1]</code> 的成本会下降，右侧 <code>[M+1, R]</code> 的成本会上升。这两部分抵消后，村庄 M 的交通成本会增加 <code>d</code>，得到一个更差的结果。</p>
+<p>如果区间长为偶数，用同样的方法可以得到，在最中间的两个村庄之间移动邮局的 $\Delta=0$.</p>
+<h3 id="hou-ji">后记</h3>
+<p>这道题几个月前被丢到了我的 list上。我最开始没有意识到 Lemma 3, 而是试图维护一个三元数组 <code>(L, M, R)</code>，在Sliding的过程中动态调整邮局的位置。顺着这个思路想下去，就是越想越偏离正解。  看了答案以后，意识到最优的邮局地点是固定的，也学到了借助前缀和来求特定区间的交通成本，从而避免了手动维护当前Window的成本。</p>
+<p>在写题解的过程中，发现 Lemmy 2&amp;3 的证明过程其实可以合并。我之前做这类题目时，对证明过程理解不到位。写这篇题解让我的认识深入了很多，也发现完全可以用很简明的方式证明。</p>
+<p>LeetCode 原题里没有提到坐标，我借用 <a rel="noopener" target="_blank" href="https://www.luogu.com.cn/problem/solution/P4767">IOI2000 邮局</a> 的题目背景，感觉直观了不少。</p>
+<p>{% include mathjax.html %}</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/compile-nets-test-suite/">&#8249; Compile .NET&#x27;s Test Suite and Run .NET Tests under Wine</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/srm-848-alternateparity-solution/"> TopCoder SRM 848 AlternateParity 题解 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

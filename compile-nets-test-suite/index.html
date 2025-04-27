@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Compile .NET's Test Suite and Run .NET Tests under Wine | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/compile-nets-test-suite/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/compile-nets-test-suite/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/compile-nets-test-suite/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="Compile .NET&#x27;s Test Suite and Run .NET Tests under Wine | Blog of Endle" />
+  <meta name="twitter:title" content="Compile .NET&#x27;s Test Suite and Run .NET Tests under Wine | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2024-05-03" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/compile-nets-test-suite/">Compile .NET&#x27;s Test Suite and Run .NET Tests under Wine</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> May 03, 2024 <span class="rpad"></span></span>
+
+    
+
+
+<p>In 2024 March, I had been trying to build .NET test suite and running
+them under Wine.
+Although I didn't gather valuable Wine results yet, I'd write this
+article to record the pitfalls I've met when compiling .NET, and I hope
+it may help readers (including me) in future.</p>
+<h3 id="preparation">Preparation</h3>
+<h4 id="install-visual-studio-2019">Install Visual Studio 2019</h4>
+<p>According to the <a rel="noopener" target="_blank" href="https://github.com/dotnet/runtime/blob/v5.0.18/docs/workflow/requirements/windows-requirements.md">requirements page</a>, Visual Studio 2019 is required
+for <a rel="noopener" target="_blank" href="https://github.com/dotnet/runtime/tree/v5.0.18">v5.0.18</a>. I created a brand new Windows 11 instance, and
+installed Visual Studio Community 2019 at
+<a rel="noopener" target="_blank" href="https://visualstudio.microsoft.com/vs/older-downloads/">https://visualstudio.microsoft.com/vs/older-downloads/</a>. With the
+Visual Studio Installer, I can install the required SDKs listed in the
+<a rel="noopener" target="_blank" href="https://github.com/dotnet/runtime/blob/v5.0.18/docs/workflow/requirements/windows-requirements.md">requirements page</a>.</p>
+<p>Initially I installed VS 2022, and installed Win10 SDK. However, the
+required dependencies couldn't be located by the toolchain.</p>
+<h4 id="install-dependencies">Install Dependencies</h4>
+<p>The <a rel="noopener" target="_blank" href="https://learn.microsoft.com/en-us/windows/package-manager/winget/">Windows App
+Installer</a> is included on Windows 11 and later version of Windows 10. If not, it's easy to install it via <a rel="noopener" target="_blank" href="https://apps.microsoft.com/detail/9nblggh4nns1?hl=en-us&amp;gl=CA">Windows App
+Store</a>.</p>
+<p>Install dependencies with <code>winget</code> is similar to package managers:</p>
+<pre class="z-code"><code><span class="z-text z-plain">winget install -e --id Python.Python.3.9
+</span><span class="z-text z-plain">winget install -e --id Git.Git
+</span></code></pre>
+<p>Note: Don't install LLVM with winget here. As we're building
+<a rel="noopener" target="_blank" href="https://github.com/dotnet/runtime/tree/v5.0.18">v5.0.18</a>, the manually installed LLVM might be too new.</p>
+<h3 id="build">Build</h3>
+<p>Following the <a rel="noopener" target="_blank" href="https://github.com/dotnet/runtime/blob/v5.0.18/docs/workflow/README.md">workflow
+guide</a>, we can start building now.</p>
+<h4 id="building-coreclr-common-language-runtime">Building CoreCLR (Common Language Runtime)</h4>
+<p>Execute <code>build.cmd -subset clr</code> in cmd. <a rel="noopener" target="_blank" href="https://github.com/dotnet/runtime/blob/v5.0.18/docs/workflow/building/coreclr/README.md">Ref</a></p>
+<p>Note: <code>build.cmd</code> is just a wrapper to a PowerShell script
+<code>eng/build.ps1</code>. Seems that Microsoft had been migrating cmd into ps1.</p>
+<h4 id="building-libraries">Building Libraries</h4>
+<p>The <a rel="noopener" target="_blank" href="https://github.com/dotnet/runtime/blob/v5.0.18/docs/workflow/building/coreclr/README.md">official
+guide</a> is messy to me. I executed <code>build.cmd clr+libs -c Release</code> here.</p>
+<h4 id="building-tests-for-coreclr">Building Tests for CoreCLR</h4>
+<p>Following the <a rel="noopener" target="_blank" href="https://github.com/dotnet/runtime/blob/v5.0.18/docs/workflow/testing/coreclr/testing.md">official guide</a>, we can build all tests by  <code>src\coreclr\build-test.cmd</code></p>
+<p>This is a time consuming step.</p>
+<h4 id="running-all-tests-under-windows">Running All Tests under Windows</h4>
+<p>.NET shipped <code>src\coreclr\tests\runtest.cmd</code> to invoke the test cases. However, <a rel="noopener" target="_blank" href="https://gitlab.winehq.org/wine/wine/-/tree/master/programs/cmd?ref_type=heads">Wine's CMD implementation</a> lacks basic features to execute this complex cmd script, so I've been finding a method to workaround it.</p>
+<p>In Windows CMD, I can invoke all tests by</p>
+<pre class="z-code"><code><span class="z-text z-plain">&quot;C:\Users\li\Documents\runtime\.dotnet\dotnet.exe&quot; msbuild C:\Users\li\Documents\runtime\src\coreclr\tests\src\runtest.proj /p:Runtests=true /clp:showcommandline 
+</span></code></pre>
+<h4 id="running-tests-under-wine">Running Tests under Wine</h4>
+<p>I copied the whole directory from my Windows 11 Guest into my Fedora host, stored at <code>/home/lizhenbo/winp/runtime</code>. Wine mapped it to <code>Z:\home\lizhenbo\winp\runtime</code>.</p>
+<p>First, I need to set <code>CORE_ROOT</code>. Wine will pass the shell environment (<a rel="noopener" target="_blank" href="https://askubuntu.com/a/672625/134171">Ref</a>), so I need</p>
+<pre class="z-code"><code><span class="z-text z-plain">export CORE_ROOT=Z:\\home\\lizhenbo\\winp\\runtime\\artifacts\\tests\\coreclr\\Windows_NT.x64.Debug\\Tests\\Core_Root
+</span></code></pre>
+<p>Then I can run the test suite</p>
+<pre class="z-code"><code><span class="z-text z-plain">wine &quot;Z:\\home\\lizhenbo\\winp\\runtime\\.dotnet\\dotnet.exe&quot; msbuild Z:\\home\\lizhenbo\\winp\\runtime\\src\\coreclr\\tests\\src\\runtest.proj /p:Runtests=true /clp:showcommandline 
+</span></code></pre>
+<p>However, the test crased just a few seconds later. I have no ideas yet</p>
+<pre class="z-code"><code><span class="z-text z-plain">Unhandled exception: page fault on read access to 0x0000000000000000 in 64-bit code (0x006fffffe62475).
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Backtrace:
+</span><span class="z-text z-plain">=&gt;0 0x006fffffe62475 wcslen+0x1f(str=0x00000000000000000) [/home/lizhenbo/src/wine64/../wine/dlls/ntdll/wcstring.c:218] in ntdll (0x007ffffe27e570)
+</span><span class="z-text z-plain">  1 0x006fffffdedd1b strdupW+0x18(str=0x00000000000000000) [/home/lizhenbo/src/wine64/../wine/dlls/ntdll/actctx.c:660] in ntdll (0x007ffffe27e5b0)
+</span><span class="z-text z-plain">  2 0x006fffffdfd4aa RtlCreateActivationContext+0x237(handle=00007FFFFE27E708, ptr=00007FFFFE27E758) [/home/lizhenbo/src/wine64/../wine/dlls/ntdll/actctx.c:5292] in ntdll (0x007ffffe27e640)
+</span><span class="z-text z-plain">  3 0x006fffff8bee72 CreateActCtxW+0x84(ctx=00007FFFFE27E758) [/home/lizhenbo/src/wine64/../wine/dlls/kernelbase/loader.c:1157] in kernelbase (0x007ffffe27e720)
+</span><span class="z-text z-plain">  4 0x0000014002f362 in corerun (+0x2f362) (0x007ffffe27ffa0)
+</span><span class="z-text z-plain">...
+</span><span class="z-text z-plain">  12 0x006fffffcc1cc6 BaseThreadInitThunk+0x20(unknown=0, entry=000000014000B160, arg=000000007FFD0000) [/home/lizhenbo/src/wine64/../wine/dlls/kernel32/thread.c:61] in kernel32 (0x007ffffe27ffa0)
+</span><span class="z-text z-plain">  13 0x006fffffe4c0a7 in ntdll (+0x6c0a7) (0000000000000000)
+</span><span class="z-text z-plain">0x006fffffe62475 wcslen+0x1f [/home/lizhenbo/src/wine64/../wine/dlls/ntdll/wcstring.c:218] in ntdll: movzxw (%rax), %eax
+</span><span class="z-text z-plain">218	    while (*s) s++;
+</span></code></pre>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/macos-sequoia-1531-share-vpn-to-windows-laptop/">&#8249; macOS Sequoia 15.3.1 Share VPN to Windows Laptop</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/leetcode-2948-solution-yet-another-sliding-window/"> LeetCode 2948 题解 (又是 Sliding Window) &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

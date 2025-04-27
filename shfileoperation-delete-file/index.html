@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://blog.zhenbo.pro/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://blog.zhenbo.pro/abridge.css?h=d6d42eaae519f2454d3a" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="base" content="https://blog.zhenbo.pro" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="manifest" href="https://blog.zhenbo.pro/manifest.min.json" />
+  <link rel="mask-icon" href="https://blog.zhenbo.pro/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://blog.zhenbo.pro/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://blog.zhenbo.pro/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://blog.zhenbo.pro/favicon-16x16.png" />
+  <link rel="alternate" type="application/atom+xml" title="Blog of Endle Atom Feed" href="https://blog.zhenbo.pro/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>SHFileOperation 删除文件的小测试 | Blog of Endle</title>
+  <meta name="author" content="Zhenbo Li" />
+  <meta name="copyright" content="Blog of Endle" />
+  <meta name="description" content="Endle&#x27;s Blog. Since 2014." />
+  <link rel="canonical" href="https://blog.zhenbo.pro/shfileoperation-delete-file/" />
+  <meta property="og:url" content="https://blog.zhenbo.pro/shfileoperation-delete-file/" />
+  <meta name="twitter:url" content="https://blog.zhenbo.pro/shfileoperation-delete-file/" />
+  <meta property="og:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta name="twitter:description" content="Endle&#x27;s Blog. Since 2014." />
+  <meta property="og:title" content="SHFileOperation 删除文件的小测试 | Blog of Endle" />
+  <meta name="twitter:title" content="SHFileOperation 删除文件的小测试 | Blog of Endle" />
+  <meta name="twitter:card" content="summary" />
+  <meta property="og:site_name" content="Blog of Endle" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:updated_time" content="2013-12-14" />
+  <script defer src="https://blog.zhenbo.pro/js/abridge.min.js?h=e0f9a881a665c86cce9c" integrity="sha384-QF67y7RnPkuDrJNQqn3/7nYxqxWkW/qHI7zN0WTES1aXbf+TotoByRBb835fUE6U"></script>
+  <noscript><link rel="stylesheet" href="https://blog.zhenbo.pro/nojs.css" /></noscript><script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js">
+</script>
+
+  
+</head>
+<body>
+  <header>
+    <nav>
+      <div><big><a href="https://blog.zhenbo.pro" title="Blog of Endle">Blog of Endle</a></big></div>
+      <div>
+
+        <div>
+          <ul><li><a class="s110" href="https://blog.zhenbo.pro/archive/"> Posts </a></li><li><i type="reset" id="mode" class="js svgs adjust"></i></ul>
+        </div>
+
+        <div>
+          <div>
+            <form autocomplete=off class="js" name="goSearch" id="searchbox">
+              <div class="searchd">
+                <input id="searchinput" type="text" placeholder="Search" title="Search" />
+                <button type="submit" title="Search" class="svgs svgm search"></button>
+              </div>
+              <div class="results"><div id="suggestions"></div></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://blog.zhenbo.pro/shfileoperation-delete-file/">SHFileOperation 删除文件的小测试</a></h1>
+
+      <span class="s95"> Zhenbo Li <span class="rpad"></span> December 14, 2013 <span class="rpad"></span></span>
+
+    
+
+
+<p>这段时间处理 <a rel="noopener" target="_blank" href="http://bugs.winehq.org/show_bug.cgi?id=34324">Wine bug 34324: QQ2013 SP1 can't install</a>， 发现问题没有想象的简单。把之前取得的成果先记录下来，希望能给同样遇到这个问题的人一点提示，也算给自己留下一点笔记。</p>
+<p><strong>注意： 以下的所有结果是通过包括 <a rel="noopener" target="_blank" href="http://wiki.winehq.org/WineTestBot">Wine Testbot</a> 等黑箱测试得到的，没有任何反汇编的内容。如果你对 Wine 开发感兴趣，也请不要参考类似的资料</strong></p>
+<h2 id="bug-jian-jie">bug 简介</h2>
+<p>QQ2013 SP1 安装时，会调用 <code>SHFileOperation</code> 删除 <code>C:\\Program Files\\qqtest</code>。但如果该目录不存在，这次函数调用就会失败。<br />
+在 WinXP 下，返回值时 <code>0x402</code>。而在 Vista 及以后版本中，返回值就是 <code>ERROR_FILE_NOT_FOUND</code> (<code>0x2</code>)。<br />
+但是，在当前的版本(wine-1.7.8)中，返回值为 <code>ERROR_PATH_NOT_FOUND</code>(<code>0X3</code>)。所以，在 QQ2013 Installer 看来，这不符合预期，就拒绝继续安装。</p>
+<h2 id="ce-shi-jin-cheng">测试进程</h2>
+<p>为了完成这个 hack，我研究了一下 Wine 原有的 testcase (<code>dlls/shell32/tests/shlfileop.c</code>, <code>commit a1762ba8a46eca5c7ef1e</code>)<br />
+在 <code>test_delete()</code> 函数里，主要的情况是：</p>
+<ol>
+<li>delete a nonexistent file<br />
+事实上，如果找不到文件，系统是无法区分 file 和 dictionary 的。在 XP 下，返回值是 <code>0x402</code>，而 Vista 及以后，返回值都是 <code>ERROR_FILE_NOT_FOUND</code></li>
+<li>delete a nonexistent file in an existent dir or a nonexistent dir<br />
+对于前者(existend dir)，结果与 delete nonexistent file 是一样的。<br />
+对于后者，XP 的返回值依旧是<code>0x402</code>，而 Vista 及以后的版本中，返回值是 <code>DE_INVALIDFILES</code>(<code>0x7c</code>)。</li>
+<li>delete a dir, and then a file inside the dir<br />
+这是一个比较旧的 tetscase，当时 Vista 是最新的 Windows 版本。有人留下了说明， <em>Vista would throw up a dialog box that we can't suppress</em>。但他的 hack 方式 <code>ret != ERROR_FILE_NOT_FOUND</code> 会忽略掉 Win 7/8。我提交了一个 <a rel="noopener" target="_blank" href="http://source.winehq.org/patches/data/100895">patch</a>，在经过 Wine-devel 中的 <a rel="noopener" target="_blank" href="http://www.winehq.org/pipermail/wine-devel/2013-December/102211.html">讨论</a> 后，这个 patch 还是被拒绝了。Qian Hong 的解释是：<br />
+<em>根据Windows版本来区分api的特性是不靠谱的，因为Microsoft会不断地发布service pack，每次发布都会修复一些bug，表面上看，某个特性可能在Windows XP和Windows 7上是不同的，可是经过更新打上某个service pack之后，Windows XP的特性和Windows 7可能就相同了。因此，要根据feature来决定要不要skip某个test。</em></li>
+</ol>
+<p>附上我的补丁核心部分：<br />
+{% highlight c %}</p>
+<ul>
+<li><pre class="z-code"><code><span class="z-text z-plain">   ok(ret == ERROR_PATH_NOT_FOUND  ||  /* XP */
+</span></code></pre>
+</li>
+<li><pre class="z-code"><code><span class="z-text z-plain">      broken(ret == ERROR_SUCCESS) ||  /* NT4 */
+</span></code></pre>
+</li>
+<li><pre class="z-code"><code><span class="z-text z-plain">      ret == DE_INVALIDFILES,          /* Win 7 or 8 */
+</span></code></pre>
+</li>
+<li><pre class="z-code"><code><span class="z-text z-plain">      &quot;Expected ERROR_PATH_NOT_FOUND or DE_INVALIDFILES, got 0x%x\n&quot;, ret);
+</span></code></pre>
+</li>
+</ul>
+<p>{% endhighlight %}</p>
+<p>我还做了一个测试（补丁找不到了）：删除同一个文件两次，运行结果和情况 3 是一样的。</p>
+<h2 id="jie-xia-lai-de-ren-wu">接下来的任务</h2>
+<p>在 Wine 的实现里，<code>SHFileOperation</code> 会调用 <code>BOOL DeleteFileW</code>。而 <code>DeleteFileW</code> 是靠 <code>SetLastError()</code> 设置错误代码的。(<a rel="noopener" target="_blank" href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa363915%28v=vs.85%29.aspx">MSDN: DeleteFile function</a>) 我看了一下 kernel32 的相关测试，覆盖的并不是很好。我的 <a rel="noopener" target="_blank" href="http://source.winehq.org/patches/data/101039">patch 101039</a> 被 reject 掉了，<a rel="noopener" target="_blank" href="http://www.winehq.org/pipermail/wine-devel/2013-December/102265.html">相关讨论</a> 里提到，kernel32 的很多 testcase 比较旧。接下来，我打算花时间完善一下这些 testcase。</p>
+
+      <nav>
+        <div>
+          <a href="https://blog.zhenbo.pro/deletefilea-testcase-code/">&#8249; DeleteFileA 的 testcase 的代码阅读笔记</a>
+        </div>
+        <div>
+          <a href="https://blog.zhenbo.pro/wine-add-testcase/"> 为 wine 添加 testcase &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <div class="c">
+      <nav class="tpad"><div><a type="application/atom+xml" href="https://blog.zhenbo.pro/atom.xml" target="_blank" title="Blog of Endle Atom Feed"><i type="Button" class="svg rss" title="Blog of Endle Atom Feed"></i></a><a href="https://fediscience.org/@zhenboli" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://matrix.to&#x2F;#&#x2F;@zhenbo:matrix.org/" target="_blank" title="Element"><i type="Button" class="svg element" title="Element"></i></a><a href="https://github.com/Endle/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <nav class="vpad">
+        <a class="rpad s90" href="https://blog.zhenbo.pro/about/"> About </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/links/"> Links </a>
+        <a class="rpad s90" href="https://blog.zhenbo.pro/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+          
+      <p class="s80"> <span id="year">2025</span> Blog of Endle • Website content is licensed <a rel="noopener" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p class="s80">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> & <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>
