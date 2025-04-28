@@ -27,7 +27,7 @@ Click `New Calendar` at bottom-left, `On The Network`. `Username` is `username@n
 After typing the password, you can select calendars you need. For now (2025-04-27), northmail.ca doesn't support [2FA](https://en.wikipedia.org/wiki/Multi-factor_authentication) or [app password](https://support.google.com/accounts/answer/185833?hl=en), which is not the best practice.
 
 
-#### Add to iOS 15 Calendar 
+#### Add to iOS 18 Calendar 
 
 In `Settings`, scroll to bottom and click `Apps`. Click `Calendar` -> `Add Account` -> `Add CalDAV Account`.
 
