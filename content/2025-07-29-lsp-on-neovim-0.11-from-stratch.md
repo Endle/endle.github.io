@@ -6,45 +6,58 @@ category:
 tags: []
 ---
 
-#### Preface 
-Self-host a [CalDAV](https://en.wikipedia.org/wiki/CalDAV) server is definitely doable, and I recommend having a try. I'm not a tech-savvy, and I'd promote a Canadian business, so I'm using northmail.ca in this article. It's easy to replace northmail.ca with self-hosted server or another service provider. I'm not affiliated with northmail.ca
+There are countless examples
 
-#### CalDAV by northmail.ca 
+#### Step 0: Clean my old Neovim config
 
-Click Calendar button at header, then `Calendar Settings` at bottom-left.  
+- `~/.config/nvim`
+- `~/.local/share/nvim`
+- `~/.local/state/nvim`
 
-Click `Copy primary CalDAV address`, we will get `https://cloud.northmail.ca/remote.php/dav` 
+I created a new git branch for my brand new neovim config.
 
-Click `Copy iOS/macOS CalDAV address`, we will get `https://cloud.northmail.ca/remote.php/dav/principals/users/{user_email}/`.
+```
+$ nvim --version
+NVIM v0.11.2
+```
 
+#### Step 1: Install Package Manager (lazy.nvim)
 
-#### Add to Thunderbird Calendar 
-[Thunderbird](https://www.thunderbird.net/en-CA/) is an open-source, cross-platform email client. First, click the upper-left button or press Ctrl-3. 
+As of 2025 Aug, the built-in plugin manager `vim.pack` is [still in early stage](https://web.archive.org/web/20250725133537/https://neovim.io/doc/user/pack.html#vim.pack). I'm going with [lazy.nvim](https://lazy.folke.io/) by [folke](https://github.com/folke).
 
+Following the [official guide](https://lazy.folke.io/installation), I create `~/.config/nvim/lua/config/lazy.lua` and add `require("config.lazy")` to the brand new `~/.config/nvim/init.lua`
 
-Click `New Calendar` at bottom-left, `On The Network`. `Username` is `username@northmail.ca`, and Location is CalDAV address.
+`lazy.nvim` fails to load when we have no plugins. So I add [johnfrankmorgan/whitespace](https://github.com/johnfrankmorgan/whitespace.nvim) to my nvim. Create `~/.config/nvim/lua/plugins/whitespace.lua` 
 
-After typing the password, you can select calendars you need. For now (2025-04-27), northmail.ca doesn't support [2FA](https://en.wikipedia.org/wiki/Multi-factor_authentication) or [app password](https://support.google.com/accounts/answer/185833?hl=en), which is not the best practice.
+```
+return {
+    'johnfrankmorgan/whitespace.nvim',
+    config = function ()
+        require('whitespace-nvim').setup({
+            highlight = 'DiffDelete',
+            ignored_filetypes = { 'TelescopePrompt', 'Trouble', 'help', 'dashboard' },
+            ignore_terminal = true,
+            return_cursor = true,
+        })
+        -- remove trailing whitespace with a keybinding
+        -- vim.keymap.set('n', '<Leader>t', require('whitespace-nvim').trim)
+    end
+}
+```
 
+Restart nvim, this plugin is automatically installed. Executing `:checkhealth lazy` should say OK.
 
-#### Add to iOS 18 Calendar 
+##### Move vim key binding to a new config file
+Personally I prefer to gather my vim keybind settings. I create a new file `~/.config/nvim/lua/config/key_binding.lua`
 
-In `Settings`, scroll to bottom and click `Apps`. Click `Calendar` -> `Add Account` -> `Add CalDAV Account`.
+```
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+```
+I also remove them from `~/.config/nvim/lua/config/lazy.lua`
 
-In `Server`, paste the iOS CalDAV address. In `User Name` type the full email address. For now (2025-04-27), northmail.ca doesn't support [2FA](https://en.wikipedia.org/wiki/Multi-factor_authentication) or [app password](https://support.google.com/accounts/answer/185833?hl=en), which is not the best practice.
-
-#### Screenshots 
-I've taken screenshots at all critical steps. To keep the article brief, I moved all screenshots to the end of this article.
-
-![Northmail Screenshot](/images/2025/caldav/screenshot_northmail.png)
-![Thunderbird Screenshot](/images/2025/caldav/thunderbird_calendar.png)
-![Thunderbird Screenshot](/images/2025/caldav/thunderbird_add_account.png)
-![Thunderbird Screenshot](/images/2025/caldav/thunderbird_password.png)
-![Thunderbird Screenshot](/images/2025/caldav/thunderbird_calendar_select.png)
-![iOS Screenshot](/images/2025/caldav/ios_setting.jpg)
-![iOS Screenshot](/images/2025/caldav/ios_apps.jpg)
-![iOS Screenshot](/images/2025/caldav/ios_add_account.jpg)
-![iOS Screenshot](/images/2025/caldav/ios_add_other.jpg)
-![iOS Screenshot](/images/2025/caldav/ios_caldav.jpg)
-![iOS Screenshot](/images/2025/caldav/ios_password.jpg)
-
+My `init.lua` now changes to 
+```
+require("config.key_binding")
+require("config.lazy")
+```
