@@ -1,0 +1,97 @@
+---
+layout: post
+title: "Compile Wine with Podman, in Fedora Silverblue 42"
+description: ""
+category: 
+tags: []
+---
+
+#### Preface 
+Fedora Silverblue i686 x86_64 ...
+
+
+#### Create Toolbox Image 
+rpm-ostree install distrobox
+
+distrobox: 1.8.1.2
+
+```
+distrobox create --name wine --init --image fedora:42
+distrobox enter wine
+```
+
+
+
+
+#### Install Dependency 
+https://gitlab.winehq.org/wine/wine/-/wikis/Building-Wine
+
+```
+sudo dnf builddep wine.i686 wine.x86_64
+sudo dnf install libgcc.i686 glibc-devel.i686 glibc.i686
+sudo dnf install libX11-devel libX11-devel.i686 libXcomposite-devel libXcomposite-devel.i686 libXcomposite-devel.x86_64 libxcrypt-compat
+sudo dnf install libxcrypt-compat.i686 libxcrypt-compat.x86_64 libXcursor-devel                           libXcursor-devel.i686 libXcursor-devel.x86_64 libXext-devel libXext-devel.i686 libXext-devel.x86_64 libXfixes-devel.i686                           libXfixes-devel.x86_64 libXfixes.i686 libXi-devel                           libXi-devel.i686 libXi-devel.x86_64 libXinerama-devel libXinerama-devel.x86_64                           libxml2-devel.i686 libXmu-devel libXrandr-devel                           libXrandr-devel.i686 libXrandr-devel.x86_64 libXrender-devel                           libXrender-devel.i686 libXrender-devel.x86_64 freetype-devel.x86_64                           freetype-devel.i686 fontforge.x86_64 fontforge.i686
+
+sudo dnf install mesa-libGL-devel.i686 mesa-libGL-devel.x86_64 gnutls-devel.i686 gnutls-devel.x86_64
+sudo dnf install pulseaudio-libs-devel.i686 pulseaudio-libs-devel.x86_64
+
+```
+
+#### Build Wine 64 
+
+export WINE_INSTALL_PATH="/home/lizhenbo/apps/wine"
+
+```
+mkdir -p ~/src/wine64 && cd ~/src/wine64
+
+PKG_CONFIG_PATH=/usr/lib64/pkgconfig    \
+    CFLAGS="-Og" CROSSCFLAGS="-Og" CC="sccache gcc" \
+    i386_CC="sccache i686-w64-mingw32-gcc" x86_64_CC="sccache x86_64-w64-mingw32-gcc" \
+    ~/src/wine/configure --enable-win64 --prefix=$WINE_INSTALL_PATH
+
+make -j$(nproc)
+# Just taking one second to show off my 16-core CPU and 64 GB of RAM
+```
+Outside the container, I can use wine64 directly
+
+```
+./wine notepad
+./wine "/var/home/lizhenbo/.wine/drive_c/Program Files/7-Zip/7zFM.exe"
+```
+
+#### Build Wine 32
+
+```
+mkdir -p ~/src/wine32 && cd ~/src/wine32
+
+PKG_CONFIG_PATH=/usr/lib/pkgconfig    \
+    CFLAGS="-Og" CROSSCFLAGS="-Og" CC="sccache gcc -m32" \
+    ~/src/wine/configure --with-wine64=../wine64 --prefix=$WINE_INSTALL_PATH
+
+make -j$(nproc)
+```
+
+```
+./wine winecfg # Graphics -> Screen resolution -> 192 dpi
+./wine ~/Downloads/"setup_slay_the_spire_2020-12-15-8735c9fe3cc2280b76aa3ec47c953352a7df1f65_(64bit)_(43443).exe"
+./wine ~/.wine/drive_c/"GOG Games/Slay the Spire"/SlayTheSpire.exe
+```
+
+It worked well
+
+According to [Wine Wiki](https://gitlab.winehq.org/wine/wine/-/wikis/Building-Wine#:~:text=you%20should%20run%20make%20install%20in%20the%2032%2Dbit%20build%20tree%20first%2C%20then%20in%20the%2064%2Dbit%20one)
+```
+cd ~/src/wine32
+make install -j$(nproc)
+cd ~/src/wine64
+make install -j$(nproc)
+```
+
+```
+$ which wine
+~/apps/wine/bin/wine
+```
+
+
+
+
