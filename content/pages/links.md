@@ -18,7 +18,7 @@ Happy coding, happy living!
 #### [VOID001'S WOWO](https://void-shana.moe)
 VOID001 的小窝  
 
-#### [Zhullyb's Blog](https://blog.zhullyb.top/)  
+#### [Zhullyb's Blog](https://zhul.in/)  
 大笨钟啊拜啊拜（｡ò ∀ ó｡）
 
 #### [Cui Hao's Homepage](https://cvhc.cc/)  
