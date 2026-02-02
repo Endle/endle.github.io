@@ -12,7 +12,7 @@ tags: []
 
 A few days ago, I saw some recommendations of [ComfyUI](https://github.com/Comfy-Org/ComfyUI). After Googling,
 I found a blog article [Getting Started with ComfyUI on Fedora 42 Using AMD Instinct MI60](https://www.ojambo.com/getting-started-with-comfyui-on-fedora-42-using-amd-instinct-mi60) at <https://www.ojambo.com/>. 
-Fedora 
+[Fedora HC group](https://fedoraproject.org/wiki/SIGs/HC) has been updating ROCm rapidly, and package names are different in Fedora 42 and 43 (might be different in 44 as well) 
 
 
 
@@ -26,48 +26,33 @@ Fedora
 | GPU       | AMD Radeon RX 7600 XT, 16 GB VRAM |
 | Storage   | 1 TB SSD                          |
 
-自己小学的时候，每过一年都感觉非常激动，从二年级升至三年级，像是跨过了一道天坎。但成年以后，时间一年年地走过，并没有什么实感。如果从自己六岁开始算，小学时候过了一年，自己人生的体验增加了三分之一，而现在则不到二十分之一，感觉平淡也理所应当。但是如果换一个角度看，不算百分比，而是算加减法，那我现在一年里的经历，比小时候还是要多的多得多。所以，我就在元旦这天，用小学生写流水帐日记的形式，记录 2025 年我的一些有趣的琐事。
 
-#### 学会了 grub.cfg  
+#### Dependencies
 
-字面意思，我不是说我给 grub 贡献了某个 patch，而是我今年第一次学会了用 `configfile` `linux` `boot` 这些 grub shell commands. 大家不要笑，虽然我从2012年开始算用了十四年 Linux 了，但我一直把 bootloader 当成禁忌的魔法。如果电脑的启动出问题了，我只会两手一摊，快速地用 LiveCD 重装。现在学会了以后才发现，其实这些命令非常简单直接，只要进入了 Grub Shell 那就很简单了。同样，grub.cfg 只是一个简单的文本文档，虽然常见发行版生成的 grub.cfg 非常唬人，但核心部分也很简单。bootloader 出问题的时候手动指定 kernel path 再进系统里面修并不难。
+```
+rpm-ostree install rocminfo rocm-smi
+```
 
-#### 分清楚了交换机和路由器的区别  
+ROCm packages are prone to conflict with `steam.i686` in rpmfusion.
 
-我之前的印象里，路由器的 WAN 口接到魔法盒子 Modem 上，消耗一个公网 IP，让我的十几个设备可以同时联网。至于交换机，我不知道它有什么用，它甚至不是一个网络设备，祝它在思科的仓库里一切顺利。今年夏天有幸被迫阅读了 [Computer Networks](https://search.worldcat.org/title/1105777650) 自己对网络也有了一点点的理解，解答了自己多年来的疑惑。<https://cha.fan/questions/4bHeXFQ8VuQywzbt3zZB/answers/63Je7ZidNkMEb6oUCBuC>
+```
+git clone https://github.com/Comfy-Org/ComfyUI.git
+cd ComfyUI
+python3 -m venv venv
+source venv/bin/activate
+```
 
+As of 2026-Jan, ComfyUI suggests ROCm 6.4
 
-#### 在 neovim 0.11 下重新配置了 LSP  
-Neovim 0.11 [内置的 treesitter](https://vonheikemen.github.io/learn-nvim/feature/treesitter.html) 让配置 LSP 变得异常容易。我也[写了一篇博客](http://127.0.0.1:1111/lsp-on-neovim-0-11-from-stratch/)，从零开始配置 LSP。
+```
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.4
+pip install -r requirements.txt
+```
 
-#### 发现的有趣的应用 
+#### Run ComfyUI
 
-##### KOReader + Readwisereader
-今年很惊喜地发现，（在2022年）我的 [Kindle Voyage 可以越狱了](https://www.mobileread.com/forums/showthread.php?t=346037). 抱着坏了就买一个KOBO 的心态，我顺利地装上了 KOReader。更大的惊喜是，我发现 [tomtom800/readwisereader](https://github.com/tomtom800/readwisereader) 把我一年前的点子实现了出来。现在我的 Kindle 和我的 Readwise Reader 可以双向同步，我积攒的 read-later 的博客的数量也终于开始下降了。在我心理，这个插件就是 Software Of The Year 2025.
+```
+python main.py --lowvram
+```
 
-##### Supasend
-
-我是多年的 Logseq 用户，但手机上做快速记录时启动 LogSeq 又太慢。之前我用过 [Loglink](https://github.com/hankhank10/loglink-plugin)，可以用 WhatsApp 发消息，但还是要手动 Sync 一次，太繁琐。我今年发现了 [Supasend](https://supasend.app/), 发现它简直是我梦想中的速记软件。急速、离线。每个角度看，都打磨的很完美。Supasend 支持很多记录软件，除了Logseq 也包括 Obsidian, Notion, Things 等。我觉得非常值得一试。
-
-##### Inkwell
-
-一个用来生成 LLVM IR 的 Rust 库。<https://github.com/TheDan64/inkwell> 我先前试着用它写一个迷你编译器，虽然中途弃坑了，但过程还是很好玩的。我也是写了才发现，LLVM IR 居然功能这么多. [Ref blog](https://mcyoung.xyz/2023/08/01/llvm-ir/)
-
-#### 音乐 
-
-虽然我在 2025 年没玩过维多利亚三，但我在通勤路上无数次播放了它的 OST。我觉得B站评论区引述的一句话非常妙：*一个时代结束的标志就是它开始被浪漫化*. Rule The World 把这个时代最积极的一面，用昂扬的旋律描绘了出来。世博会、飞艇、铁路等意向仿佛就浮现在了眼前。我现在还能背出首个官宣 PV 的内容，金色的笔墨划过地图，将整个世界联系在一起。我觉得 *鎏金* 这个词在这里无比贴切。
-
-在写这篇文章的时候，我还特意考证了一下。Randall Collins 的确在它的著作 《Discovery of Society》第一章开篇提到， One sign that an era is over is that it begins to be romanticized. 书里的这句话是描写十九世纪的法国人怀念中世纪。现在，十九世纪也在被人们怀念了。
-
-#### 观战体育比赛 
-
-今年是我第一年关注英雄联盟的 S 赛。我非常喜欢的选手是多兰，他也受到了很多不合理的非议。试问一下，一位选手谦逊、勤勉，在比赛中愿意吃最少的资源干脏活类活，为了团队战术牺牲自己的数据，这样的队友谁不喜欢呢？不过，部分观众不喜欢这样的选手也不意外。有的人夺冠后被质疑硬实力不强，有的人双冠后还需要继续证明自己。天佑勇者，也许真的在冥冥之中有天意，值得一个冠军却功亏一篑的选手很多，但胜利的桂冠没有办法给德不配位的人。至于 Faker, 虽然他已经拿了六个冠军了，但还是需要在明年再拿下S赛来证明自己不是昙花一现的版本冠军 /s
-
-今年石油杯我也看了格斗项目——绿冲捡手柄真的是太有节目效果了。为此我已经在本地图书馆排队了街霸6的光盘，看看明年我的年终总结里会不会记录我被打破防的体验。
-
-#### 告别 2025 
-
-[BGM: Rule the World](https://youtu.be/fM667pMQ9AE?si=yI1cwDcYdyUEJSkG)
-
-在最后说一点个人的看法。社交平台上都充斥着大家的年终总结，里面写了不少实现的雄心壮志。不过，这是不是也是一种 reporting bias 呢？至少我的2025年度总结里的内容应该足够 trivial. 或者说，时间流逝本身就是non-trivial的吧
 
