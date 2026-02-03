@@ -15,7 +15,6 @@ I found a blog article [Getting Started with ComfyUI on Fedora 42 Using AMD Inst
 [Fedora HC group](https://fedoraproject.org/wiki/SIGs/HC) has been updating ROCm rapidly, and package names are different in Fedora 42 and 43 (might be different in 44 as well) 
 
 
-
 #### Environment
 
 | Component | Spec                              |
@@ -55,4 +54,8 @@ pip install -r requirements.txt
 python main.py --lowvram
 ```
 
+We'd better to monitor GPU usage
+```
+watch -n 1 rocm-smi
+```
 
